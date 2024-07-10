@@ -1,0 +1,58 @@
+@extends('adminlte::page')
+@section('title', 'Dashboard GW | Edit Clients')
+@section('content_header')
+    <div class="row p-2">
+        <div class="col-sm">
+            <h2><i class="nav-icon fas fa-water "></i> &nbsp;&nbsp;Atualização de Dados</h2>
+        </div>
+        <div class="col-sm">
+            @if (session('success'))
+                <x-adminlte-card title=" {{ session('success') }}" theme="success" icon="fas fa-lg fa-thumbs-up" removable>
+                </x-adminlte-card>
+            @endif
+            @if (session('error'))
+                <x-adminlte-card title=" {{ session('error') }}" theme="danger" icon="fas fa-lg fa-thumbs-down" removable>
+                </x-adminlte-card>
+            @endif
+        </div>
+    </div>
+@stop
+
+@section('content')
+
+    <div class="card card-default">
+        <div class="card-header">
+            <h2 class="card-title">
+                &nbsp;&nbsp;Editando Cliente: {{$Clients->client}} </h2>
+        </div>
+        <p></p>
+        <form action="{{ $Clients->id }}" method="POST">
+            @csrf
+            @method('PUT') 
+            <div class="class row p-2">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="client" name="client"
+                            placeholder="Nome do Novo Cliente" value="{{$Clients->client}}" required>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="input-group mb-3">
+                        <button type="submit" class="btn btn-block btn-primary">
+                            </i>&nbsp;&nbsp;<span
+                                class="fas fa-water"></span>&nbsp;&nbsp;Atualizar
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+    <hr>
+@stop
+
+@section('css')
+@stop
+@section('js')
+    
+@stop
