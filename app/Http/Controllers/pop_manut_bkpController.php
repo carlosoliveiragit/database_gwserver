@@ -1,79 +1,75 @@
 <?php
-
 namespace App\Http\Controllers;
-
-
-use App\Models\User;
 
 use App\Models\Users;
 use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
-
 use Illuminate\Http\Request;
-
-use stdClass;
+use Illuminate\Support\Facades\Storage;
 
 class pop_manut_bkpController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     protected $user;
 
-    public function __construct(User $user)
+    public function __construct(Users $user)
     {
         $this->middleware('auth');
         $this->user = $user;
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        //$this->authorize('is_admin');
         $Clients = Clients::all();
         $Users = Users::all();
         $Systems = Systems::all();
 
-        return view('uploads.pop_manut_bkp.index', ['Clients' => $Clients], ['Systems' => $Systems], ['Users' => $Users]);
+        return view('uploads.pop_manut_bkp.index', [
+            'Clients' => $Clients,
+            'Systems' => $Systems,
+            'Users' => $Users
+        ]);
     }
 
     public function store(Request $request)
-{
-    // Verifica se há arquivos no request e se é um array
-    if ($request->hasFile('upload') && is_array($request->file('upload'))) {
-        foreach ($request->file('upload') as $requestUpload) {
-            if ($requestUpload->isValid()) {
-                $file = new Files;
+    {
+        $request->validate([
+            'upload.*' => 'required|file|max:10240', // Arquivos até 10MB
+            'users_name' => 'required|string',
+            'clients_client' => 'required|string',
+            'systems_system' => 'required|string',
+            'type' => 'required|string',
+        ]);
 
-                // Criando o caminho do diretório
-                $file->users_name = $request->users_name;
-                $file->clients_client = $request->clients_client;
-                $file->systems_system = $request->systems_system;
-                $file->type = $request->type;
-                $file->sector = "MANUTENCAO";
-                $file->path = 'storage/received_file/' . $request->clients_client . '/' . $request->systems_system . '/' . $request->type .'/';
-                
-                // Criando nome do arquivo
-                $uploadName = pathinfo($requestUpload->getClientOriginalName(), PATHINFO_FILENAME).'.'.$requestUpload->getClientOriginalExtension();
+        if ($request->hasFile('upload')) {
+            foreach ($request->file('upload') as $requestUpload) {
+                if ($requestUpload->isValid()) {
+                    $file = new Files;
 
-                // Movendo o arquivo para a pasta desejada
-                $requestUpload->move(public_path($file->path), $uploadName);
+                    $file->users_name = $request->users_name;
+                    $file->clients_client = $request->clients_client;
+                    $file->systems_system = $request->systems_system;
+                    $file->type = $request->type;
+                    $file->sector = "MANUTENCAO";
 
-                // Salvando no banco de dados
-                $file->file = $uploadName;
-                $file->save();
+                    // Definição do caminho do diretório no storage
+                    $filePath = 'private/received_file/' . $request->clients_client . '/' . $request->systems_system . '/' . $request->type . '/';
+                    Storage::makeDirectory($filePath);
+
+                    $file->path = $filePath;
+
+                    // Criando nome do arquivo
+                    $uploadName = pathinfo($requestUpload->getClientOriginalName(), PATHINFO_FILENAME) . '.' . $requestUpload->getClientOriginalExtension();
+
+                    // Salvando o arquivo no storage
+                    $requestUpload->storeAs($filePath, $uploadName, 'local');
+
+                    $file->file = $uploadName;
+                    $file->save();
+                }
             }
         }
+
+        return redirect('pop_manut_bkp')->with('success', 'Upload realizado com sucesso');
     }
-
-    return redirect('pop_manut_bkp')->with('success', 'Upload realizados com sucesso');
-}
-
 }
