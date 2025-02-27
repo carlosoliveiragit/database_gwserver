@@ -30,7 +30,7 @@ class Pop_FilesController extends Controller
         if (file_exists($filePath)) {
             unlink($filePath);
             Files::findOrFail($id)->delete();
-            return redirect('files')->with('success', 'Arquivo Deletado com Sucesso');
+            return redirect('pop_files')->with('success', 'Arquivo Deletado com Sucesso');
         }
 
         return redirect('pop_files')->with('error', 'Arquivo não encontrado.');
@@ -46,14 +46,14 @@ class Pop_FilesController extends Controller
         $fileEntry = Files::where('file', $file)->first();
 
         if (!$fileEntry) {
-            return redirect()->route('files')->with('error', 'Arquivo não encontrado no banco de dados.');
+            return redirect()->route('pop_files')->with('error', 'Arquivo não encontrado no banco de dados.');
         }
 
         // Montar o caminho completo baseado no registro do banco
         $filePath = storage_path("app/" . $fileEntry->path . $fileEntry->file);
 
         if (!file_exists($filePath)) {
-            return redirect()->route('files')->with('error', 'O arquivo não existe no sistema de arquivos.');
+            return redirect()->route('pop_files')->with('error', 'O arquivo não existe no sistema de arquivos.');
         }
 
         return response()->download($filePath);
