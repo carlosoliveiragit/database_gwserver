@@ -85,7 +85,7 @@
             </div>
             <div class="row p-2">
                 <div class="col-sm-6">
-                    <x-adminlte-select2 name="types_type" label="Tipo" data-placeholder="selecione o tip...">
+                    <x-adminlte-select2 name="types_type" label="Tipo" data-placeholder="selecione o tipo...">
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-file"></i>
