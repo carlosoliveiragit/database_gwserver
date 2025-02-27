@@ -9,7 +9,6 @@ use App\Models\Files;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Imagick;
-
 class Images_bkpController extends Controller
 {
     protected $user;
@@ -67,7 +66,12 @@ class Images_bkpController extends Controller
         // Upload de PDF separado
         if ($request->hasFile('uploadPdf')) {
             $pdfFile = $request->file('uploadPdf');
-            $pdfFileName = $request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His") . '.pdf';
+            // Gerar nome do arquivo PDF em maiúsculas, com extensão em minúscula
+            $pdfFileName = strtoupper($request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His"));
+            $extension = strtolower($pdfFile->getClientOriginalExtension()); // Garantir extensão minúscula
+            $pdfFileName .= '.' . $extension;
+            
+            // Armazenar o PDF com o nome atualizado
             $pdfFile->storeAs($pdfPath, $pdfFileName, 'local');
         }
 

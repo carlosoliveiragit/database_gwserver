@@ -53,7 +53,7 @@ class ClpAltusController extends Controller
             Storage::makeDirectory($directoryPath);
 
             // Criando nome seguro para o arquivo
-            $uploadName = strtolower(str_replace(" ", "_", 
+            $uploadName = strtoupper(str_replace(" ", "_", 
                 $request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . $request->model . '_' . date("dmy_His") . "." . $extension));
 
             // Salvando o arquivo no storage

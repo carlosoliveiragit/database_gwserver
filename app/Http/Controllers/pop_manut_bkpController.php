@@ -8,7 +8,7 @@ use App\Models\Files;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class pop_manut_bkpController extends Controller
+class Pop_manut_bkpController extends Controller
 {
     protected $user;
 
@@ -58,8 +58,10 @@ class pop_manut_bkpController extends Controller
 
                     $file->path = $filePath;
 
-                    // Criando nome do arquivo
-                    $uploadName = pathinfo($requestUpload->getClientOriginalName(), PATHINFO_FILENAME) . '.' . $requestUpload->getClientOriginalExtension();
+                    // Criando nome do arquivo: nome em maiúsculas e extensão em minúsculas
+                    $originalName = pathinfo($requestUpload->getClientOriginalName(), PATHINFO_FILENAME);
+                    $extension = strtolower($requestUpload->getClientOriginalExtension()); // Garantir extensão minúscula
+                    $uploadName = strtoupper("MAN-" .$originalName) . '.' . $extension; // Nome em maiúsculas
 
                     // Salvando o arquivo no storage
                     $requestUpload->storeAs($filePath, $uploadName, 'local');

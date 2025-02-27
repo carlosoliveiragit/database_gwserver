@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Files;
 use App\Models\User;
 
-class FilesController extends Controller
+class Pop_FilesController extends Controller
 {
     protected $user;
 
@@ -19,8 +19,8 @@ class FilesController extends Controller
 
     public function index()
 {
-    $Files = Files::where('type', 'NOT LIKE', '%POP%')->get();  // Use get() to execute the query
-    return view('files.index', ['Files' => $Files]);
+    $Files = Files::where('type', 'LIKE', '%POP%')->get();  // Use get() to execute the query
+    return view('pop_files.index', ['Files' => $Files]);
 }
 
     public function destroy($id, Request $request)
@@ -33,7 +33,7 @@ class FilesController extends Controller
             return redirect('files')->with('success', 'Arquivo Deletado com Sucesso');
         }
 
-        return redirect('files')->with('error', 'Arquivo não encontrado.');
+        return redirect('pop_files')->with('error', 'Arquivo não encontrado.');
     }
 
     public function download($file)
