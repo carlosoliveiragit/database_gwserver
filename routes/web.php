@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FilesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,30 +23,49 @@ Auth::routes();
 
 Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('files', [App\Http\Controllers\FilesController::class, 'index'])->name('files');
-Route::post('files', [App\Http\Controllers\FilesController::class, 'destroy'])->name('files');
-Route::delete('files/{id}', [App\Http\Controllers\FilesController::class, 'destroy'])->name('files');
+Route::get('files', [FilesController::class, 'index'])->name('files');
+Route::get('files/{file}/download', [FilesController::class, 'download'])->name('files.download');
+Route::post('files', [FilesController::class, 'destroy'])->name('files');
+Route::delete('files/{id}', [FilesController::class, 'destroy'])->name('files');
 
-Route::get   ('clients',           [App\Http\Controllers\ClientsController::class, 'index'  ])->name('clients');
-Route::post  ('clients',           [App\Http\Controllers\ClientsController::class, 'store'  ])->name('clients');
-Route::delete('clients/{id}',      [App\Http\Controllers\ClientsController::class, 'destroy'])->name('clients');
-Route::get   ('edit_client/{id}',  [App\Http\Controllers\ClientsController::class, 'edit'   ])->name('edit_client');
-Route::put   ('edit_client/{id}',  [App\Http\Controllers\ClientsController::class, 'update' ])->name('update_client');
+Route::get('clients_files', [App\Http\Controllers\Clients_filesController::class, 'index'])->name('clients_files');
+Route::get('clients_files/{file}/download', [App\Http\Controllers\Clients_filesController::class, 'download'])->name('clients_files.download');
+Route::post('clients_files', [App\Http\Controllers\Clients_filesController::class, 'store'])->name('clients_files');
+Route::delete('clients_files/{id}', [App\Http\Controllers\Clients_filesController::class, 'destroy'])->name('clients_files');
+
+Route::get('clients', [App\Http\Controllers\ClientsController::class, 'index'])->name('clients');
+Route::post('clients', [App\Http\Controllers\ClientsController::class, 'store'])->name('clients');
+Route::delete('clients/{id}', [App\Http\Controllers\ClientsController::class, 'destroy'])->name('clients');
+Route::get('edit_client/{id}', [App\Http\Controllers\ClientsController::class, 'edit'])->name('edit_client');
+Route::put('edit_client/{id}', [App\Http\Controllers\ClientsController::class, 'update'])->name('update_client');
 
 Route::get('systems', [App\Http\Controllers\SystemsController::class, 'index'])->name('systems');
 Route::post('systems', [App\Http\Controllers\SystemsController::class, 'store'])->name('systems');
 Route::delete('systems/{id}', [App\Http\Controllers\SystemsController::class, 'destroy'])->name('systems');
-Route::get   ('edit_system/{id}',  [App\Http\Controllers\SystemsController::class, 'edit'   ])->name('edit_system');
-Route::put   ('edit_system/{id}',  [App\Http\Controllers\SystemsController::class, 'update' ])->name('update_system');
+Route::get('edit_system/{id}', [App\Http\Controllers\SystemsController::class, 'edit'])->name('edit_system');
+Route::put('edit_system/{id}', [App\Http\Controllers\SystemsController::class, 'update'])->name('update_system');
 
 Route::get('users', [App\Http\Controllers\UsersController::class, 'index'])->name('users');
 Route::post('users', [App\Http\Controllers\UsersController::class, 'store'])->name('users');
 Route::delete('users/{id}', [App\Http\Controllers\UsersController::class, 'destroy'])->name('users');
-Route::get   ('edit_user/{id}',  [App\Http\Controllers\UsersController::class, 'edit'   ])->name('edit_user');
-Route::put   ('edit_user/{id}',  [App\Http\Controllers\UsersController::class, 'update' ])->name('update_user');
+
+Route::get('edit_user/{id}', [App\Http\Controllers\UsersController::class, 'edit'])->name('edit_user');
+Route::put('edit_user/{id}', [App\Http\Controllers\UsersController::class, 'update'])->name('update_user');
 
 Route::get('telemetry', [App\Http\Controllers\TelemetryController::class, 'index'])->name('telemetry');
 Route::post('telemetry', [App\Http\Controllers\TelemetryController::class, 'store'])->name('telemetry');
+
+Route::get('images_bkp', [App\Http\Controllers\Images_bkpController::class, 'index'])->name('images_bkp');
+Route::post('images_bkp', [App\Http\Controllers\Images_bkpController::class, 'store'])->name('images_bkp');
+
+Route::get('pop_bkp', [App\Http\Controllers\pop_bkpController::class, 'index'])->name('pop_bkp');
+Route::post('pop_bkp', [App\Http\Controllers\pop_bkpController::class, 'store'])->name('pop_bkp');
+
+Route::get('pop_manut_bkp', [App\Http\Controllers\pop_manut_bkpController::class, 'index'])->name('pop_manut_bkp');
+Route::post('pop_manut_bkp', [App\Http\Controllers\pop_manut_bkpController::class, 'store'])->name('pop_manut_bkp');
+
+Route::get('pop_oper_bkp', [App\Http\Controllers\pop_oper_bkpController::class, 'index'])->name('pop_oper_bkp');
+Route::post('pop_oper_bkp', [App\Http\Controllers\pop_oper_bkpController::class, 'store'])->name('pop_oper_bkp');
 
 Route::get('clp_weg', [App\Http\Controllers\ClpWegController::class, 'index'])->name('clp_weg');
 Route::post('clp_weg', [App\Http\Controllers\ClpWegController::class, 'store'])->name('clp_weg');

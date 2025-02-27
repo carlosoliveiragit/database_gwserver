@@ -3,7 +3,7 @@
 @section('content_header')
     <div class="row p-2">
         <div class="col-sm">
-            <h2><i class="nav-icon fas fa-water "></i> &nbsp;&nbsp;Atualização de Dados</h2>
+            <h4><i class="nav-icon fas fa-water "></i> &nbsp;&nbsp;Atualização de Dados</h4>
         </div>
         <div class="col-sm">
             @if (session('success'))

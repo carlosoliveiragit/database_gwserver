@@ -6,31 +6,32 @@
 @section('plugins.Select2', true)
 
 @section('content_header')
+<div class="col-sm">
+    <h2><i class="fas fa-solid fa-upload "></i> &nbsp;&nbsp;UPLOAD - TELEMETRIA</h2>
+</div>
     <div class="row p-2">
         <div class="col-sm">
-            <h2><i class="fas fa-solid fa-upload "></i> &nbsp;&nbsp;Upload Telemetria</h2>
-        </div>
-        <div class="col-sm">
             @if (session('success'))
-                <x-adminlte-card title=" {{ session('success') }}" theme="success" icon="fas fa-lg fa-thumbs-up" removable>
-                </x-adminlte-card>
+            <div class="row p-3">
+                <div class="col-sm">
+                    <x-adminlte-alert theme="success" title="Operação Finalizada" dismissable>
+                        <ul>
+                            <li>{{ session('success') }}</li>
+                        </ul>
+                    </x-adminlte-alert>
+                </div>
+            </div>
             @endif
             @if (session('error'))
-                <x-adminlte-card title=" {{ session('error') }}" theme="danger" icon="fas fa-lg fa-thumbs-down" removable>
-                </x-adminlte-card>
-            @endif
-            @if (isset($_GET['id']))
-                <x-adminlte-card class="bg-warning" title=" Tem Certeza que Deseja Excluir o Arquivo?" theme="warning"
-                    icon="fas fa-exclamation-triangle" removable>
-                    <h5><strong>{{ $_GET['system'] }}</strong></h5>
-                    <form action="systems/{{ $_GET['id'] }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fa fa-lg fa-fw fa-trash"></i>&nbsp;&nbsp;Deletar
-                        </button>
-                    </form>
-                </x-adminlte-card>
+            <div class="row p-3">
+                <div class="col-sm">
+                    <x-adminlte-alert theme="danger" title="Erro na Operação" dismissable>
+                        <ul>
+                            <li>{{ session('error') }}</li>
+                        </ul>
+                    </x-adminlte-alert>
+                </div>
+            </div>
             @endif
         </div>
     </div>
@@ -38,45 +39,65 @@
 @section('content')
     <div class="card card-default">
         <div class="card-header">
-            <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;Adicionar Arquivo Json ScadaBR / NodeRed
-            </h2><br>
+            <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;Adicionar Arquivo JSON ScadaBR / NodeRed</h2>
         </div>
+
         <form id="fileUploadForm" action="telemetry" method="POST" enctype="multipart/form-data">
             @csrf
-            <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
+            <input value="{{ Auth::user()->name }}" name="users_name" type="hidden" required>
+
             <div class="row p-2">
                 <div class="col-sm">
-                    <x-adminlte-select2 name="clients_client" label="Cliente" data-placeholder="Select Client..." required>
+                    <x-adminlte-select2 name="clients_client" label="Cliente" data-placeholder="Selecione o Cliente..." required>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-water"></i>
                             </div>
                         </x-slot>
-                        @foreach ($Clients as $index => $client)
-                            <option disabled="disabled" selected></option>
+                        @foreach ($Clients as $client)
                             <option>{{ $client->client }}</option>
                         @endforeach
                     </x-adminlte-select2>
                 </div>
                 <div class="col-sm">
-                    <x-adminlte-select2 name="systems_system" label="Sistema" data-placeholder="Select System..." required>
+                    <x-adminlte-select2 name="systems_system" label="Sistema" data-placeholder="Selecione o Sistema..." required>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-sitemap"></i>
                             </div>
                         </x-slot>
-                        @foreach ($Systems as $index => $system)
-                            <option disabled="disabled" selected></option>
+                        @foreach ($Systems as $system)
                             <option>{{ $system->system }}</option>
                         @endforeach
                     </x-adminlte-select2>
                 </div>
             </div>
             <div class="row p-2">
+                 <!-- Seletor para escolher Upload ou Colar JSON -->
                 <div class="col-sm">
-                    {{-- With label and feedback disabled --}}
+                    <label>Selecione o método de envio:</label>
+                    <select id="uploadMethod" class="form-control">
+                        <option value="file">Upload de Arquivo</option>
+                        <option value="text">Colar JSON</option>
+                    </select>
+                </div>
+                    <div class="col-sm">
+                        <x-adminlte-select2 name="type" label="Tipo" data-placeholder="Selecione o Tipo..." required>
+                            <x-slot name="prependSlot">
+                                <div class="input-group-text text-primary">
+                                    <i class="fas fa-solid fa-file"></i>
+                                </div>
+                            </x-slot>
+                            <option value="SCADABR">ScadaBR</option>
+                            <option value="NODERED">NodeRed</option>
+                        </x-adminlte-select2>
+                    </div>
+            </div>
+            <!-- Upload de Arquivo -->
+            <div class="row p-2" id="fileUploadContainer">
+                <div class="col-sm">
                     <x-adminlte-input-file accept=".json" type="file" id="upload" name="upload" label="Upload file"
-                        placeholder="Choose a file..." enable-feedback required>
+                        placeholder="Escolha um arquivo..." enable-feedback>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-upload"></i>
@@ -84,25 +105,18 @@
                         </x-slot>
                     </x-adminlte-input-file>
                 </div>
+            </div>
+            <!-- Colar JSON -->
+            <div class="row p-2" id="textUploadContainer" style="display: none;">
                 <div class="col-sm">
-                    <x-adminlte-select2 name="type" label="Tipo" data-placeholder="Select Type..." required>
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text text-primary">
-                                <i class="fas fa-solid fa-file"></i>
-                            </div>
-                        </x-slot>
-                        <option disabled="disabled" selected></option>
-                        <option value="SCADABR">ScadaBR</option>
-                        <option value="NODERED">NodeRed</option>
-                    </x-adminlte-select2>
+                    <label for="jsonText">Cole o JSON:</label>
+                    <textarea class="form-control" name="json_text" id="jsonText" rows="6" placeholder="Cole seu JSON aqui..."></textarea>
                 </div>
             </div>
             <div class="row p-2">
                 <div class="col-sm">
-                    {{-- Dinamic Change --}}
-                    <x-adminlte-progress id="pbDinamic"  theme="lighblue" animated with-label />
-                    {{-- Update the previous progress bar every 2 seconds, incrementing by 10% each step --}}
-                    
+                    <x-adminlte-progress id="pbDinamic" theme="lightblue" animated with-label />
+
                     <label>Ação</label>
                     <div class="input-group mb-3">
                         <button type="submit" class="btn btn-block btn-primary">
@@ -111,7 +125,9 @@
                     </div>
                 </div>
             </div>
+
             <hr>
+
             <div class="row p-2">
                 <div class="col-sm">
                     <p>* Preencha o formulário corretamente</p>
@@ -122,10 +138,22 @@
     </div>
 @stop
 
-
-
-@section('css')
-@stop
 @section('js')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const uploadMethod = document.getElementById("uploadMethod");
+        const fileUploadContainer = document.getElementById("fileUploadContainer");
+        const textUploadContainer = document.getElementById("textUploadContainer");
 
+        uploadMethod.addEventListener("change", function() {
+            if (this.value === "file") {
+                fileUploadContainer.style.display = "block";
+                textUploadContainer.style.display = "none";
+            } else {
+                fileUploadContainer.style.display = "none";
+                textUploadContainer.style.display = "block";
+            }
+        });
+    });
+</script>
 @stop

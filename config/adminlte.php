@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'logo' => '<b>Dashboard</b>GW',
+    'logo' => '<b>Servidor de Arquivos</b> GW',
     'logo_img' => 'vendor/adminlte/dist/img/icogw.svg',
     'logo_img_class' => 'brand-image img-circle elevation-4',
     'logo_img_xl' => null,
@@ -235,70 +235,185 @@ return [
             'topnav_right'   => true, // Or "topnav => true" to place on the left.
             'icon_enabled'   => 'fas fa-moon',
             'icon_disabled'  => 'fas fa-sun',
-            // 'color_enabled'  => 'white',
-            // 'color_disabled' => 'yellow'
+            'color_enabled'  => 'white',
+            'color_disabled' => 'yellow'
         ],
+        ['header' => ''],
         [
-            'text' => 'Home',
+            'text' => 'PAGINA INICIAL',
             'url'  => 'home',
             'icon' => 'fas fa-home',
         ],
+        ['header' => ''],
+        ['header' => 'DOWNLOAD'],
         [
             'text' => 'Arquivos',
-            'url' => 'files',
             'icon' => 'fas fa-solid fa-cloud-arrow-down',
-            //'can'  => 'is_admin',
-        ],
-        ['header' => 'Upload de Arquivos'],
+            'submenu' => [
 
+                [
+                    'text' => 'Pesquisar',
+                    'url' => 'clients_files',
+                    'icon' => 'fas fa-solid fa-cloud-arrow-down',
+                    //'can'  => 'is_admin',
+                ],
+                [
+                    'text' => 'Lista Geral',
+                    'url' => 'files',
+                    'icon' => 'fas fa-solid fa-cloud-arrow-down',
+                    //'can'  => 'is_admin',
+                ],
+                
+            ],
+        ],
         [
-            'text' => 'CLP',
+            'text' => 'Procedimentos',
+            'icon' => 'fas fa-solid fa-cloud-arrow-down',
+            'submenu' => [
+
+                [
+                    'text' => 'Pesquisar',
+                    'url' => 'pop_clients_files',
+                    'icon' => 'fas fa-solid fa-cloud-arrow-down',
+                    //'can'  => 'is_admin',
+                ],
+                [
+                    'text' => 'Lista Geral',
+                    'url' => 'pop_files',
+                    'icon' => 'fas fa-solid fa-cloud-arrow-down',
+                    //'can'  => 'is_admin',
+                ],
+                
+            ],
+        ],
+        
+        ['header' => ''],
+        ['header' => 'UPLOAD'],
+        [
+            'text' => 'CCO',
             'icon' => 'fas fa-cloud-arrow-up',
             'submenu' => [
 
                 [
-                    'text' => 'ABB',
-                    'url' => 'clp_abb',
-                    'icon' => 'fas fa-upload',
+                    'text' => 'Telemetria',
+                    'url' => 'telemetry',
+                    'icon' => 'fas fa-cloud-arrow-up',
+                    'icon_color' => 'cyan',
                 ],
                 [
-                    'text' => 'Altus',
-                    'url' => 'clp_altus',
-                    'icon' => 'fas fa-upload',
+                    'text' => 'POP',
+                    'url' => 'pop_bkp',
+                    'icon' => 'fas fa-cloud-arrow-up',
+                    'icon_color' => 'cyan',
                 ],
-                [
-                    'text' => 'WEG',
-                    'url' => 'clp_weg',
-                    'icon' => 'fas fa-upload',
+                
+            ],
+        ],
 
+        [
+            'text' => 'MANUTENÇÃO',
+            'icon' => 'fas fa-cloud-arrow-up',
+            'submenu' => [
+
+                
+
+                [
+                    'text' => 'CLP',
+                    'icon' => 'fas fa-cloud-arrow-up',
+                    'icon_color' => 'cyan',
+                    'submenu' => [
+        
+                        [
+                            'text' => 'ABB',
+                            'url' => 'clp_abb',
+                            'icon_color' => 'cyan',
+                        ],
+                        [
+                            'text' => 'Altus',
+                            'url' => 'clp_altus',
+                            'icon_color' => 'cyan',
+                        ],
+                        [
+                            'text' => 'WEG',
+                            'url' => 'clp_weg',
+                            'icon_color' => 'cyan',
+        
+                        ],
+                        [
+                            'text' => 'Allen-Bradley',
+                            'url' => 'clp_allen_bradley',
+                            'icon_color' => 'cyan',
+        
+                        ],
+                        [
+                            'text' => 'Metaltex',
+                            'url' => 'clp_metaltex',
+                            'icon_color' => 'cyan',
+        
+                        ],
+                    ],
+                ],
+                [
+                    'text' => 'IHM',
+                    'url' => 'ihm_bkp',
+                    'icon' => 'fas fa-cloud-arrow-up',
+                    'icon_color' => 'cyan',
+                ],
+                [
+                    'text' => 'POP',
+                    'url' => 'pop_manut_bkp',
+                    'icon' => 'fas fa-cloud-arrow-up',
+                    'icon_color' => 'cyan',
                 ],
             ],
         ],
+        
         [
-            'text' => 'Telemetria',
-            'url' => 'telemetry',
+            'text' => 'OPERAÇÃO',
             'icon' => 'fas fa-cloud-arrow-up',
+            'submenu' => [
+
+                [
+                    'text' => 'Setpoints',
+                    'url' => 'images_bkp',
+                    'icon' => 'fas fa-cloud-arrow-up',
+                    'icon_color' => 'cyan',
+                ],
+                [
+                    'text' => 'POP',
+                    'url' => 'pop_oper_bkp',
+                    'icon' => 'fas fa-cloud-arrow-up',
+                    'icon_color' => 'cyan',
+                ],
+                
+            ],
         ],
+        
+        ['header' => ''],
         [
             'text' => 'Administração',
             'url' => '#',
             'icon' => 'fas fa-solid fa-gear',
+            'icon_color' => 'red',
             'can' => 'is_admin',
             'submenu' => [
                 [
                     'text' => 'Usuários',
                     'url' => 'users',
                     'icon' => 'fas fa-solid fa-users',
+                    'icon_color' => 'blue',
                 ],
                 [
                     'text' => 'Clientes',
                     'url' => 'clients',
                     'icon' => 'fas fa-solid fa-water',
+                    'icon_color' => 'green',
                 ],
                 [
                     'text' => 'Sistemas',
                     'url' => 'systems',
                     'icon' => 'fas fa-solid fa-sitemap',
+                    'icon_color' => 'yellow',
                 ],
 
             ],

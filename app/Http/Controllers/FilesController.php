@@ -2,25 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-
-use Storage;
-
-//use App\Models\Users;
-//use App\Models\Clients;
-//use App\Models\Systems;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Files;
-
-use stdClass;
+use App\Models\User;
 
 class FilesController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     protected $user;
 
     public function __construct(User $user)
@@ -29,36 +17,47 @@ class FilesController extends Controller
         $this->user = $user;
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
-    {   
-        //$this->authorize('is_admin');
-
-        //$Clients=   Clients::all();
-        //$Users=     Users::all();
-        //$Systems=   Systems::all();
-        $Files=     Files::all();
-
-        return view('files.index',['Files'=> $Files]);
+    {
+        $Files = Files::all();
+        return view('files.index', ['Files' => $Files]);
     }
 
-    public function destroy($id, Request $request) {
+    public function destroy($id, Request $request)
+    {
+        $filePath = storage_path('app/' . $request->path . $request->file);
 
-         $Files = new Files;
-         $Files -> path = $request -> path;
-         $Files -> file = $request -> file;
+        if (file_exists($filePath)) {
+            unlink($filePath);
+            Files::findOrFail($id)->delete();
+            return redirect('files')->with('success', 'Arquivo Deletado com Sucesso');
+        }
 
-
-        Files::findOrFail($id)->delete();
-        unlink($request -> path . $request -> file);
-        
-        return redirect('files')->with('success', 'Arquivo Deletado com Sucesso');
-        
-
+        return redirect('files')->with('error', 'Arquivo não encontrado.');
     }
+
+    public function download($file)
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Você precisa estar logado para acessar esta página.');
+        }
+
+        // Buscar no banco de dados o caminho do arquivo
+        $fileEntry = Files::where('file', $file)->first();
+
+        if (!$fileEntry) {
+            return redirect()->route('files')->with('error', 'Arquivo não encontrado no banco de dados.');
+        }
+
+        // Montar o caminho completo baseado no registro do banco
+        $filePath = storage_path("app/" . $fileEntry->path . $fileEntry->file);
+
+        if (!file_exists($filePath)) {
+            return redirect()->route('files')->with('error', 'O arquivo não existe no sistema de arquivos.');
+        }
+
+        return response()->download($filePath);
+    }
+
 
 }

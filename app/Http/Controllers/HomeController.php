@@ -36,11 +36,14 @@ class HomeController extends Controller
         $clients=   Clients::count();
         $users=     Users::count();
         $systems=   Systems::count();
-        $files=     Files::count();
+        //$files=     Files::count();
+        $files_arq = Files::where('type', 'NOT LIKE', '%POP%')->count();
+        $files_proc = Files::where('type', 'LIKE', '%POP%')->count();
 
-        //dd($files);
+
+        //dd($files_arq);
         
-        return view('home.index',compact('clients','users','systems','files'));
+        return view('home.index',compact('clients','users','systems','files_arq','files_proc'));
     }
 
 }

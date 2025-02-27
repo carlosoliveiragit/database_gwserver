@@ -1,20 +1,30 @@
 @extends('adminlte::page')
-@section('title', 'Dashboard GW | Home')
+@section('title', 'Dashboard GW | Pagina Inicial')
 @section('content_header')
-    <h2 class=""><i class="nav-icon fas fa-house "></i> &nbsp;&nbsp;Home</h2>
+    <h4 class=""><i class="nav-icon fas fa-house "></i> &nbsp;&nbsp;Pagina Inicial</h4>
 @stop
-
 @section('content')
     <div class="row">
-
         <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3> {{ $files }} <sup style="font-size: 15px"> Arquivos</sup> </h3>
+                    <h3> {{ $files_arq }} <sup style="font-size: 15px"> Arquivos</sup> </h3>
                     <p>Arquivos Cadastrados</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-solid fa-cloud-arrow-down"></i>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>{{ $files_proc }} <sup style="font-size: 15px"> Procedimentos </sup></h3>
+                    <p>Procedimentos Cadastrados</p>
+                </div>
+                <div class="icon">
+                    <i class="far fa-solid fa-chalkboard-user"></i>
                 </div>
                 
             </div>
@@ -28,19 +38,6 @@
                 </div>
                 <div class="icon">
                     <i class="far fa-solid fa-water"></i>
-                </div>
-                
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3>{{ $systems }} <sup style="font-size: 15px"> Sistemas </sup></h3>
-                    <p>Sistemas Cadastrados</p>
-                </div>
-                <div class="icon">
-                    <i class="far fa-solid fa-sitemap"></i>
                 </div>
                 
             </div>

@@ -25,10 +25,7 @@
                 {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
             </a>
         </div>
-        <div class="row">
-            <div class="col-sm text-center"><h5>Manutenção</h5></div>
-        </div>
-
+        
         {{-- Card Box --}}
         <div class="card {{ config('adminlte.classes_auth_card', 'card-outline card-primary') }}">
 

@@ -6,18 +6,21 @@
 @section('plugins.Select2', true)
 
 @section('content_header')
+<div class="col-sm">
+    <h4><i class="fas fa-solid fa-upload "></i> &nbsp;&nbsp;UPLOAD - CLP ALTUS</h4>
+</div>
     <div class="row p-2">
         <div class="col-sm">
-            <h2><i class="fas fa-solid fa-upload "></i> &nbsp;&nbsp;UPLOAD CLP ALTUS</h2>
-        </div>
-        <div class="col-sm">
             @if (session('success'))
-                <x-adminlte-card title=" {{ session('success') }}" theme="success" icon="fas fa-lg fa-thumbs-up" removable>
-                </x-adminlte-card>
-            @endif
-            @if (session('error'))
-                <x-adminlte-card title=" {{ session('error') }}" theme="danger" icon="fas fa-lg fa-thumbs-down" removable>
-                </x-adminlte-card>
+            <div class="row p-3">
+                <div class="col-sm">
+                    <x-adminlte-alert theme="success" title="Operação Finalizada" dismissable>
+                        <ul>
+                            <li>{{ session('success') }}</li>
+                        </ul>
+                    </x-adminlte-alert>
+                </div>
+            </div>
             @endif
         </div>
     </div>

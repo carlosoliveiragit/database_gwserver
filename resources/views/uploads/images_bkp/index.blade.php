@@ -2,25 +2,25 @@
     href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 @section('plugins.BsCustomFileInput', true)
 @extends('adminlte::page')
-@section('title', 'Dashboard GW | CLP ABB')
+@section('title', 'Dashboard GW | Imagens')
 @section('plugins.Select2', true)
 
 @section('content_header')
-<div class="col-sm">
-    <h4><i class="fas fa-solid fa-upload "></i> &nbsp;&nbsp;UPLOAD - CLP ABB</h4>
-</div>
+    <div class="col-sm">
+        <h4><i class="fas fa-solid fa-upload "></i> &nbsp;&nbsp;UPLOAD - SETPOINTS</h4>
+    </div>
     <div class="row p-2">
         <div class="col-sm">
             @if (session('success'))
-            <div class="row p-3">
-                <div class="col-sm">
-                    <x-adminlte-alert theme="success" title="Operação Finalizada" dismissable>
-                        <ul>
-                            <li>{{ session('success') }}</li>
-                        </ul>
-                    </x-adminlte-alert>
+                <div class="row p-3">
+                    <div class="col-sm">
+                        <x-adminlte-alert theme="success" title="Operação Finalizada" dismissable>
+                            <ul>
+                                <li>{{ session('success') }}</li>
+                            </ul>
+                        </x-adminlte-alert>
+                    </div>
                 </div>
-            </div>
             @endif
         </div>
     </div>
@@ -28,9 +28,10 @@
 @section('content')
     <div class="card card-default">
         <div class="card-header">
-            <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;<b>Adicionar Arquivo dos seguintes Modelos: </b>PM5032-T-ETH / PM5052-T-ETH</h2><br>
+            <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;Adicionar Arquivos de Imagem
+            </h2><br>
         </div>
-        <form id="fileUploadForm" action="clp_abb" method="POST" enctype="multipart/form-data">
+        <form id="fileUploadForm" action="images_bkp" method="POST" enctype="multipart/form-data">
             @csrf
             <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
             <div class="row p-2">
@@ -63,9 +64,17 @@
             </div>
             <div class="row p-2">
                 <div class="col-sm">
-                    {{-- With label and feedback disabled --}}
-                    <x-adminlte-input-file type="file" accept=".projectarchive" id="upload" name="upload"
-                        label="Escolha o Arquivo" placeholder="Choose a file..." enable-feedback required>
+                    <label>Selecione o tipo de arquivo:</label>
+                    <select id="fileType" class="form-control">
+                        <option value="image">Imagem (JPG, PNG)</option>
+                        <option value="pdf">Documento PDF</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col-sm" id="fileUploadContainer">
+                    <x-adminlte-input-file accept=".jpg,.png" type="file" id="upload" name="upload[]" label="Upload Imagem" multiple
+                        placeholder="Escolha um arquivo..." enable-feedback>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-upload"></i>
@@ -73,22 +82,33 @@
                         </x-slot>
                     </x-adminlte-input-file>
                 </div>
-                <div class="col-sm">
+                <div class="col-sm" id="pdfUploadContainer" style="display: none;">
+                    <x-adminlte-input-file accept=".pdf" type="file" id="uploadPdf" name="uploadPdf" label="Upload PDF"
+                        placeholder="Escolha um arquivo..." enable-feedback>
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text text-primary">
+                                <i class="fas fa-solid fa-file-pdf"></i>
+                            </div>
+                        </x-slot>
+                    </x-adminlte-input-file>
+                </div>
+                <div class="col-sm" hidden>
                     <x-adminlte-select2 name="type" label="Tipo" data-placeholder="Select Type..." required>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-file"></i>
                             </div>
                         </x-slot>
-                        <option disabled="disabled" selected></option>
-                        <option value="CLP1">CLP 1</option>
-                        <option value="CLP2">CLP 2</option>
-                        <option value="CLP3">CLP 3</option>
+                        <option value="SETPOINTS" selected></option>
                     </x-adminlte-select2>
                 </div>
             </div>
             <div class="row p-2">
                 <div class="col-sm">
+                    {{-- Dinamic Change --}}
+                    <x-adminlte-progress id="pbDinamic" theme="lighblue" animated with-label />
+                    {{-- Update the previous progress bar every 2 seconds, incrementing by 10% each step --}}
+
                     <label>Ação</label>
                     <div class="input-group mb-3">
                         <button type="submit" class="btn btn-block btn-primary">
@@ -96,25 +116,12 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-sm">
-                    <x-adminlte-select2 name="model" label="Modelo" data-placeholder="Select Model..." required>
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text text-primary">
-                                <i class="fas fa-solid fa-tag"></i>
-                            </div>
-                        </x-slot>
-                        <option disabled="disabled" selected></option>
-                        <option value="PM5052-T-ETH">PM5052-T-ETH</option>
-                        <option value="PM5032-T-ETH">PM5032-T-ETH</option>
-                        
-                    </x-adminlte-select2>
-                </div>
             </div>
             <hr>
             <div class="row p-2">
                 <div class="col-sm">
                     <p>* Preencha o formulário corretamente</p>
-                    <p><b>* Arquivos Suportados:</b> .projectarchive</p>
+                    <p><b>* Arquivos Suportados:</b> .png .jpg</p>
                 </div>
             </div>
         </form>
@@ -126,5 +133,22 @@
 @section('css')
 @stop
 @section('js')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const fileType = document.getElementById("fileType");
+            const fileUploadContainer = document.getElementById("fileUploadContainer");
+            const pdfUploadContainer = document.getElementById("pdfUploadContainer");
 
+            fileType.addEventListener("change", function() {
+                if (this.value === "image") {
+                    fileUploadContainer.style.display = "block";
+                    pdfUploadContainer.style.display = "none";
+                } else {
+                    fileUploadContainer.style.display = "none";
+                    pdfUploadContainer.style.display = "block";
+                }
+            });
+        });
+    </script>
 @stop
+

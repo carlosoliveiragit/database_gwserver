@@ -1,21 +1,30 @@
 @extends('adminlte::page')
 @section('title', 'Dashboard | Users')
 @section('content_header')
-    <div class="row">
-        <div class="col-sm">
-            <h2 class=""><i class="nav-icon fas fa-users "></i> &nbsp;&nbsp;Gestão de Usuários</h2>
-        </div>
+    <div class="row p-2">
         <div class="col-sm">
             @if (session('success'))
-                <x-adminlte-card title=" {{ session('success') }}" theme="success" icon="fas fa-lg fa-thumbs-up" removable>
-                </x-adminlte-card>
+                <div class="row p-3">
+                    <div class="col-sm">
+                        <x-adminlte-alert theme="success" title="Operação Finalizada" dismissable>
+                            <ul>
+                                <li>{{ session('success') }}</li>
+                            </ul>
+                        </x-adminlte-alert>
+                    </div>
+                </div>
             @endif
-
             @if (session('error'))
-                <x-adminlte-card title=" {{ session('error') }}" theme="danger" icon="fas fa-lg fa-thumbs-down" removable>
-                </x-adminlte-card>
+                <div class="row p-3">
+                    <div class="col-sm">
+                        <x-adminlte-alert theme="danger" title="Erro na Operação" dismissable>
+                            <ul>
+                                <li>{{ session('error') }}</li>
+                            </ul>
+                        </x-adminlte-alert>
+                    </div>
+                </div>
             @endif
-
             @if (isset($_GET['id']))
                 @if ($_GET['id'] != ($user = Auth::user()['id']))
                     <x-adminlte-card class="bg-warning" title=" Tem Certeza que Deseja Excluir o Usuário?" theme="warning"
@@ -35,7 +44,6 @@
                     </x-adminlte-card>
                 @endif
             @endif
-
         </div>
     </div>
 @stop
@@ -132,7 +140,8 @@
                         aria-labelledby="custom-tabs-one-home-tab">
                         <div class="row">
                             <div class="col-md-12">
-                                <table id="table1" class="table table-bordered table-hover " style="width: 100%;">
+                                <table id="table1" class="table table-sm table-bordered table-hover"
+                                    style="width: 100%;">
                                     <thead>
                                         <tr class="text-secondary">
                                             <th>Id</th>
@@ -148,19 +157,19 @@
                                     <tbody>
                                         @foreach ($Users as $key => $return_db)
                                             <tr class="border border-secondary">
-                                                <td><i class="fa-solid fa-hashtag text-primary"></i>
+                                                <td>
                                                     {{ $return_db->id }}
                                                 </td>
-                                                <td><i class="fa-solid fa-user text-primary"></i>
+                                                <td>
                                                     {{ $return_db->name }}
                                                 </td>
-                                                <td><i class="fas fa-envelope text-primary"></i>
+                                                <td>
                                                     {{ $return_db->email }}
                                                 </td>
-                                                <td><i class="fas fa-screwdriver-wrench text-primary"></i>
+                                                <td>
                                                     {{ $return_db->profile }}
                                                 </td>
-                                                <th><i class="fas fa-moon text-primary"></i>
+                                                <th>
                                                     {{ $return_db->admin_lte_dark_mode }}
                                                 </th>
                                                 @can('is_admin')
@@ -170,7 +179,8 @@
                                                                 href="users?id={{ $return_db->id }}&name={{ $return_db->name }}">
                                                                 <i class="fa fa-lg fa-fw fa-trash"></i>
                                                             </a>
-                                                            <a class="btn btn-info btn-sm" href="edit_user/{{ $return_db->id }}">
+                                                            <a class="btn btn-info btn-sm"
+                                                                href="edit_user/{{ $return_db->id }}">
                                                                 <i class="fa fa-lg fa-fw fa-pen"></i>
                                                             </a>
                                                         </div>
@@ -191,15 +201,34 @@
 @section('css')
 @stop
 @section('js')
-    <script>
+<script>
+    $(document).ready(function () {
         $('#table1').DataTable({
             "paging": true,
             "lengthChange": true,
             "searching": true,
-            "ordering": true,
+            "ordering": true, // Habilita a ordenação
+            "order": [[0, "desc"]], // Define a primeira coluna (índice 0) em ordem decrescente
             "info": true,
-            "autoWidth": true,
-            "responsive": true
+            "autoWidth": false,
+            "responsive": true,
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "Nada encontrado",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "Nenhum registro disponível",
+                "infoFiltered": "(filtrado de _MAX_ registros no total)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primeiro",
+                    "last": "Último",
+                    "next": "Próximo",
+                    "previous": "Anterior"
+                }
+            }
         });
-    </script>
+    });
+</script>
+
 @stop
+
