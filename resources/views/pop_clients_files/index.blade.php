@@ -131,37 +131,38 @@
                                         @foreach ($Files as $key => $return_db)
                                             <tr class="border border-secondary">
                                                 <td>
-                                                    {{ $return_db->id }}</i>
+                                                    {{ $return_db->id }}
                                                 </td>
-                                                <td>
-                                                    {{ $return_db->clients_client }}
+                                                <td title="{{ $return_db->clients_client }}">
+                                                    {{ Str::limit($return_db->clients_client, 100) }}
                                                 </td>
+
                                                 <td>
                                                     {{ $return_db->systems_system }}
                                                 </td>
                                                 <td>
                                                     {{ $return_db->sector }}
                                                 </td>
-                                                <td>
-                                                    {{ $return_db->file }}
+                                                <td title="{{ $return_db->file }}">
+                                                    {{ Str::limit($return_db->file, 100) }}
                                                 </td>
                                                 <td>
-                                                    {{ $return_db->created_at->format('d/m/Y - H:i:s') }}
+                                                    {{ $return_db->created_at->format('d/m/Y H:i:s') }}
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a class="btn btn-success btn-lg px-4 py-3"
+                                                        <a class="btn btn-success btn-lg px-2 py-1"
                                                             href="{{ route('pop_clients_files.download', ['file' => $return_db->file]) }}"
                                                             title="Baixar Arquivo">
-                                                            <i class="fa fa-lg fa-fw fa-download"></i>
+                                                            <i class="fa fa fa-fw fa-download"></i>
                                                         </a>
                                                     </div>
                                                     @can('is_admin')
                                                         <div class="btn-group">
-                                                            <a type="submit" class="btn btn-danger btn-lg px-4 py-3"
+                                                            <a type="submit" class="btn btn-danger btn-lg px-2 py-1"
                                                                 href="pop_clients_files?id={{ $return_db->id }}&path={{ $return_db->path }}&file={{ $return_db->file }}"
                                                                 title="Excluir Arquivo">
-                                                                <i class="fa fa-lg fa-fw fa-trash"></i>
+                                                                <i class="fa fa fa-fw fa-trash"></i>
                                                             </a>
                                                         </div>
                                                     @endcan

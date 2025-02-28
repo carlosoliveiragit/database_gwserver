@@ -134,8 +134,8 @@
                                     <thead>
                                         <tr class="text-secondary">
                                             <th>Id</th>
-                                            <th>Usuário</th>
-                                            <th>Cliente</th>
+                                            {{--<th>Usuário</th>--}}
+                                            <th>Arquivo</th>
                                             <th>Sistema</th>
                                             <th>Tipo</th>
                                             <th>Data</th>
@@ -148,11 +148,11 @@
                                                 <td>
                                                     {{ $return_db->id }}</i>
                                                 </td>
-                                                <td>
+                                                {{--<td>
                                                     {{ $return_db->users_name }}
-                                                </td>
+                                                </td>--}}
                                                 <td>
-                                                    {{ $return_db->clients_client }}
+                                                    {{ $return_db->file}}
                                                 </td>
                                                 <td>
                                                     {{ $return_db->systems_system }}
@@ -165,18 +165,18 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a class="btn btn-success btn-lg px-4 py-3"
+                                                        <a class="btn btn-success btn-lg px-2 py-1"
                                                             href="{{ route('clients_files.download', ['file' => $return_db->file]) }}"
                                                             title="Baixar Arquivo">
-                                                            <i class="fa fa-lg fa-fw fa-download"></i>
+                                                            <i class="fa fa fa-fw fa-download"></i>
                                                         </a>
                                                     </div>
                                                     @can('is_admin')
                                                         <div class="btn-group">
-                                                            <a type="submit" class="btn btn-danger btn-lg px-4 py-3"
+                                                            <a type="submit" class="btn btn-danger btn-lg px-2 py-1"
                                                                 href="clients_files?id={{ $return_db->id }}&path={{ $return_db->path }}&file={{ $return_db->file }}"
                                                                 title="Excluir Arquivo">
-                                                                <i class="fa fa-lg fa-fw fa-trash"></i>
+                                                                <i class="fa fa fa-fw fa-trash"></i>
                                                             </a>
                                                         </div>
                                                     @endcan

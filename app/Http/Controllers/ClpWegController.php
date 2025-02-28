@@ -56,12 +56,17 @@ class ClpWegController extends Controller
             }
 
             // Criando o caminho seguro para armazenamento
-            $directoryPath = 'private/received_file/' . $request->clients_client . '/' . $request->systems_system . '/' . $request->type . '_' . $request->model . '/';
+            $directoryPath = 'private/received_file/' . $request->clients_client . '/' . $request->systems_system . '/' . "CLP". '/' . $request->model . '/';
             Storage::makeDirectory($directoryPath);
 
-            // Criando nome seguro para o arquivo (AGORA COM LETRAS MAIÚSCULAS)
-            $uploadName = strtoupper(str_replace(" ", "_", 
-                $request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . $request->model . '_' . date("dmy_His") . "." . $extension));
+            $uploadName = strtoupper(str_replace(
+                [" - "],
+                "_",
+                $request->clients_client . '_' . $request->systems_system . '_' . $request->type_Ident . '_' . $request->model . '_' . date("dmy_His")
+            ));
+
+            // Adiciona a extensão em minúsculas
+            $uploadName .= '.' . $extension;
 
             // Salvando o arquivo no storage
             $requestUpload->storeAs($directoryPath, $uploadName, 'local');
