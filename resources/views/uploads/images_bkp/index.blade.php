@@ -7,7 +7,7 @@
 
 @section('content_header')
     <div class="col-sm">
-        <h4><i class="fas fa-solid fa-upload "></i> &nbsp;&nbsp;UPLOAD - SETPOINTS</h4>
+        <h4><i class="fa-solid fa-image"></i> &nbsp;&nbsp;UPLOAD - SETPOINTS</h4>
     </div>
     <div class="row p-2">
         <div class="col-sm">

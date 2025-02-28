@@ -231,17 +231,17 @@ return [
             'text' => 'search',
         ],
         [
-            'type'           => 'darkmode-widget',
-            'topnav_right'   => true, // Or "topnav => true" to place on the left.
-            'icon_enabled'   => 'fas fa-moon',
-            'icon_disabled'  => 'fas fa-sun',
-            'color_enabled'  => 'white',
+            'type' => 'darkmode-widget',
+            'topnav_right' => true, // Or "topnav => true" to place on the left.
+            'icon_enabled' => 'fas fa-moon',
+            'icon_disabled' => 'fas fa-sun',
+            'color_enabled' => 'white',
             'color_disabled' => 'yellow'
         ],
         ['header' => ''],
         [
             'text' => 'PAGINA INICIAL',
-            'url'  => 'home',
+            'url' => 'home',
             'icon' => 'fas fa-home',
         ],
         ['header' => ''],
@@ -254,16 +254,16 @@ return [
                 [
                     'text' => 'Pesquisar',
                     'url' => 'clients_files',
-                    'icon' => 'fas fa-solid fa-cloud-arrow-down',
+                    'icon' => 'fa-solid fa-magnifying-glass',
                     //'can'  => 'is_admin',
                 ],
                 [
                     'text' => 'Lista Geral',
                     'url' => 'files',
-                    'icon' => 'fas fa-solid fa-cloud-arrow-down',
+                    'icon' => 'fa-solid fa-list-ul',
                     //'can'  => 'is_admin',
                 ],
-                
+
             ],
         ],
         [
@@ -274,19 +274,19 @@ return [
                 [
                     'text' => 'Pesquisar',
                     'url' => 'pop_clients_files',
-                    'icon' => 'fas fa-solid fa-cloud-arrow-down',
+                    'icon' => 'fa-solid fa-magnifying-glass',
                     //'can'  => 'is_admin',
                 ],
                 [
                     'text' => 'Lista Geral',
                     'url' => 'pop_files',
-                    'icon' => 'fas fa-solid fa-cloud-arrow-down',
+                    'icon' => 'fa-solid fa-list-ul',
                     //'can'  => 'is_admin',
                 ],
-                
+
             ],
         ],
-        
+
         ['header' => ''],
         ['header' => 'UPLOAD'],
         [
@@ -297,16 +297,14 @@ return [
                 [
                     'text' => 'Telemetria',
                     'url' => 'telemetry',
-                    'icon' => 'fas fa-cloud-arrow-up',
-                    'icon_color' => 'cyan',
+                    'icon' => 'fa-solid fa-scroll',
                 ],
                 [
                     'text' => 'POP',
                     'url' => 'pop_bkp',
-                    'icon' => 'fas fa-cloud-arrow-up',
-                    'icon_color' => 'cyan',
+                    'icon' => 'fa-solid fa-file-arrow-up',
                 ],
-                
+
             ],
         ],
 
@@ -315,59 +313,57 @@ return [
             'icon' => 'fas fa-cloud-arrow-up',
             'submenu' => [
 
-                
+
 
                 [
                     'text' => 'CLP',
-                    'icon' => 'fas fa-cloud-arrow-up',
-                    'icon_color' => 'cyan',
+                    'icon' => 'fa-solid fa-gears',
                     'submenu' => [
-        
+
                         [
                             'text' => 'ABB',
                             'url' => 'clp_abb',
-                            'icon_color' => 'cyan',
                         ],
                         [
                             'text' => 'Altus',
                             'url' => 'clp_altus',
-                            'icon_color' => 'cyan',
                         ],
                         [
                             'text' => 'WEG',
                             'url' => 'clp_weg',
-                            'icon_color' => 'cyan',
-        
+
                         ],
                         [
                             'text' => 'Allen-Bradley',
                             'url' => 'clp_allen_bradley',
-                            'icon_color' => 'cyan',
-        
+                            'label' => "DEV",
+                            'label_color' => 'danger',
+
                         ],
                         [
                             'text' => 'Metaltex',
                             'url' => 'clp_metaltex',
-                            'icon_color' => 'cyan',
-        
+                            'label' => "DEV",
+                            'label_color' => 'danger',
+
                         ],
                     ],
                 ],
                 [
                     'text' => 'IHM',
                     'url' => 'ihm_bkp',
-                    'icon' => 'fas fa-cloud-arrow-up',
-                    'icon_color' => 'cyan',
+                    'icon' => 'fa-solid fa-desktop',
+                    'label' => "DEV",
+                    'label_color' => 'danger',
                 ],
                 [
                     'text' => 'POP',
                     'url' => 'pop_manut_bkp',
-                    'icon' => 'fas fa-cloud-arrow-up',
-                    'icon_color' => 'cyan',
+                    'icon' => 'fa-solid fa-file-arrow-up',
                 ],
             ],
         ],
-        
+
         [
             'text' => 'OPERAÇÃO',
             'icon' => 'fas fa-cloud-arrow-up',
@@ -376,25 +372,25 @@ return [
                 [
                     'text' => 'Setpoints',
                     'url' => 'images_bkp',
-                    'icon' => 'fas fa-cloud-arrow-up',
-                    'icon_color' => 'cyan',
+                    'icon' => 'fa-solid fa-image',
                 ],
                 [
                     'text' => 'POP',
                     'url' => 'pop_oper_bkp',
-                    'icon' => 'fas fa-cloud-arrow-up',
-                    'icon_color' => 'cyan',
+                    'icon' => 'fa-solid fa-file-arrow-up ',
                 ],
-                
+
             ],
         ],
-        
+
         ['header' => ''],
         [
             'text' => 'Administração',
             'url' => '#',
             'icon' => 'fas fa-solid fa-gear',
             'icon_color' => 'red',
+            'label' => "admin",
+            'label_color' => 'danger',
             'can' => 'is_admin',
             'submenu' => [
                 [

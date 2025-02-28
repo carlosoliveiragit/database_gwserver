@@ -203,7 +203,7 @@
                 "searching": false,
                 "ordering": true,
                 "order": [
-                    [0, "desc"]
+                    [0, "asc"]
                 ],
                 "info": true,
                 "autoWidth": false,

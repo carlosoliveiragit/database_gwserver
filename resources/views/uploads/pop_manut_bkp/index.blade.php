@@ -7,7 +7,7 @@
 
 @section('content_header')
 <div class="col-sm">
-    <h4><i class="fas fa-solid fa-upload "></i> &nbsp;&nbsp;UPLOAD - PROCEDIMENTO OPERACIONAL PADRÃO - MANUTENÇÃO</h4>
+    <h4><i class="fa-solid fa-file-arrow-up"></i> &nbsp;&nbsp;UPLOAD - PROCEDIMENTO OPERACIONAL PADRÃO - MANUTENÇÃO</h4>
 </div>
     <div class="row p-2">
         <div class="col-sm">

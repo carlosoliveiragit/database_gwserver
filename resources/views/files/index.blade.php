@@ -7,7 +7,7 @@
 @stop
 @section('content_header')
     <div class="col-sm">
-        <h4><i class="nav-icon fas fa-file "></i> &nbsp;&nbsp;Lista Geral de Arquivos</h4>
+        <h4><i class="fa-solid fa-list-ul"></i> &nbsp;&nbsp;Lista Geral de Arquivos</h4>
     </div>
     <div class="row p-2">
         <div class="col-sm">
