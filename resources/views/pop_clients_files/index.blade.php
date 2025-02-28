@@ -5,7 +5,7 @@
 @section('title', 'Dashboard GW | Pesquisa')
 @section('content_header')
     <div class="col-sm">
-        <h4><i class="nav-icon fas fa-fw fa-search"></i> &nbsp;&nbsp;Pesquisa de Arquivos</h4>
+        <h4><i class="nav-icon fas fa-fw fa-search"></i> &nbsp;&nbsp;Pesquisa de Procedimentos</h4>
     </div>
     <div class="row p-2">
         <div class="col-sm">
@@ -36,7 +36,7 @@
                     icon="fas fa-exclamation-triangle" removable>
                     <h6>Dir:<strong>{{ $_GET['path'] }}</strong></h6><br>
                     <h6>File:<strong>{{ $_GET['file'] }}</strong></h6>
-                    <form action="clients_files/{{ $_GET['id'] }}" method="POST">
+                    <form action="pop_clients_files/{{ $_GET['id'] }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <input value="{{ $_GET['path'] }}" name="path" type="text" hidden required>
@@ -68,7 +68,7 @@
                         @endforeach
                     </x-adminlte-select2>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <x-adminlte-select2 name="systems_system" label="Sistema" data-placeholder="selecione o sistema...">
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
@@ -81,25 +81,7 @@
                         @endforeach
                     </x-adminlte-select2>
                 </div>
-
-            </div>
-            <div class="row p-2">
-                <div class="col-sm-6">
-                    <x-adminlte-select2 name="types_type" label="Tipo" data-placeholder="selecione o tipo...">
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text text-primary">
-                                <i class="fas fa-solid fa-file"></i>
-                            </div>
-                        </x-slot>
-                        <option disabled="disabled" selected></option>
-                        <option value="SETPOINTS">SETPOINTS</option>
-                        <option value="SCADABR">SCADABR</option>
-                        <option value="NODERED">NODERED</option>
-                        <option value="CLP">CLP</option>
-                        <option value="IHM">IHM</option>
-                    </x-adminlte-select2>
-                </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <x-adminlte-select2 name="sectors_sector" label="Setor" data-placeholder="selecione o setor...">
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
@@ -112,11 +94,14 @@
                         <option value="CCO">CCO</option>
                     </x-adminlte-select2>
                 </div>
+
             </div>
-            <div class="col-sm">
-                <div class="input-group mb-3">
-                    <button type="submit" class="btn btn-block bg-gradient-info"><i
-                            class="fa-solid fa-magnifying-glass-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Pesquisar</button>
+            <div class="row p-2"> 
+                <div class="col-sm">
+                    <div class="input-group mb-3">
+                        <button type="submit" class="btn btn-block bg-gradient-info"><i
+                                class="fa-solid fa-magnifying-glass-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Pesquisar</button>
+                    </div>
                 </div>
             </div>
         </form>
@@ -134,10 +119,10 @@
                                     <thead>
                                         <tr class="text-secondary">
                                             <th>Id</th>
-                                            <th>Usuário</th>
                                             <th>Cliente</th>
                                             <th>Sistema</th>
-                                            <th>Tipo</th>
+                                            <th>Setor</th>
+                                            <th>Procedimento</th>
                                             <th>Data</th>
                                             <th>Ação</th>
                                         </tr>
@@ -149,16 +134,16 @@
                                                     {{ $return_db->id }}</i>
                                                 </td>
                                                 <td>
-                                                    {{ $return_db->users_name }}
-                                                </td>
-                                                <td>
                                                     {{ $return_db->clients_client }}
                                                 </td>
                                                 <td>
                                                     {{ $return_db->systems_system }}
                                                 </td>
                                                 <td>
-                                                    {{ $return_db->type }}
+                                                    {{ $return_db->sector }}
+                                                </td>
+                                                <td>
+                                                    {{ $return_db->file }}
                                                 </td>
                                                 <td>
                                                     {{ $return_db->created_at->format('d/m/Y - H:i:s') }}
@@ -166,7 +151,7 @@
                                                 <td>
                                                     <div class="btn-group">
                                                         <a class="btn btn-success btn-lg px-4 py-3"
-                                                            href="{{ route('clients_files.download', ['file' => $return_db->file]) }}"
+                                                            href="{{ route('pop_clients_files.download', ['file' => $return_db->file]) }}"
                                                             title="Baixar Arquivo">
                                                             <i class="fa fa-lg fa-fw fa-download"></i>
                                                         </a>
@@ -174,7 +159,7 @@
                                                     @can('is_admin')
                                                         <div class="btn-group">
                                                             <a type="submit" class="btn btn-danger btn-lg px-4 py-3"
-                                                                href="clients_files?id={{ $return_db->id }}&path={{ $return_db->path }}&file={{ $return_db->file }}"
+                                                                href="pop_clients_files?id={{ $return_db->id }}&path={{ $return_db->path }}&file={{ $return_db->file }}"
                                                                 title="Excluir Arquivo">
                                                                 <i class="fa fa-lg fa-fw fa-trash"></i>
                                                             </a>

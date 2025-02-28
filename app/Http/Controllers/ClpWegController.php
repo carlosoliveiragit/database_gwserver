@@ -35,7 +35,7 @@ class ClpWegController extends Controller
             'users_name' => 'required|string',
             'clients_client' => 'required|string',
             'systems_system' => 'required|string',
-            'type' => 'required|string',
+            'type_Ident' => 'required|string',
             'model' => 'required|string'
         ]);
 
@@ -71,7 +71,7 @@ class ClpWegController extends Controller
             $file->users_name = $request->users_name;
             $file->clients_client = $request->clients_client;
             $file->systems_system = $request->systems_system;
-            $file->type = $request->type;
+            $file->type = "CLP";
             $file->sector = "CCO";
             $file->path = $directoryPath;
             $file->file = $uploadName;

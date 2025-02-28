@@ -46,7 +46,7 @@
             <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
             <div class="row p-2">
                 <div class="col-sm">
-                    <x-adminlte-select2 name="clients_client" label="Cliente" data-placeholder="Select Client..." required>
+                    <x-adminlte-select2 name="clients_client" label="1º - Cliente" data-placeholder="selecione o cliente..." required>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-water"></i>
@@ -59,7 +59,7 @@
                     </x-adminlte-select2>
                 </div>
                 <div class="col-sm">
-                    <x-adminlte-select2 name="systems_system" label="Sistema" data-placeholder="Select System..." required>
+                    <x-adminlte-select2 name="systems_system" label="2º - Sistema" data-placeholder="selecione o sistema..." required>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-sitemap"></i>
@@ -74,41 +74,7 @@
             </div>
             <div class="row p-2">
                 <div class="col-sm">
-                    {{-- With label and feedback disabled --}}
-                    <x-adminlte-input-file type="file" accept=".bkp, .cli, .projectarchive" id="upload" name="upload"
-                        label="Upload file" placeholder="Choose a file..." enable-feedback required>
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text text-primary">
-                                <i class="fas fa-solid fa-upload"></i>
-                            </div>
-                        </x-slot>
-                    </x-adminlte-input-file>
-                </div>
-                <div class="col-sm">
-                    <x-adminlte-select2 name="type" label="Tipo" data-placeholder="Select Type..." required>
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text text-primary">
-                                <i class="fas fa-solid fa-file"></i>
-                            </div>
-                        </x-slot>
-                        <option disabled="disabled" selected></option>
-                        <option value="CLP1">CLP 1</option>
-                        <option value="CLP2">CLP 2</option>
-                        <option value="CLP3">CLP 3</option>
-                    </x-adminlte-select2>
-                </div>
-            </div>
-            <div class="row p-2">
-                <div class="col-sm">
-                    <label>Ação</label>
-                    <div class="input-group mb-3">
-                        <button type="submit" class="btn btn-block btn-primary">
-                            <span class="fas fa-plus"></span>&nbsp;&nbsp;Upload
-                        </button>
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <x-adminlte-select2 name="model" label="Modelo" data-placeholder="Select Model..." required>
+                    <x-adminlte-select2 name="model" label="3º - Modelo" data-placeholder="selecione o modelo..." required>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-tag"></i>
@@ -119,6 +85,41 @@
                         <option value="CLIC02">CLIC 02</option>
                         <option value="PLC500">PLC 500</option>
                     </x-adminlte-select2>
+                </div>
+                <div class="col-sm">
+                    <x-adminlte-select2 name="type_Ident" label="4º - Identificação" data-placeholder="selecione a identificação..." required>
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text text-primary">
+                                <i class="fas fa-solid fa-file"></i>
+                            </div>
+                        </x-slot>
+                        <option disabled="disabled" selected></option>
+                        <option value="CLP1">CLP 1</option>
+                        <option value="CLP2">CLP 2</option>
+                        <option value="CLP3">CLP 3</option>
+                        <option value="CLP4">CLP 4</option>
+                    </x-adminlte-select2>
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col-sm">
+                    {{-- With label and feedback disabled --}}
+                    <x-adminlte-input-file type="file" accept=".bkp, .cli, .projectarchive" id="upload" name="upload"
+                        label="5º - Upload file" placeholder="selecione o arquivo correspondente ao modelo..." enable-feedback required>
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text text-primary">
+                                <i class="fas fa-solid fa-upload"></i>
+                            </div>
+                        </x-slot>
+                    </x-adminlte-input-file>
+                </div>
+                <div class="col-sm">
+                    <label>6º - Ação</label>
+                    <div class="input-group mb-3">
+                        <button type="submit" class="btn btn-block btn-primary">
+                            <span class="fas fa-plus"></span>&nbsp;&nbsp;Upload
+                        </button>
+                    </div>
                 </div>
             </div>
             <hr>
