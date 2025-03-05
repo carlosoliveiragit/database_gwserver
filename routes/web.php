@@ -6,6 +6,7 @@ use App\Http\Controllers\FilesController;
 use App\http\Controllers\Pop_FilesController;
 use App\http\Controllers\Pop_clients_filesController;
 use App\http\Controllers\Ihm_bkpController;
+use App\http\Controllers\Production_dataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,4 +92,9 @@ Route::post('clp_abb', [App\Http\Controllers\ClpAbbController::class, 'store'])-
 
 Route::get('ihm_bkp', [Ihm_bkpController::class, 'index'])->name('ihm_bkp');
 Route::post('ihm_bkp', [Ihm_bkpController::class, 'store'])->name('ihm_bkp');
+
+Route::get('production_data', [Production_dataController::class, 'index'])->name('production_data');
+Route::post('production_data', [Production_dataController::class, 'store'])->name('production_data');
+Route::delete('production_data/{id}', [Production_dataController::class, 'destroy'])->name('production_data');
+
 
