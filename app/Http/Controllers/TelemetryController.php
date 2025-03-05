@@ -46,27 +46,41 @@ class TelemetryController extends Controller
         $file->type = $request->type;
         $file->sector = "CCO";
 
-        // Define o caminho de armazenamento dentro de "storage/app/private/"
         $directoryPath = 'private/received_file/' . $request->clients_client . '/' . $request->systems_system . '/' . $request->type . '/';
         Storage::makeDirectory($directoryPath);
 
-        // Caso o usuário envie um arquivo JSON
         if ($request->hasFile('upload') && $request->file('upload')->isValid()) {
-            $uploadName = strtolower(str_replace(" ", "_", 
-                $request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His") . ".json"));
+            $requestUpload = $request->file('upload');
+            $extension = strtolower($requestUpload->getClientOriginalExtension());
 
-            $request->file('upload')->storeAs($directoryPath, $uploadName, 'local');
-            $file->file = $uploadName;
-
-        // Caso o usuário insira JSON manualmente
-        } elseif ($request->json_text) {
-            // Valida se o JSON colado é válido
-            if (!json_decode($request->json_text)) {
-                return redirect()->back()->withInput()->with('error', 'O JSON inserido não é válido.');
+            // Validação manual da extensão
+            if ($extension !== 'json') {
+                return redirect()->back()->withInput()->with('error', 'O arquivo deve ter a extensão .json.');
             }
 
-            $uploadName = strtolower(str_replace(" ", "_", 
-                $request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His") . ".json"));
+            // Criando nome seguro para o arquivo
+            $uploadName = strtoupper(str_replace(
+                [" - ", "-", " "],
+                "_",
+                $request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His")
+            ));
+
+            // Adiciona a extensão em minúsculas
+            $uploadName .= '.' . $extension;
+
+            // Salvando o arquivo no storage
+            $requestUpload->storeAs($directoryPath, $uploadName, 'local');
+            $file->file = $uploadName;
+        } elseif ($request->json_text) {
+            if (json_decode($request->json_text) === null && json_last_error() !== JSON_ERROR_NONE) {
+                return redirect()->back()->withInput()->with('error', 'O JSON inserido não é válido: ' . json_last_error_msg());
+            }
+
+            $uploadName = strtoupper(str_replace(
+                [" - ", "-", " "],
+                "_",
+                $request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His")
+            )) . '.json';
 
             Storage::put($directoryPath . $uploadName, $request->json_text);
             $file->file = $uploadName;
