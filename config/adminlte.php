@@ -337,14 +337,14 @@ return [
                             'text' => 'Allen-Bradley',
                             'url' => 'clp_allen_bradley',
                             'label' => "DEV",
-                            'label_color' => 'danger',
+                            'label_color' => 'warning',
 
                         ],
                         [
                             'text' => 'Metaltex',
                             'url' => 'clp_metaltex',
                             'label' => "DEV",
-                            'label_color' => 'danger',
+                            'label_color' => 'warning',
 
                         ],
                     ],
@@ -354,7 +354,7 @@ return [
                     'url' => 'ihm_bkp',
                     'icon' => 'fa-solid fa-desktop',
                     'label' => "DEV",
-                    'label_color' => 'danger',
+                    'label_color' => 'warning',
                 ],
                 [
                     'text' => 'POP',
@@ -369,6 +369,13 @@ return [
             'icon' => 'fas fa-cloud-arrow-up',
             'submenu' => [
 
+                [
+                    'text' => 'Dados de Produção',
+                    'url' => 'production_data',
+                    'icon' => 'fa-solid fa-table',
+                    'label' => "DEV",
+                    'label_color' => 'warning',
+                ],
                 [
                     'text' => 'Setpoints',
                     'url' => 'images_bkp',
