@@ -31,7 +31,7 @@ class ClpAbbController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'upload' => 'required|file|max:100000', // Remove mimes para validar manualmente depois
+            'upload' => 'required|file|max:100000', // Máximo 100MB, validamos a extensão depois
             'users_name' => 'required|string',
             'clients_client' => 'required|string',
             'systems_system' => 'required|string',
@@ -49,12 +49,18 @@ class ClpAbbController extends Controller
             }
 
             // Criando o caminho seguro para armazenamento
-            $directoryPath = 'private/received_file/' . $request->clients_client . '/' . $request->systems_system . '/' . $request->type . '_' . $request->model . '/';
+            $directoryPath = 'private/received_file/' . $request->clients_client . '/' . $request->systems_system . '/' . "CLP". '/' . $request->model . '/';
             Storage::makeDirectory($directoryPath);
 
             // Criando nome seguro para o arquivo
-            $uploadName = strtoupper(str_replace(" ", "_", 
-                $request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . $request->model . '_' . date("dmy_His") . "." . $extension));
+            $uploadName = strtoupper(str_replace(
+                [" - ", "-", " "],
+                "_",
+                $request->clients_client . '_' . $request->systems_system . '_' . $request->type_Ident . '_' . $request->model . '_' . date("dmy_His")
+            ));
+
+            // Adiciona a extensão em minúsculas
+            $uploadName .= '.' . $extension;
 
             // Salvando o arquivo no storage
             $requestUpload->storeAs($directoryPath, $uploadName, 'local');
@@ -64,7 +70,7 @@ class ClpAbbController extends Controller
             $file->users_name = $request->users_name;
             $file->clients_client = $request->clients_client;
             $file->systems_system = $request->systems_system;
-            $file->type = $request->type;
+            $file->type = "CLP";
             $file->sector = "MANUTENCAO";
             $file->path = $directoryPath;
             $file->file = $uploadName;

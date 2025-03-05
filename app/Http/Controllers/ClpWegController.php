@@ -60,7 +60,7 @@ class ClpWegController extends Controller
             Storage::makeDirectory($directoryPath);
 
             $uploadName = strtoupper(str_replace(
-                [" - "],
+                [" - ", "-", " "],
                 "_",
                 $request->clients_client . '_' . $request->systems_system . '_' . $request->type_Ident . '_' . $request->model . '_' . date("dmy_His")
             ));
@@ -77,7 +77,7 @@ class ClpWegController extends Controller
             $file->clients_client = $request->clients_client;
             $file->systems_system = $request->systems_system;
             $file->type = "CLP";
-            $file->sector = "CCO";
+            $file->sector = "MANUTENCAO";
             $file->path = $directoryPath;
             $file->file = $uploadName;
             $file->save();
