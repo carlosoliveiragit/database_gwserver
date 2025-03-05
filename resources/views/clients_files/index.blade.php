@@ -197,14 +197,14 @@
 
     <script>
         $(document).ready(function() {
-            var table = $('#table1').DataTable({
-                "paging": false,
+            $('#table1').DataTable({
+                "paging": true,
                 "lengthChange": true,
-                "searching": false,
-                "ordering": true,
+                "searching": true,
+                "ordering": true, // Habilita a ordenação
                 "order": [
-                    [0, "asc"]
-                ],
+                    [0, "desc"]
+                ], // Define a primeira coluna (índice 0) em ordem decrescente
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,
@@ -223,10 +223,7 @@
                     }
                 }
             });
-
-            // Verificar se a tabela está vazia e ocultar a div
-            if (table.rows().count() === 0) {
-                $('.card.card-default').hide();
-            }
         });
     </script>
+
+@stop
