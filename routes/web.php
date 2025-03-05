@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FilesController;
 use App\http\Controllers\Pop_FilesController;
 use App\http\Controllers\Pop_clients_filesController;
+use App\http\Controllers\Ihm_bkpController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,5 +89,6 @@ Route::post('clp_altus', [App\Http\Controllers\ClpAltusController::class, 'store
 Route::get('clp_abb', [App\Http\Controllers\ClpAbbController::class, 'index'])->name('clp_abb');
 Route::post('clp_abb', [App\Http\Controllers\ClpAbbController::class, 'store'])->name('clp_abb');
 
-
+Route::get('ihm_bkp', [Ihm_bkpController::class, 'index'])->name('ihm_bkp');
+Route::post('ihm_bkp', [Ihm_bkpController::class, 'store'])->name('ihm_bkp');
 
