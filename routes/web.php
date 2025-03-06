@@ -7,6 +7,7 @@ use App\http\Controllers\Pop_FilesController;
 use App\http\Controllers\Pop_clients_filesController;
 use App\http\Controllers\Ihm_bkpController;
 use App\http\Controllers\Production_dataController;
+use App\http\Controllers\View_production_dataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,4 +98,7 @@ Route::get('production_data', [Production_dataController::class, 'index'])->name
 Route::post('production_data', [Production_dataController::class, 'store'])->name('production_data');
 Route::delete('production_data/{id}', [Production_dataController::class, 'destroy'])->name('production_data');
 
-
+Route::get('view_production_data', [View_production_dataController::class, 'index'])->name('view_production_data');
+Route::get('view_production_data/{file}/download', [View_production_dataController::class, 'download'])->name('view_production_data.download');
+Route::post('view_production_data', [View_production_dataController::class, 'destroy'])->name('view_production_data');
+Route::delete('view_production_data/{id}', [View_production_dataController::class, 'destroy'])->name('view_production_data');

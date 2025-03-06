@@ -245,6 +245,29 @@ return [
             'icon' => 'fas fa-home',
         ],
         ['header' => ''],
+        [
+            'text' => 'DADOS DE PRODUÇÃO',
+            'icon' => 'fa-solid fa-table',
+            'label' => "New",
+            'label_color' => 'info',
+            'submenu' => [
+
+                [
+                    'text' => 'Pesquisar',
+                    'url' => 'search_production_data',
+                    'icon' => 'fa-solid fa-magnifying-glass',
+                    //'can'  => 'is_admin',
+                ],
+                [
+                    'text' => 'Lista Geral',
+                    'url' => 'view_production_data',
+                    'icon' => 'fa-solid fa-list-ul',
+                    //'can'  => 'is_admin',
+                ],
+
+            ],
+        ],
+        ['header' => ''],
         ['header' => 'DOWNLOAD'],
         [
             'text' => 'Arquivos',
@@ -353,8 +376,7 @@ return [
                     'text' => 'IHM',
                     'url' => 'ihm_bkp',
                     'icon' => 'fa-solid fa-desktop',
-                    'label' => "DEV",
-                    'label_color' => 'warning',
+
                 ],
                 [
                     'text' => 'POP',
@@ -373,8 +395,6 @@ return [
                     'text' => 'Dados de Produção',
                     'url' => 'production_data',
                     'icon' => 'fa-solid fa-table',
-                    'label' => "DEV",
-                    'label_color' => 'warning',
                 ],
                 [
                     'text' => 'Setpoints',

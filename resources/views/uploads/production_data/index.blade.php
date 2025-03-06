@@ -6,21 +6,32 @@
 @section('plugins.Select2', true)
 
 @section('content_header')
-<div class="col-sm">
-    <h4><i class="fa-solid fa-file-arrow-up"></i> &nbsp;&nbsp;UPLOAD - Dados de Produção</h4>
-</div>
+    <div class="col-sm">
+        <h4><i class="fa-solid fa-file-arrow-up"></i> &nbsp;&nbsp;UPLOAD - Dados de Produção</h4>
+    </div>
     <div class="row p-2">
         <div class="col-sm">
             @if (session('success'))
-            <div class="row p-3">
-                <div class="col-sm">
-                    <x-adminlte-alert theme="success" title="Operação Finalizada" dismissable>
-                        <ul>
-                            <li>{{ session('success') }}</li>
-                        </ul>
-                    </x-adminlte-alert>
+                <div class="row p-3">
+                    <div class="col-sm">
+                        <x-adminlte-alert theme="success" title="Operação Finalizada" dismissable>
+                            <ul>
+                                <li>{{ session('success') }}</li>
+                            </ul>
+                        </x-adminlte-alert>
+                    </div>
                 </div>
-            </div>
+            @endif
+            @if (session('error'))
+                <div class="row p-3">
+                    <div class="col-sm">
+                        <x-adminlte-alert theme="danger" title="Erro na Operação" dismissable>
+                            <ul>
+                                <li>{{ session('error') }}</li>
+                            </ul>
+                        </x-adminlte-alert>
+                    </div>
+                </div>
             @endif
         </div>
     </div>
@@ -65,14 +76,14 @@
             <div class="row p-2">
                 <div class="col-sm">
                     {{-- With label and feedback disabled --}}
-                    <x-adminlte-input-file accept=".xlsx" multiple id="upload" name="upload" label="Upload file"
-    placeholder="Choose files..." enable-feedback required>
-    <x-slot name="prependSlot">
-        <div class="input-group-text text-primary">
-            <i class="fas fa-solid fa-upload"></i>
-        </div>
-    </x-slot>
-</x-adminlte-input-file>
+                    <x-adminlte-input-file accept=".xlsx" multiple id="upload" name="upload[]" label="Upload file"
+                        placeholder="Choose files..." enable-feedback required>
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text text-primary">
+                                <i class="fas fa-solid fa-upload"></i>
+                            </div>
+                        </x-slot>
+                    </x-adminlte-input-file>
                 </div>
                 <div class="col-sm" hidden>
                     <x-adminlte-select2 name="type" label="Tipo" data-placeholder="Select Type..." required>
@@ -81,16 +92,16 @@
                                 <i class="fas fa-solid fa-file"></i>
                             </div>
                         </x-slot>
-                        <option value="POP" selected></option>
+                        <option value="DADOS DE PRODUCAO" selected></option>
                     </x-adminlte-select2>
                 </div>
             </div>
             <div class="row p-2">
                 <div class="col-sm">
                     {{-- Dinamic Change --}}
-                    <x-adminlte-progress id="pbDinamic"  theme="lighblue" animated with-label />
+                    <x-adminlte-progress id="pbDinamic" theme="lighblue" animated with-label />
                     {{-- Update the previous progress bar every 2 seconds, incrementing by 10% each step --}}
-                    
+
                     <label>Ação</label>
                     <div class="input-group mb-3">
                         <button type="submit" class="btn btn-block btn-primary">
