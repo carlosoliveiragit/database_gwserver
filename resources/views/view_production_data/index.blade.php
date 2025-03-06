@@ -93,7 +93,7 @@
                                                     {{ $return_db->type }}
                                                 </td>--}}
                                                 <td>
-                                                    {{ $return_db->created_at->format('d/m/Y - H:i:s') }}
+                                                    {{ $return_db->updated_at->format('d/m/Y - H:i:s') }}
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
