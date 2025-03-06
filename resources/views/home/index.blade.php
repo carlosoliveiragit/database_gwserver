@@ -29,7 +29,18 @@
                 
             </div>
         </div>
-
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>{{ $files_proddata }} <sup style="font-size: 15px"> Dados de produção </sup></h3>
+                    <p>Dados de produção Cadastrados</p>
+                </div>
+                <div class="icon">
+                    <i class="fa-solid fa-table"></i>
+                </div>
+                
+            </div>
+        </div>
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
@@ -38,19 +49,6 @@
                 </div>
                 <div class="icon">
                     <i class="far fa-solid fa-water"></i>
-                </div>
-                
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>{{ $users }} <sup style="font-size: 15px"> Usuários </sup></h3>
-                    <p>Usuários Cadastrados</p>
-                </div>
-                <div class="icon">
-                    <i class="far fa-user"></i>
                 </div>
                 
             </div>

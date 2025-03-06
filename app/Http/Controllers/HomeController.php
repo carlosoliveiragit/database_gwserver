@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Users;
 use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
-use stdClass;
 
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * Cria uma nova instância do controlador.
      *
      * @return void
      */
@@ -25,7 +23,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Mostra o painel da aplicação.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -33,17 +31,18 @@ class HomeController extends Controller
     {   
         //$this->authorize('is_admin');
 
-        $clients=   Clients::count();
-        $users=     Users::count();
-        $systems=   Systems::count();
-        //$files=     Files::count();
-        $files_arq = Files::where('type', 'NOT LIKE', '%POP%')->count();
+        $clients = Clients::count();
+        $users = User::count();
+        $systems = Systems::count();
+        //$files = Files::count();
+        $files_arq = Files::where('type', 'NOT LIKE', '%POP%')
+                          ->where('type', 'NOT LIKE', '%DADOS DE PRODUCAO%')
+                          ->count();
         $files_proc = Files::where('type', 'LIKE', '%POP%')->count();
-
+        $files_proddata = Files::where('type', 'LIKE', '%DADOS DE PRODUCAO%')->count();
 
         //dd($files_arq);
         
-        return view('home.index',compact('clients','users','systems','files_arq','files_proc'));
+        return view('home.index', compact('clients', 'users', 'systems', 'files_arq', 'files_proc', 'files_proddata'));
     }
-
 }
