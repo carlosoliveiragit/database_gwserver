@@ -18,10 +18,11 @@ class FilesController extends Controller
     }
 
     public function index()
-{
-    $Files = Files::where('type', 'NOT LIKE', '%POP%')->get();  // Use get() to execute the query
-    return view('files.index', ['Files' => $Files]);
-}
+    {
+        $Files = Files::where('type', 'NOT LIKE', '%POP%')
+                      ->where('type', 'NOT LIKE', '%DADOS DE PRODUCAO%')->get();  // Use get() to execute the query
+        return view('files.index', ['Files' => $Files]);
+    }
 
     public function destroy($id, Request $request)
     {

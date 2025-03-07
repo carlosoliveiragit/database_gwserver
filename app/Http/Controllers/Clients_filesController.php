@@ -54,7 +54,8 @@ class Clients_filesController extends Controller
             }
 
             // Filtra registros onde type NÃO CONTÉM "POP"
-            $query->where('type', 'NOT LIKE', '%POP%');
+            $query->where('type', 'NOT LIKE', '%POP%')
+                ->where('type', 'NOT LIKE', '%DADOS DE PRODUCAO%');
 
             $Files = $query->get();
         }

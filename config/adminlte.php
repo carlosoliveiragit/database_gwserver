@@ -244,12 +244,12 @@ return [
             'url' => 'home',
             'icon' => 'fas fa-home',
         ],
+        
         ['header' => ''],
+        ['header' => 'DOWNLOAD'],
         [
             'text' => 'DADOS DE PRODUÇÃO',
-            'icon' => 'fa-solid fa-table',
-            'label' => "New",
-            'label_color' => 'info',
+            'icon' => 'fas fa-solid fa-cloud-arrow-down',
             'submenu' => [
 
                 [
@@ -267,10 +267,8 @@ return [
 
             ],
         ],
-        ['header' => ''],
-        ['header' => 'DOWNLOAD'],
         [
-            'text' => 'Arquivos',
+            'text' => 'ARQUIVOS',
             'icon' => 'fas fa-solid fa-cloud-arrow-down',
             'submenu' => [
 
@@ -290,7 +288,7 @@ return [
             ],
         ],
         [
-            'text' => 'Procedimentos',
+            'text' => 'PROCEDIMENTOS',
             'icon' => 'fas fa-solid fa-cloud-arrow-down',
             'submenu' => [
 
@@ -312,6 +310,29 @@ return [
 
         ['header' => ''],
         ['header' => 'UPLOAD'],
+        [
+            'text' => 'OPERAÇÃO',
+            'icon' => 'fas fa-cloud-arrow-up',
+            'submenu' => [
+
+                [
+                    'text' => 'Dados de Produção',
+                    'url' => 'production_data',
+                    'icon' => 'fa-solid fa-table',
+                ],
+                [
+                    'text' => 'Setpoints',
+                    'url' => 'images_bkp',
+                    'icon' => 'fa-solid fa-image',
+                ],
+                [
+                    'text' => 'POP',
+                    'url' => 'pop_oper_bkp',
+                    'icon' => 'fa-solid fa-file-arrow-up ',
+                ],
+
+            ],
+        ],
         [
             'text' => 'CCO',
             'icon' => 'fas fa-cloud-arrow-up',
@@ -383,30 +404,6 @@ return [
                     'url' => 'pop_manut_bkp',
                     'icon' => 'fa-solid fa-file-arrow-up',
                 ],
-            ],
-        ],
-
-        [
-            'text' => 'OPERAÇÃO',
-            'icon' => 'fas fa-cloud-arrow-up',
-            'submenu' => [
-
-                [
-                    'text' => 'Dados de Produção',
-                    'url' => 'production_data',
-                    'icon' => 'fa-solid fa-table',
-                ],
-                [
-                    'text' => 'Setpoints',
-                    'url' => 'images_bkp',
-                    'icon' => 'fa-solid fa-image',
-                ],
-                [
-                    'text' => 'POP',
-                    'url' => 'pop_oper_bkp',
-                    'icon' => 'fa-solid fa-file-arrow-up ',
-                ],
-
             ],
         ],
 

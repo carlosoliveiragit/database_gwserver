@@ -168,9 +168,9 @@
     <script>
         $(document).ready(function() {
             $('#table1').DataTable({
-                "paging": true,
+                "paging": false,
                 "lengthChange": true,
-                "searching": true,
+                "searching": false,
                 "ordering": true, // Habilita a ordenação
                 "order": [
                     [0, "desc"]

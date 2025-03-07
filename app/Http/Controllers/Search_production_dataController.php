@@ -64,7 +64,7 @@ class Search_production_dataController extends Controller
         if (file_exists($filePath)) {
             unlink($filePath);
             Files::findOrFail($id)->delete();
-            return redirect('files')->with('success', 'Arquivo Deletado com Sucesso');
+            return redirect('search_production_data')->with('success', 'Arquivo Deletado com Sucesso');
         }
 
         return redirect('search_production_data')->with('success', 'Arquivo Deletado com Sucesso');

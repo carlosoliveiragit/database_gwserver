@@ -7,9 +7,6 @@ use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Production_dataController extends Controller
 {
@@ -26,13 +23,11 @@ class Production_dataController extends Controller
         $Clients = Clients::all();
         $Users = Users::all();
         $Systems = Systems::all();
-        $Files = Files::all();
 
         return view('uploads.production_data.index', [
             'Clients' => $Clients,
             'Systems' => $Systems,
-            'Users' => $Users,
-            'Files' => $Files
+            'Users' => $Users
         ]);
     }
 
@@ -97,7 +92,7 @@ class Production_dataController extends Controller
                             }
                         } else {
                             // Bloquear o upload se o arquivo não existir
-                            return redirect('production_data')->with('error', 'Upload não permitido. O arquivo não existe.');
+                            return redirect('production_data')->with('error', 'Upload não permitido. Nome do arquivo incorreto.');
                         }
                     }
                 }
@@ -105,56 +100,5 @@ class Production_dataController extends Controller
         }
 
         return redirect('production_data')->with('success', 'Upload realizado com sucesso');
-    }
-
-    public function show($id)
-    {
-        $file = Files::findOrFail($id);
-        $filePath = $file->path . $file->file;
-
-        if (Storage::exists($filePath)) {
-            $spreadsheet = Excel::toArray([], storage_path('app/' . $filePath));
-            return view('uploads.production_data.show', compact('spreadsheet'));
-        }
-
-        return redirect('production_data')->with('error', 'Arquivo não encontrado.');
-    }
-
-    public function edit($id)
-    {
-        $file = Files::findOrFail($id);
-        $filePath = $file->path . $file->file;
-
-        if (Storage::exists($filePath)) {
-            $spreadsheet = Excel::toArray([], storage_path('app/' . $filePath));
-            return view('uploads.production_data.edit', compact('spreadsheet', 'file'));
-        }
-
-        return redirect('production_data')->with('error', 'Arquivo não encontrado.');
-    }
-
-    public function update(Request $request, $id)
-    {
-        $file = Files::findOrFail($id);
-        $filePath = $file->path . $file->file;
-
-        if (Storage::exists($filePath)) {
-            $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
-
-            // Atualizar os dados da planilha com os dados do request
-            foreach ($request->data as $row => $columns) {
-                foreach ($columns as $column => $value) {
-                    $sheet->setCellValueByColumnAndRow($column + 1, $row + 1, $value);
-                }
-            }
-
-            $writer = new Xlsx($spreadsheet);
-            $writer->save(storage_path('app/' . $filePath));
-
-            return redirect('production_data')->with('success', 'Arquivo atualizado com sucesso.');
-        }
-
-        return redirect('production_data')->with('error', 'Arquivo não encontrado.');
     }
 }
