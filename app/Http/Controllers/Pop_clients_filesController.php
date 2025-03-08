@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\User;
 use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
+use PDF;
 
 class Pop_clients_filesController extends Controller
 {
@@ -93,5 +93,20 @@ class Pop_clients_filesController extends Controller
         }
 
         return response()->download($filePath);
+    }
+
+    public function showPDF($id)
+    {
+        $file = Files::findOrFail($id);
+        $filePath = storage_path("app/" . $file->path . $file->file);
+
+        if (!file_exists($filePath)) {
+            return redirect()->route('pop_clients_files.index')->with('error', 'O arquivo não existe no sistema de arquivos.');
+        }
+
+        return response()->file($filePath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $file->file . '"'
+        ]);
     }
 }

@@ -60,5 +60,20 @@ class FilesController extends Controller
         return response()->download($filePath);
     }
 
+    public function showPDF($id)
+    {
+        $file = Files::findOrFail($id);
+        $filePath = storage_path("app/" . $file->path . $file->file);
+
+        if (!file_exists($filePath)) {
+            return redirect()->route('files.index')->with('error', 'O arquivo não existe no sistema de arquivos.');
+        }
+
+        return response()->file($filePath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $file->file . '"'
+        ]);
+    }
+
 
 }
