@@ -2,7 +2,7 @@
     href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 @section('plugins.BsCustomFileInput', true)
 @extends('adminlte::page')
-@section('title', 'Dashboard GW | Files')
+@section('title', 'Dashboard GW | Lista de Procedimentos')
 @section('css')
 @stop
 @section('content_header')
