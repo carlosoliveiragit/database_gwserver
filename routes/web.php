@@ -9,6 +9,8 @@ use App\http\Controllers\Ihm_bkpController;
 use App\http\Controllers\Production_dataController;
 use App\http\Controllers\View_production_dataController;
 use App\http\Controllers\Search_production_dataController;
+use App\http\Controllers\ShowPDFController;
+use App\http\Controllers\ShowJSONController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,9 +35,6 @@ Route::get('files', [FilesController::class, 'index'])->name('files');
 Route::get('files/{file}/download', [FilesController::class, 'download'])->name('files.download');
 Route::post('files', [FilesController::class, 'destroy'])->name('files');
 Route::delete('files/{id}', [FilesController::class, 'destroy'])->name('files');
-Route::get('files/view/{id}', [FilesController::class, 'showPDF'])->name('files.view');
-
-
 
 Route::get('clients_files', [App\Http\Controllers\Clients_filesController::class, 'index'])->name('clients_files');
 Route::get('clients_files/{file}/download', [App\Http\Controllers\Clients_filesController::class, 'download'])->name('clients_files.download');
@@ -51,7 +50,6 @@ Route::get('pop_clients_files', [Pop_clients_filesController::class, 'index'])->
 Route::get('pop_clients_files/{file}/download', [Pop_clients_filesController::class, 'download'])->name('pop_clients_files.download');
 Route::post('pop_clients_files', [Pop_clients_filesController::class, 'store'])->name('pop_clients_files.store');
 Route::delete('pop_clients_files/{id}', [Pop_clients_filesController::class, 'destroy'])->name('pop_clients_files.destroy');
-Route::get('pop_clients_files/view/{id}', [Pop_clients_filesController::class, 'showPDF'])->name('pop_clients_files.view');
 
 Route::get('clients', [App\Http\Controllers\ClientsController::class, 'index'])->name('clients');
 Route::post('clients', [App\Http\Controllers\ClientsController::class, 'store'])->name('clients');
@@ -112,4 +110,7 @@ Route::get('search_production_data', [Search_production_dataController::class, '
 Route::get('search_production_data/{file}/download', [Search_production_dataController::class, 'download'])->name('search_production_data.download');
 Route::post('search_production_data', [Search_production_dataController::class, 'store'])->name('search_production_data');
 Route::delete('search_production_data/{id}', [Search_production_dataController::class, 'destroy'])->name('search_production_data');
+
+Route::get(uri: 'showpdf/view/{id}', action: [ShowPDFController::class, 'showPDF'])->name('showpdf.view');
+Route::get('showjson/view/{id}', [ShowJSONController::class, 'showJSON'])->name('showjson.view');
 

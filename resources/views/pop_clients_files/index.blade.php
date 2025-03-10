@@ -160,7 +160,7 @@
                                                     @if (pathinfo($return_db->file, PATHINFO_EXTENSION) === 'pdf')
                                                         <div class="btn-group">
                                                             <a class="btn btn-primary btn-lg px-2 py-1"
-                                                                href="{{ route('pop_clients_files.view', ['id' => $return_db->id]) }}"
+                                                                href="{{ route('showpdf.view', ['id' => $return_db->id]) }}"
                                                                 title="Visualizar Arquivo">
                                                                 <i class="fa fa fa-fw fa-eye"></i>
                                                             </a>
