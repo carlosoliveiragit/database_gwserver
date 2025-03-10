@@ -134,7 +134,7 @@
                                     <thead>
                                         <tr class="text-secondary">
                                             <th>Id</th>
-                                            {{--<th>Usuário</th>--}}
+                                            {{-- <th>Usuário</th> --}}
                                             <th>Arquivo</th>
                                             <th>Sistema</th>
                                             <th>Tipo</th>
@@ -148,11 +148,11 @@
                                                 <td>
                                                     {{ $return_db->id }}</i>
                                                 </td>
-                                                {{--<td>
+                                                {{-- <td>
                                                     {{ $return_db->users_name }}
-                                                </td>--}}
+                                                </td> --}}
                                                 <td>
-                                                    {{ $return_db->file}}
+                                                    {{ $return_db->file }}
                                                 </td>
                                                 <td>
                                                     {{ $return_db->systems_system }}
@@ -175,6 +175,14 @@
                                                         <div class="btn-group">
                                                             <a class="btn btn-primary btn-lg px-2 py-1"
                                                                 href="{{ route('showpdf.view', ['id' => $return_db->id]) }}"
+                                                                title="Visualizar Arquivo">
+                                                                <i class="fa fa fa-fw fa-eye"></i>
+                                                            </a>
+                                                        </div>
+                                                    @elseif (pathinfo($return_db->file, PATHINFO_EXTENSION) === 'json')
+                                                        <div class="btn-group">
+                                                            <a class="btn btn-primary btn-lg px-2 py-1"
+                                                                href="{{ route('showjson.view', ['id' => $return_db->id]) }}"
                                                                 title="Visualizar Arquivo">
                                                                 <i class="fa fa fa-fw fa-eye"></i>
                                                             </a>
