@@ -607,6 +607,8 @@ class ComposerStaticInitb4329570f96d6f63a6a77fa13c6877dc
         'App\\Http\\Controllers\\Pop_clients_filesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Pop_clients_filesController.php',
         'App\\Http\\Controllers\\Production_dataController' => __DIR__ . '/../..' . '/app/Http/Controllers/Production_dataController.php',
         'App\\Http\\Controllers\\Search_production_dataController' => __DIR__ . '/../..' . '/app/Http/Controllers/Search_production_dataController.php',
+        'App\\Http\\Controllers\\ShowJSONController' => __DIR__ . '/../..' . '/app/Http/Controllers/ShowJSONController.php',
+        'App\\Http\\Controllers\\ShowPDFController' => __DIR__ . '/../..' . '/app/Http/Controllers/ShowPDFController.php',
         'App\\Http\\Controllers\\SystemsController' => __DIR__ . '/../..' . '/app/Http/Controllers/SystemsController.php',
         'App\\Http\\Controllers\\TelemetryController' => __DIR__ . '/../..' . '/app/Http/Controllers/TelemetryController.php',
         'App\\Http\\Controllers\\UsersController' => __DIR__ . '/../..' . '/app/Http/Controllers/UsersController.php',

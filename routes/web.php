@@ -11,6 +11,20 @@ use App\http\Controllers\View_production_dataController;
 use App\http\Controllers\Search_production_dataController;
 use App\http\Controllers\ShowPDFController;
 use App\http\Controllers\ShowJSONController;
+use App\http\Controllers\ShowExcelController;
+use App\http\Controllers\ClpWegController;
+use App\http\Controllers\ClpAltusController;
+use App\http\Controllers\ClpAbbController;
+use App\http\Controllers\Images_bkpController;
+use App\http\Controllers\pop_bkpController;
+use App\http\Controllers\pop_manut_bkpController;
+use App\http\Controllers\pop_oper_bkpController;
+use App\http\Controllers\Clients_filesController;
+use App\http\Controllers\ClientsController;
+use App\http\Controllers\SystemsController;
+use App\http\Controllers\UsersController;
+use App\http\Controllers\TelemetryController;
+use App\http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,17 +43,17 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('home', [HomeController::class, 'index'])->name('home');
 
 Route::get('files', [FilesController::class, 'index'])->name('files');
 Route::get('files/{file}/download', [FilesController::class, 'download'])->name('files.download');
 Route::post('files', [FilesController::class, 'destroy'])->name('files');
 Route::delete('files/{id}', [FilesController::class, 'destroy'])->name('files');
 
-Route::get('clients_files', [App\Http\Controllers\Clients_filesController::class, 'index'])->name('clients_files');
-Route::get('clients_files/{file}/download', [App\Http\Controllers\Clients_filesController::class, 'download'])->name('clients_files.download');
-Route::post('clients_files', [App\Http\Controllers\Clients_filesController::class, 'store'])->name('clients_files');
-Route::delete('clients_files/{id}', [App\Http\Controllers\Clients_filesController::class, 'destroy'])->name('clients_files');
+Route::get('clients_files', [Clients_filesController::class, 'index'])->name('clients_files');
+Route::get('clients_files/{file}/download', [Clients_filesController::class, 'download'])->name('clients_files.download');
+Route::post('clients_files', [Clients_filesController::class, 'store'])->name('clients_files');
+Route::delete('clients_files/{id}', [Clients_filesController::class, 'destroy'])->name('clients_files');
 
 Route::get('pop_files', [Pop_FilesController::class, 'index'])->name('pop_files');
 Route::get('pop_files/{file}/download', [Pop_FilesController::class, 'download'])->name('pop_files.download');
@@ -51,48 +65,48 @@ Route::get('pop_clients_files/{file}/download', [Pop_clients_filesController::cl
 Route::post('pop_clients_files', [Pop_clients_filesController::class, 'store'])->name('pop_clients_files.store');
 Route::delete('pop_clients_files/{id}', [Pop_clients_filesController::class, 'destroy'])->name('pop_clients_files.destroy');
 
-Route::get('clients', [App\Http\Controllers\ClientsController::class, 'index'])->name('clients');
-Route::post('clients', [App\Http\Controllers\ClientsController::class, 'store'])->name('clients');
-Route::delete('clients/{id}', [App\Http\Controllers\ClientsController::class, 'destroy'])->name('clients');
-Route::get('edit_client/{id}', [App\Http\Controllers\ClientsController::class, 'edit'])->name('edit_client');
-Route::put('edit_client/{id}', [App\Http\Controllers\ClientsController::class, 'update'])->name('update_client');
+Route::get('clients', [ClientsController::class, 'index'])->name('clients');
+Route::post('clients', [ClientsController::class, 'store'])->name('clients');
+Route::delete('clients/{id}', [ClientsController::class, 'destroy'])->name('clients');
+Route::get('edit_client/{id}', [ClientsController::class, 'edit'])->name('edit_client');
+Route::put('edit_client/{id}', [ClientsController::class, 'update'])->name('update_client');
 
-Route::get('systems', [App\Http\Controllers\SystemsController::class, 'index'])->name('systems');
-Route::post('systems', [App\Http\Controllers\SystemsController::class, 'store'])->name('systems');
-Route::delete('systems/{id}', [App\Http\Controllers\SystemsController::class, 'destroy'])->name('systems');
-Route::get('edit_system/{id}', [App\Http\Controllers\SystemsController::class, 'edit'])->name('edit_system');
-Route::put('edit_system/{id}', [App\Http\Controllers\SystemsController::class, 'update'])->name('update_system');
+Route::get('systems', [SystemsController::class, 'index'])->name('systems');
+Route::post('systems', [SystemsController::class, 'store'])->name('systems');
+Route::delete('systems/{id}', [SystemsController::class, 'destroy'])->name('systems');
+Route::get('edit_system/{id}', [SystemsController::class, 'edit'])->name('edit_system');
+Route::put('edit_system/{id}', [SystemsController::class, 'update'])->name('update_system');
 
-Route::get('users', [App\Http\Controllers\UsersController::class, 'index'])->name('users');
-Route::post('users', [App\Http\Controllers\UsersController::class, 'store'])->name('users');
-Route::delete('users/{id}', [App\Http\Controllers\UsersController::class, 'destroy'])->name('users');
+Route::get('users', [UsersController::class, 'index'])->name('users');
+Route::post('users', [UsersController::class, 'store'])->name('users');
+Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('users');
 
-Route::get('edit_user/{id}', [App\Http\Controllers\UsersController::class, 'edit'])->name('edit_user');
-Route::put('edit_user/{id}', [App\Http\Controllers\UsersController::class, 'update'])->name('update_user');
+Route::get('edit_user/{id}', [UsersController::class, 'edit'])->name('edit_user');
+Route::put('edit_user/{id}', [UsersController::class, 'update'])->name('update_user');
 
-Route::get('telemetry', [App\Http\Controllers\TelemetryController::class, 'index'])->name('telemetry');
-Route::post('telemetry', [App\Http\Controllers\TelemetryController::class, 'store'])->name('telemetry');
+Route::get('telemetry', [TelemetryController::class, 'index'])->name('telemetry');
+Route::post('telemetry', [TelemetryController::class, 'store'])->name('telemetry');
 
-Route::get('images_bkp', [App\Http\Controllers\Images_bkpController::class, 'index'])->name('images_bkp');
-Route::post('images_bkp', [App\Http\Controllers\Images_bkpController::class, 'store'])->name('images_bkp');
+Route::get('images_bkp', [Images_bkpController::class, 'index'])->name('images_bkp');
+Route::post('images_bkp', [Images_bkpController::class, 'store'])->name('images_bkp');
 
-Route::get('pop_bkp', [App\Http\Controllers\pop_bkpController::class, 'index'])->name('pop_bkp');
-Route::post('pop_bkp', [App\Http\Controllers\pop_bkpController::class, 'store'])->name('pop_bkp');
+Route::get('pop_bkp', [pop_bkpController::class, 'index'])->name('pop_bkp');
+Route::post('pop_bkp', [pop_bkpController::class, 'store'])->name('pop_bkp');
 
-Route::get('pop_manut_bkp', [App\Http\Controllers\pop_manut_bkpController::class, 'index'])->name('pop_manut_bkp');
-Route::post('pop_manut_bkp', [App\Http\Controllers\pop_manut_bkpController::class, 'store'])->name('pop_manut_bkp');
+Route::get('pop_manut_bkp', [pop_manut_bkpController::class, 'index'])->name('pop_manut_bkp');
+Route::post('pop_manut_bkp', [pop_manut_bkpController::class, 'store'])->name('pop_manut_bkp');
 
-Route::get('pop_oper_bkp', [App\Http\Controllers\pop_oper_bkpController::class, 'index'])->name('pop_oper_bkp');
-Route::post('pop_oper_bkp', [App\Http\Controllers\pop_oper_bkpController::class, 'store'])->name('pop_oper_bkp');
+Route::get('pop_oper_bkp', [pop_oper_bkpController::class, 'index'])->name('pop_oper_bkp');
+Route::post('pop_oper_bkp', [pop_oper_bkpController::class, 'store'])->name('pop_oper_bkp');
 
-Route::get('clp_weg', [App\Http\Controllers\ClpWegController::class, 'index'])->name('clp_weg');
-Route::post('clp_weg', [App\Http\Controllers\ClpWegController::class, 'store'])->name('clp_weg');
+Route::get('clp_weg', [ClpWegController::class, 'index'])->name('clp_weg');
+Route::post('clp_weg', [ClpWegController::class, 'store'])->name('clp_weg');
 
-Route::get('clp_altus', [App\Http\Controllers\ClpAltusController::class, 'index'])->name('clp_altus');
-Route::post('clp_altus', [App\Http\Controllers\ClpAltusController::class, 'store'])->name('clp_altus');
+Route::get('clp_altus', [ClpAltusController::class, 'index'])->name('clp_altus');
+Route::post('clp_altus', [ClpAltusController::class, 'store'])->name('clp_altus');
 
-Route::get('clp_abb', [App\Http\Controllers\ClpAbbController::class, 'index'])->name('clp_abb');
-Route::post('clp_abb', [App\Http\Controllers\ClpAbbController::class, 'store'])->name('clp_abb');
+Route::get('clp_abb', [ClpAbbController::class, 'index'])->name('clp_abb');
+Route::post('clp_abb', [ClpAbbController::class, 'store'])->name('clp_abb');
 
 Route::get('ihm_bkp', [Ihm_bkpController::class, 'index'])->name('ihm_bkp');
 Route::post('ihm_bkp', [Ihm_bkpController::class, 'store'])->name('ihm_bkp');
@@ -113,4 +127,5 @@ Route::delete('search_production_data/{id}', [Search_production_dataController::
 
 Route::get(uri: 'showpdf/view/{id}', action: [ShowPDFController::class, 'showPDF'])->name('showpdf.view');
 Route::get('showjson/view/{id}', [ShowJSONController::class, 'showJSON'])->name('showjson.view');
+Route::get('showexcel/view/{id}', [ShowExcelController::class, 'showExcel'])->name('showexcel.view');
 

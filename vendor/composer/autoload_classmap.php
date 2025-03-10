@@ -28,6 +28,8 @@ return array(
     'App\\Http\\Controllers\\Pop_clients_filesController' => $baseDir . '/app/Http/Controllers/Pop_clients_filesController.php',
     'App\\Http\\Controllers\\Production_dataController' => $baseDir . '/app/Http/Controllers/Production_dataController.php',
     'App\\Http\\Controllers\\Search_production_dataController' => $baseDir . '/app/Http/Controllers/Search_production_dataController.php',
+    'App\\Http\\Controllers\\ShowJSONController' => $baseDir . '/app/Http/Controllers/ShowJSONController.php',
+    'App\\Http\\Controllers\\ShowPDFController' => $baseDir . '/app/Http/Controllers/ShowPDFController.php',
     'App\\Http\\Controllers\\SystemsController' => $baseDir . '/app/Http/Controllers/SystemsController.php',
     'App\\Http\\Controllers\\TelemetryController' => $baseDir . '/app/Http/Controllers/TelemetryController.php',
     'App\\Http\\Controllers\\UsersController' => $baseDir . '/app/Http/Controllers/UsersController.php',
