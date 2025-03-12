@@ -264,6 +264,7 @@ return [
                     'icon' => 'fa-solid fa-list-ul',
                     //'can'  => 'is_admin',
                 ],
+                ['header' => ''],
 
             ],
         ],
@@ -284,6 +285,7 @@ return [
                     'icon' => 'fa-solid fa-list-ul',
                     //'can'  => 'is_admin',
                 ],
+                ['header' => ''],
 
             ],
         ],
@@ -304,6 +306,7 @@ return [
                     'icon' => 'fa-solid fa-list-ul',
                     //'can'  => 'is_admin',
                 ],
+                ['header' => ''],
 
             ],
         ],
@@ -330,6 +333,7 @@ return [
                     'url' => 'pop_oper_bkp',
                     'icon' => 'fa-solid fa-file-arrow-up ',
                 ],
+                ['header' => ''],
 
             ],
         ],
@@ -348,6 +352,7 @@ return [
                     'url' => 'pop_bkp',
                     'icon' => 'fa-solid fa-file-arrow-up',
                 ],
+                ['header' => ''],
 
             ],
         ],
@@ -392,6 +397,7 @@ return [
 
                         ],
                     ],
+                    ['header' => ''],
                 ],
                 [
                     'text' => 'IHM',
@@ -404,6 +410,7 @@ return [
                     'url' => 'pop_manut_bkp',
                     'icon' => 'fa-solid fa-file-arrow-up',
                 ],
+                ['header' => ''],
             ],
         ],
 
