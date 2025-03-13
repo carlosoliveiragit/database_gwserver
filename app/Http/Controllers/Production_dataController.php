@@ -41,58 +41,51 @@ class Production_dataController extends Controller
             'type' => 'required|string',
         ]);
 
+        $forceUpload = $request->input('force_upload') === 'true';
+
         if ($request->hasFile('upload')) {
             foreach ($request->file('upload') as $requestUpload) {
                 if ($requestUpload->isValid()) {
-                    $file = new Files;
-
-                    $file->users_name = $request->users_name;
-                    $file->clients_client = $request->clients_client;
-                    $file->systems_system = $request->systems_system;
-                    $file->type = $request->type;
-                    $file->sector = "OPERACAO";
-
-                    // Definição do caminho do diretório no storage
-                    $filePath = 'private/received_file/' . $request->clients_client . '/' . $request->systems_system . '/' . $request->type . '/';
-                    Storage::makeDirectory($filePath);
-
-                    $file->path = $filePath;
-
-                    // Criando nome do arquivo com nome em maiúsculas e extensão em minúsculas
+                    // Criando nome do arquivo com extensão em minúsculas
                     $originalName = pathinfo($requestUpload->getClientOriginalName(), PATHINFO_FILENAME);
                     $extension = strtolower($requestUpload->getClientOriginalExtension()); // Garantir extensão minúscula
-                    $uploadName = strtoupper($originalName) . '.' . $extension; // Nome em maiúsculas
+                    $uploadName = $originalName . '.' . $extension; // Nome original
 
-                    // Verificar se há algum arquivo no diretório
-                    $filesInDirectory = Storage::files($filePath);
+                    // Verificar se o arquivo está registrado no banco de dados
+                    $existingFile = Files::where('clients_client', $request->clients_client)
+                        ->where('systems_system', $request->systems_system)
+                        ->where('file', $uploadName)
+                        ->first();
 
-                    if (empty($filesInDirectory)) {
-                        // Permitir o upload se não houver nenhum arquivo no diretório
+                    $filePath = 'private/received_file/HOMOLOGAÇÃO/';
+                    Storage::makeDirectory($filePath);
+
+                    if ($existingFile) {
+                        // Atualizar o arquivo existente
+                        Storage::delete($filePath . $uploadName);
                         $requestUpload->storeAs($filePath, $uploadName, 'local');
 
-                        $file->file = $uploadName;
-                        $file->save();
+                        // Atualizar o banco de dados
+                        $existingFile->updated_at = now();
+                        $existingFile->save();
                     } else {
-                        // Verificar se o arquivo já existe
-                        if (Storage::exists($filePath . $uploadName)) {
-                            // Atualizar o arquivo existente
-                            Storage::delete($filePath . $uploadName);
+                        if ($forceUpload) {
+                            // Permitir o upload se não houver nenhum arquivo registrado e o botão "Forçar Upload" foi pressionado
                             $requestUpload->storeAs($filePath, $uploadName, 'local');
 
-                            // Atualizar o banco de dados
-                            $existingFile = Files::where('file', $uploadName)
-                                ->where('clients_client', $request->clients_client)
-                                ->where('systems_system', $request->systems_system)
-                                ->where('type', $request->type)
-                                ->first();
-
-                            if ($existingFile) {
-                                $existingFile->updated_at = now();
-                                $existingFile->save();
-                            }
+                            // Salvar novo registro no banco de dados
+                            $file = new Files;
+                            $file->users_name = $request->users_name;
+                            $file->clients_client = $request->clients_client;
+                            $file->systems_system = $request->systems_system;
+                            $file->type = $request->type;
+                            $file->sector = "OPERACAO";
+                            $file->path = $filePath;
+                            $file->file = $uploadName;
+                            $file->save();
                         } else {
-                            // Bloquear o upload se o arquivo não existir
-                            return redirect('production_data')->with('error', 'Upload não permitido. Nome do arquivo incorreto.');
+                            // Bloquear o upload se o arquivo não estiver registrado e o botão "Forçar Upload" não foi pressionado
+                            return redirect('production_data')->with('error', 'Upload não permitido. Arquivo não registrado no banco de dados.');
                         }
                     }
                 }
