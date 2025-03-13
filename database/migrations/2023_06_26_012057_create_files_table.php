@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('path');
             $table->string('file');
             $table->string('type');
+            $table->enum('sector', ['CCO', 'MANUTENCAO', 'OPERACAO'])->nullable();
             $table->timestamps();
         });
     }

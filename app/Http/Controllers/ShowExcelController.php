@@ -18,7 +18,7 @@ class ShowExcelController extends Controller
     public function showExcel($id)
     {
         $file = Files::findOrFail($id);
-        $filePath = storage_path("app/" . $file->path . $file->file);
+        $filePath = 'C:\\ARQUIVOS\\DADOS DE PRODUCAO\\' . $file->file;
 
         if (!file_exists($filePath)) {
             return redirect()->route('view_production_data.index')->with('error', 'O arquivo não existe no sistema de arquivos.');

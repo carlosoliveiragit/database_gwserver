@@ -18,14 +18,15 @@ class View_production_dataController extends Controller
     }
 
     public function index()
-{
-    $Files = Files::where('type', 'LIKE', '%DADOS DE PRODUCAO%')->get();  // Use get() to execute the query
-    return view('view_production_data.index', ['Files' => $Files]);
-}
+    {
+        $Files = Files::where('type', 'LIKE', '%DADOS DE PRODUCAO%')->get();  // Use get() to execute the query
+        return view('view_production_data.index', ['Files' => $Files]);
+    }
 
     public function destroy($id, Request $request)
     {
-        $filePath = storage_path('app/' . $request->path . $request->file);
+        //$filePath = storage_path('app/' . $request->path . $request->file);
+        $filePath = 'C:\\ARQUIVOS\\DADOS DE PRODUCAO\\' . $request->file;
 
         if (file_exists($filePath)) {
             unlink($filePath);
@@ -50,14 +51,14 @@ class View_production_dataController extends Controller
         }
 
         // Montar o caminho completo baseado no registro do banco
-        $filePath = storage_path("app/" . $fileEntry->path . $fileEntry->file);
+        $filePath = 'C:\\ARQUIVOS\\DADOS DE PRODUCAO\\' . $fileEntry->file;
 
         if (!file_exists($filePath)) {
             return redirect()->route('view_production_data')->with('error', 'O arquivo não existe no sistema de arquivos.');
         }
 
         return response()->download($filePath);
+
+
     }
-
-
 }
