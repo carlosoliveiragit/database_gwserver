@@ -18,7 +18,7 @@ class ShowJSONController extends Controller
     public function showJSON($id)
     {
         $file = Files::findOrFail($id);
-        $filePath = storage_path("app/" . $file->path . $file->file);
+        $filePath = $file->path . DIRECTORY_SEPARATOR . $file->file;
 
         if (!file_exists($filePath)) {
             return redirect()->route('files.index')->with('error', 'O arquivo não existe no sistema de arquivos.');

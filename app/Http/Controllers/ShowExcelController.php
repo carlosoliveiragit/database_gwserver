@@ -18,7 +18,7 @@ class ShowExcelController extends Controller
     public function showExcel($id)
     {
         $file = Files::findOrFail($id);
-        $filePath = storage_path("app/" . $file->path . $file->file);
+        $filePath = $file->path . DIRECTORY_SEPARATOR . $file->file;
 
         if (!file_exists($filePath)) {
             return redirect()->route('view_production_data.index')->with('error', 'O arquivo não existe no sistema de arquivos.');
@@ -30,19 +30,16 @@ class ShowExcelController extends Controller
 
         foreach ($sheetNames as $sheetIndex => $sheetName) {
             $worksheet = $spreadsheet->getSheet($sheetIndex);
-            $sheetData = $worksheet->toArray(null, true, true, false); // Desabilita a avaliação de fórmulas
+            $sheetData = $worksheet->toArray(null, true, true, false);
 
-            // Determina o número de linhas de cabeçalho (por exemplo, 3)
-            $headerRowCount = 3; // Ajuste conforme necessário
+            $headerRowCount = 3;
             $headers = array_slice($sheetData, 0, $headerRowCount);
 
-            // Filtra as últimas 5 linhas preenchidas
             $filledRows = array_filter(array_slice($sheetData, $headerRowCount), function ($row) {
                 return array_filter($row);
             });
             $last5Rows = array_slice($filledRows, -5);
 
-            // Remove colunas em branco
             $columnsToKeep = [];
             foreach ($headers as $headerRow) {
                 foreach ($headerRow as $colIndex => $headerCell) {

@@ -6,7 +6,7 @@ use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class Production_dataController extends Controller
 {
@@ -57,13 +57,12 @@ class Production_dataController extends Controller
                         ->where('file', $uploadName)
                         ->first();
 
-                    $filePath = 'private/received_file/HOMOLOGAÇÃO/';
-                    Storage::makeDirectory($filePath);
+                    $filePath = '\\\\GWSRVFS\\DADOS\\GW BASE EXECUTIVA\\Técnico\\Operação\\CCO\\HOMOLOGACAO\\DADOS DE PRODUCAO\\' . $uploadName;
 
                     if ($existingFile) {
                         // Atualizar o arquivo existente
-                        Storage::delete($filePath . $uploadName);
-                        $requestUpload->storeAs($filePath, $uploadName, 'local');
+                        File::delete($filePath);
+                        $requestUpload->move(dirname($filePath), $uploadName);
 
                         // Atualizar o banco de dados
                         $existingFile->updated_at = now();
@@ -71,7 +70,7 @@ class Production_dataController extends Controller
                     } else {
                         if ($forceUpload) {
                             // Permitir o upload se não houver nenhum arquivo registrado e o botão "Forçar Upload" foi pressionado
-                            $requestUpload->storeAs($filePath, $uploadName, 'local');
+                            $requestUpload->move(dirname($filePath), $uploadName);
 
                             // Salvar novo registro no banco de dados
                             $file = new Files;
@@ -80,7 +79,7 @@ class Production_dataController extends Controller
                             $file->systems_system = $request->systems_system;
                             $file->type = $request->type;
                             $file->sector = "OPERACAO";
-                            $file->path = $filePath;
+                            $file->path = dirname($filePath);
                             $file->file = $uploadName;
                             $file->save();
                         } else {

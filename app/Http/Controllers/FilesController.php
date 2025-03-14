@@ -20,13 +20,13 @@ class FilesController extends Controller
     public function index()
     {
         $Files = Files::where('type', 'NOT LIKE', '%POP%')
-                      ->where('type', 'NOT LIKE', '%DADOS DE PRODUCAO%')->get();  // Use get() to execute the query
+            ->where('type', 'NOT LIKE', '%DADOS DE PRODUCAO%')->get();  // Use get() to execute the query
         return view('files.index', ['Files' => $Files]);
     }
 
     public function destroy($id, Request $request)
     {
-        $filePath = storage_path('app/' . $request->path . $request->file);
+        $filePath = $request->path . DIRECTORY_SEPARATOR . $request->file;
 
         if (file_exists($filePath)) {
             unlink($filePath);
@@ -51,7 +51,7 @@ class FilesController extends Controller
         }
 
         // Montar o caminho completo baseado no registro do banco
-        $filePath = storage_path("app/" . $fileEntry->path . $fileEntry->file);
+        $filePath = $fileEntry->path . DIRECTORY_SEPARATOR . $fileEntry->file;
 
         if (!file_exists($filePath)) {
             return redirect()->route('files')->with('error', 'O arquivo não existe no sistema de arquivos.');
@@ -59,21 +59,5 @@ class FilesController extends Controller
 
         return response()->download($filePath);
     }
-
-    public function showPDF($id)
-    {
-        $file = Files::findOrFail($id);
-        $filePath = storage_path("app/" . $file->path . $file->file);
-
-        if (!file_exists($filePath)) {
-            return redirect()->route('files.index')->with('error', 'O arquivo não existe no sistema de arquivos.');
-        }
-
-        return response()->file($filePath, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $file->file . '"'
-        ]);
-    }
-
 
 }

@@ -70,8 +70,6 @@
                         <option value="pdf">Documento PDF</option>
                     </select>
                 </div>
-            </div>
-            <div class="row p-2">
                 <div class="col-sm" id="fileUploadContainer">
                     <x-adminlte-input-file accept=".jpg,.png" type="file" id="upload" name="upload[]" label="Upload Imagem" multiple
                         placeholder="Escolha um arquivo..." enable-feedback>
@@ -103,6 +101,7 @@
                     </x-adminlte-select2>
                 </div>
             </div>
+            
             <div class="row p-2">
                 <div class="col-sm">
                     {{-- Dinamic Change --}}

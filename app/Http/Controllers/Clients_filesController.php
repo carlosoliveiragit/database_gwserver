@@ -65,7 +65,7 @@ class Clients_filesController extends Controller
 
     public function destroy($id, Request $request)
     {
-        $filePath = storage_path('app/' . $request->path . $request->file);
+        $filePath = $request->path . DIRECTORY_SEPARATOR . $request->file;
 
         if (file_exists($filePath)) {
             unlink($filePath);
@@ -90,7 +90,7 @@ class Clients_filesController extends Controller
         }
 
         // Montar o caminho completo baseado no registro do banco
-        $filePath = storage_path("app/" . $fileEntry->path . $fileEntry->file);
+        $filePath = $fileEntry->path . DIRECTORY_SEPARATOR . $fileEntry->file;
 
         if (!file_exists($filePath)) {
             return redirect()->route('clients_files')->with('error', 'O arquivo não existe no sistema de arquivos.');

@@ -7,7 +7,8 @@ use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+
 use Imagick;
 class Images_bkpController extends Controller
 {
@@ -40,11 +41,17 @@ class Images_bkpController extends Controller
         ]);
 
         // Caminho de armazenamento
-        $pdfPath = 'private/received_file/' . $request->clients_client . '/' . $request->systems_system . '/' . $request->type . '/';
-        Storage::makeDirectory($pdfPath);
+        $pdfPath = '\\\\GWSRVFS\\DADOS\\GW BASE EXECUTIVA\\Técnico\\Operação\\CCO\\HOMOLOGACAO\\ARQUIVOS\\' . $request->clients_client . DIRECTORY_SEPARATOR . $request->systems_system . DIRECTORY_SEPARATOR . $request->type . DIRECTORY_SEPARATOR;
 
-        $pdfName = $request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His") . '.pdf';
-        $pdfFullPath = storage_path('app/' . $pdfPath . $pdfName);
+        // Verificar se o diretório existe, se não, criar
+        if (!file_exists($pdfPath)) {
+            if (!mkdir($pdfPath, 0777, true)) {
+                return redirect()->back()->with('error', 'Não foi possível criar o diretório de armazenamento.');
+            }
+        }
+
+        $pdfName = strtoupper($request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His")) . '.pdf';
+        $pdfFullPath = $pdfPath . DIRECTORY_SEPARATOR . $pdfName;
 
         // Processamento de imagens para PDF
         if ($request->hasFile('upload')) {
@@ -66,12 +73,8 @@ class Images_bkpController extends Controller
         // Upload de PDF separado
         if ($request->hasFile('uploadPdf')) {
             $pdfFile = $request->file('uploadPdf');
-            // Gerar nome do arquivo PDF em maiúsculas, com extensão em minúscula
-            $pdfFileName = strtoupper($request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His"));
-            $extension = strtolower($pdfFile->getClientOriginalExtension()); // Garantir extensão minúscula
-            $pdfFileName .= '.' . $extension;
-            
-            // Armazenar o PDF com o nome atualizado
+            $extension = strtolower($pdfFile->getClientOriginalExtension());
+            $pdfFileName = strtoupper($request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His")) . '.' . $extension;
             $pdfFile->storeAs($pdfPath, $pdfFileName, 'local');
         }
 
