@@ -49,8 +49,8 @@ class ClpAbbController extends Controller
             }
 
             // Criando o caminho seguro para armazenamento
-            $directoryPath = 'private/received_file/' . $request->clients_client . '/' . $request->systems_system . '/' . "CLP". '/' . $request->model . '/';
-            Storage::makeDirectory($directoryPath);
+            $directoryPath = '\\\\GWSRVFS\\DADOS\\GW BASE EXECUTIVA\\Técnico\\Operação\\CCO\\HOMOLOGACAO\\ARQUIVOS\\' . $request->clients_client . DIRECTORY_SEPARATOR . $request->systems_system . DIRECTORY_SEPARATOR . "CLP" . DIRECTORY_SEPARATOR.$request->model .DIRECTORY_SEPARATOR;
+
 
             // Criando nome seguro para o arquivo
             $uploadName = strtoupper(str_replace(
@@ -62,8 +62,8 @@ class ClpAbbController extends Controller
             // Adiciona a extensão em minúsculas
             $uploadName .= '.' . $extension;
 
-            // Salvando o arquivo no storage
-            $requestUpload->storeAs($directoryPath, $uploadName, 'local');
+            // Salvando o arquivo na pasta mapeada
+            $requestUpload->move($directoryPath, $uploadName);
 
             // Salvando as informações no banco
             $file = new Files;
