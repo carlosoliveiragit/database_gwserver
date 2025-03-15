@@ -7,7 +7,6 @@ use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 use Imagick;
 class Images_bkpController extends Controller

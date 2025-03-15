@@ -6,7 +6,6 @@ use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class Pop_manut_bkpController extends Controller
 {
@@ -44,34 +43,46 @@ class Pop_manut_bkpController extends Controller
         if ($request->hasFile('upload')) {
             foreach ($request->file('upload') as $requestUpload) {
                 if ($requestUpload->isValid()) {
-                    $file = new Files;
-
-                    $file->users_name = $request->users_name;
-                    $file->clients_client = $request->clients_client;
-                    $file->systems_system = $request->systems_system;
-                    $file->type = $request->type;
-                    $file->sector = "MANUTENCAO";
-
-                    // Definição do caminho do diretório no storage
-                    $filePath = 'private/received_file/' . $request->clients_client . '/' . $request->systems_system . '/' . $request->type . '/';
-                    Storage::makeDirectory($filePath);
-
-                    $file->path = $filePath;
-
                     // Criando nome do arquivo: nome em maiúsculas e extensão em minúsculas
                     $originalName = pathinfo($requestUpload->getClientOriginalName(), PATHINFO_FILENAME);
                     $extension = strtolower($requestUpload->getClientOriginalExtension()); // Garantir extensão minúscula
-                    $uploadName = strtoupper("MAN-" .$originalName) . '.' . $extension; // Nome em maiúsculas
+                    $uploadName = strtoupper("MAN-" . $originalName) . '.' . $extension; // Nome em maiúsculas
 
-                    // Salvando o arquivo no storage
-                    $requestUpload->storeAs($filePath, $uploadName, 'local');
+                    // Verificar se o arquivo já existe no banco de dados
+                    $file = Files::where('users_name', $request->users_name)
+                        ->where('clients_client', $request->clients_client)
+                        ->where('systems_system', $request->systems_system)
+                        ->where('type', $request->type)
+                        ->where('file', $uploadName)
+                        ->first();
 
-                    $file->file = $uploadName;
+                    if ($file) {
+                        // Atualizar o registro existente
+                        $file->sector = "MANUTENCAO";
+                    } else {
+                        // Criar um novo registro
+                        $file = new Files;
+                        $file->users_name = $request->users_name;
+                        $file->clients_client = $request->clients_client;
+                        $file->systems_system = $request->systems_system;
+                        $file->type = $request->type;
+                        $file->sector = "MANUTENCAO";
+                        $file->file = $uploadName;
+                    }
+
+                    // Definição do caminho do diretório no storage
+                    $filePath = '\\\\GWSRVFS\\DADOS\\GW BASE EXECUTIVA\\Técnico\\Operação\\CCO\\HOMOLOGACAO\\ARQUIVOS\\' . $request->clients_client . DIRECTORY_SEPARATOR . $request->systems_system . DIRECTORY_SEPARATOR . $request->type . DIRECTORY_SEPARATOR;
+
+                    $file->path = $filePath;
+
+                    // Salvando o arquivo na pasta mapeada
+                    $requestUpload->move($filePath, $uploadName);
+
                     $file->save();
                 }
             }
         }
 
-        return redirect('pop_manut_bkp')->with('success', 'Upload realizado com sucesso');
-    }
+    return redirect('pop_manut_bkp')->with('success', 'Upload realizado com sucesso');
+}
 }
