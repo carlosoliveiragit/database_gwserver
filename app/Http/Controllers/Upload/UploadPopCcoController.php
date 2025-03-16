@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Upload;
 
 use App\Models\Users;
 use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 
-class Pop_bkpController extends Controller
+
+class UploadPopCcoController extends Controller
 {
     protected $user;
 
@@ -24,7 +26,7 @@ class Pop_bkpController extends Controller
         $Users = Users::all();
         $Systems = Systems::all();
 
-        return view('uploads.pop_bkp.index', [
+        return view('uploads.upload_pop_cco.index', [
             'Clients' => $Clients,
             'Systems' => $Systems,
             'Users' => $Users
@@ -84,6 +86,6 @@ class Pop_bkpController extends Controller
             }
         }
 
-        return redirect('pop_bkp')->with('success', 'Upload realizado com sucesso');
+        return redirect('upload_pop_cco')->with('success', 'Upload realizado com sucesso');
     }
 }

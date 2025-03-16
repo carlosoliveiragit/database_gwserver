@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Upload;
 
 use App\Models\Users;
 use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
+
+
 
 class UploadIhmController extends Controller
 {

@@ -2,7 +2,7 @@
     href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 @section('plugins.BsCustomFileInput', true)
 @extends('adminlte::page')
-@section('title', 'Dashboard GW | Telemetria')
+@section('title', 'Dashboard GW | UP TELEMETRIA')
 @section('plugins.Select2', true)
 
 @section('content_header')

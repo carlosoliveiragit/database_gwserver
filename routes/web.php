@@ -1,30 +1,32 @@
 <?php
 
+//upload
+use App\Http\Controllers\Upload\UploadSetpointsController;
+use App\Http\Controllers\Upload\UploadPopCcoController;
+use App\Http\Controllers\Upload\UploadTelemetryController;
+use App\Http\Controllers\Upload\UploadIhmController;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FilesController;
-use App\http\Controllers\Pop_FilesController;
-use App\http\Controllers\Pop_clients_filesController;
-use App\http\Controllers\UploadIhmController;
-use App\http\Controllers\Production_dataController;
-use App\http\Controllers\View_production_dataController;
-use App\http\Controllers\Search_production_dataController;
-use App\http\Controllers\ShowPDFController;
-use App\http\Controllers\ShowJSONController;
-use App\http\Controllers\ShowExcelController;
-use App\http\Controllers\ClpWegController;
-use App\http\Controllers\ClpAltusController;
-use App\http\Controllers\ClpAbbController;
-use App\http\Controllers\UploadSetpointsController;
-use App\http\Controllers\pop_bkpController;
-use App\http\Controllers\pop_manut_bkpController;
-use App\http\Controllers\pop_oper_bkpController;
-use App\http\Controllers\Clients_filesController;
-use App\http\Controllers\ClientsController;
-use App\http\Controllers\SystemsController;
-use App\http\Controllers\UsersController;
-use App\http\Controllers\UploadTelemetryController;
-use App\http\Controllers\HomeController;
+use App\Http\Controllers\Pop_FilesController;
+use App\Http\Controllers\Pop_clients_filesController;
+use App\Http\Controllers\Production_dataController;
+use App\Http\Controllers\View_production_dataController;
+use App\Http\Controllers\Search_production_dataController;
+use App\Http\Controllers\ShowPDFController;
+use App\Http\Controllers\ShowJSONController;
+use App\Http\Controllers\ShowExcelController;
+use App\Http\Controllers\ClpWegController;
+use App\Http\Controllers\ClpAltusController;
+use App\Http\Controllers\ClpAbbController;
+use App\Http\Controllers\pop_manut_bkpController;
+use App\Http\Controllers\pop_oper_bkpController;
+use App\Http\Controllers\Clients_filesController;
+use App\Http\Controllers\ClientsController;
+use App\Http\Controllers\SystemsController;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,9 +86,6 @@ Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('users');
 Route::get('edit_user/{id}', [UsersController::class, 'edit'])->name('edit_user');
 Route::put('edit_user/{id}', [UsersController::class, 'update'])->name('update_user');
 
-Route::get('pop_bkp', [pop_bkpController::class, 'index'])->name('pop_bkp');
-Route::post('pop_bkp', [pop_bkpController::class, 'store'])->name('pop_bkp');
-
 Route::get('pop_manut_bkp', [pop_manut_bkpController::class, 'index'])->name('pop_manut_bkp');
 Route::post('pop_manut_bkp', [pop_manut_bkpController::class, 'store'])->name('pop_manut_bkp');
 
@@ -131,3 +130,6 @@ Route::post('upload_setpoints', [UploadSetpointsController::class, 'store'])->na
 
 Route::get('upload_ihm', [UploadIhmController::class, 'index'])->name('upload_ihm');
 Route::post('upload_ihm', [UploadIhmController::class, 'store'])->name('upload_ihm');
+
+Route::get('upload_pop_cco', [UploadPopCcoController::class, 'index'])->name('upload_pop_cco');
+Route::post('upload_pop_cco', [UploadPopCcoController::class, 'store'])->name('upload_pop_cco');

@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Upload;
 
 use App\Models\User;
 use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
+
 
 use Imagick;
 class UploadSetpointsController extends Controller
@@ -25,7 +27,7 @@ class UploadSetpointsController extends Controller
         $Users = User::all();
         $Systems = Systems::all();
 
-        return view('upload_setpoints.index', compact('Clients', 'Users', 'Systems'));
+        return view('uploads.upload_setpoints.index', compact('Clients', 'Users', 'Systems'));
     }
 
     public function store(Request $request)
