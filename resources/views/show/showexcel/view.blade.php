@@ -7,6 +7,8 @@
     <h5>Arquivo: {{ $fileName }}</h5>
     @foreach ($sheetsData as $sheetName => $sheet)
         <h6>Planilha: {{ $sheetName }}</h6>
+        <p>Linhas congeladas: {{ $sheet['frozenRowIndex'] }}</p>
+        <p>Colunas congeladas: {{ $sheet['frozenColumnIndex'] }}</p>
         <div class="sheet-container card card-default">
             <div class="table-responsive">
                 <table class="table table-bordered">

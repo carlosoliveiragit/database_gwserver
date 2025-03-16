@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Show;
 use App\Models\Files;
 use App\Models\User;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
+use Illuminate\Routing\Controller;
 
 class ShowExcelController extends Controller
 {
@@ -23,7 +23,6 @@ class ShowExcelController extends Controller
         $filePath = $file->path . DIRECTORY_SEPARATOR . $file->file;
 
         if (!file_exists($filePath)) {
-            // Retorna para a página anterior em caso de erro
             return back()->with('error', 'O arquivo não existe no sistema de arquivos.');
         }
 
@@ -33,9 +32,22 @@ class ShowExcelController extends Controller
 
         foreach ($sheetNames as $sheetIndex => $sheetName) {
             $worksheet = $spreadsheet->getSheet($sheetIndex);
+
+            // Verifica se há linhas ou colunas congeladas
+            $freezePane = $worksheet->getFreezePane();
+            if ($freezePane) {
+                list($frozenColumn, $frozenRow) = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::coordinateFromString($freezePane);
+                $frozenColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($frozenColumn);
+                $frozenRowIndex = (int)$frozenRow;
+            } else {
+                $frozenColumnIndex = 0;
+                $frozenRowIndex = 0;
+            }
+
             $sheetData = $worksheet->toArray(null, true, true, false);
 
-            $headerRowCount = 3;
+            // Usa o número de linhas congeladas como cabeçalhos
+            $headerRowCount = $frozenRowIndex;
             $headers = array_slice($sheetData, 0, $headerRowCount);
 
             $filledRows = array_filter(array_slice($sheetData, $headerRowCount), function ($row) {
@@ -63,7 +75,9 @@ class ShowExcelController extends Controller
 
             $sheetsData[$sheetName] = [
                 'headers' => $filteredHeaders,
-                'data' => $filteredData
+                'data' => $filteredData,
+                'frozenColumnIndex' => $frozenColumnIndex,
+                'frozenRowIndex' => $frozenRowIndex
             ];
         }
 
