@@ -95,6 +95,6 @@ class UploadTelemetryController extends Controller
         $file->path = $filePath;
         $file->save();
 
-        return redirect('upload_telemetry.index')->with('success', 'Upload realizado com sucesso!');
+        return redirect('upload_telemetry')->with('success', 'Upload realizado com sucesso!');
     }
 }

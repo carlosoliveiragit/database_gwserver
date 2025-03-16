@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Show;
 
 use App\Models\Files;
 use App\Models\User;
+use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 
-class ShowJSONController extends Controller
+class ShowJsonController extends Controller
 {
     protected $user;
 
@@ -21,7 +22,8 @@ class ShowJSONController extends Controller
         $filePath = $file->path . DIRECTORY_SEPARATOR . $file->file;
 
         if (!file_exists($filePath)) {
-            return redirect()->route('files.index')->with('error', 'O arquivo não existe no sistema de arquivos.');
+            // Retorna para a página anterior em caso de erro
+            return back()->with('error', 'O arquivo não existe no sistema de arquivos.');
         }
 
         $jsonContent = file_get_contents($filePath);

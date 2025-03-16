@@ -1,9 +1,11 @@
 <?php
-namespace App\Http\Controllers;
+
+namespace App\Http\Controllers\Show;
 
 use App\Models\Files;
 use App\Models\User;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 
 class ShowExcelController extends Controller
 {
@@ -21,7 +23,8 @@ class ShowExcelController extends Controller
         $filePath = $file->path . DIRECTORY_SEPARATOR . $file->file;
 
         if (!file_exists($filePath)) {
-            return redirect()->route('view_production_data.index')->with('error', 'O arquivo não existe no sistema de arquivos.');
+            // Retorna para a página anterior em caso de erro
+            return back()->with('error', 'O arquivo não existe no sistema de arquivos.');
         }
 
         $spreadsheet = IOFactory::load($filePath);
@@ -64,7 +67,7 @@ class ShowExcelController extends Controller
             ];
         }
 
-        return view('showexcel.view', [
+        return view('show.showexcel.view', [
             'sheetsData' => $sheetsData,
             'fileName' => $file->file
         ]);

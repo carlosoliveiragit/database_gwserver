@@ -6,6 +6,12 @@ use App\Http\Controllers\Upload\UploadPopCcoController;
 use App\Http\Controllers\Upload\UploadTelemetryController;
 use App\Http\Controllers\Upload\UploadIhmController;
 
+//show
+use App\Http\Controllers\show\ShowPdfController;
+use App\Http\Controllers\show\ShowJsonController;
+use App\Http\Controllers\show\ShowExcelController;
+
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FilesController;
@@ -14,9 +20,6 @@ use App\Http\Controllers\Pop_clients_filesController;
 use App\Http\Controllers\Production_dataController;
 use App\Http\Controllers\View_production_dataController;
 use App\Http\Controllers\Search_production_dataController;
-use App\Http\Controllers\ShowPDFController;
-use App\Http\Controllers\ShowJSONController;
-use App\Http\Controllers\ShowExcelController;
 use App\Http\Controllers\ClpWegController;
 use App\Http\Controllers\ClpAltusController;
 use App\Http\Controllers\ClpAbbController;
@@ -117,9 +120,7 @@ Route::get('search_production_data/{file}/download', [Search_production_dataCont
 Route::post('search_production_data', [Search_production_dataController::class, 'store'])->name('search_production_data');
 Route::delete('search_production_data/{id}', [Search_production_dataController::class, 'destroy'])->name('search_production_data');
 
-Route::get(uri: 'showpdf/view/{id}', action: [ShowPDFController::class, 'showPDF'])->name('showpdf.view');
-Route::get('showjson/view/{id}', [ShowJSONController::class, 'showJSON'])->name('showjson.view');
-Route::get('showexcel/view/{id}', [ShowExcelController::class, 'showExcel'])->name('showexcel.view');
+
 
 //uploads
 Route::get('upload_telemetry', [UploadTelemetryController::class, 'index'])->name('upload_telemetry');
@@ -133,3 +134,8 @@ Route::post('upload_ihm', [UploadIhmController::class, 'store'])->name('upload_i
 
 Route::get('upload_pop_cco', [UploadPopCcoController::class, 'index'])->name('upload_pop_cco');
 Route::post('upload_pop_cco', [UploadPopCcoController::class, 'store'])->name('upload_pop_cco');
+
+//show
+Route::get(uri: 'showpdf/view/{id}', action: [ShowPdfController::class, 'showPDF'])->name('showpdf.view');
+Route::get('showjson/view/{id}', [ShowJsonController::class, 'showJSON'])->name('showjson.view');
+Route::get('showexcel/view/{id}', [ShowExcelController::class, 'showExcel'])->name('showexcel.view');
