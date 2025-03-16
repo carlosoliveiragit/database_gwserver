@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Upload;
 
 use App\Models\Users;
 use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 
-class ClpAltusController extends Controller
+class UploadClpWegController extends Controller
 {
     protected $user;
 
@@ -25,7 +25,7 @@ class ClpAltusController extends Controller
         $Users = Users::all();
         $Systems = Systems::all();
 
-        return view('uploads.clp_altus.index', compact('Clients', 'Users', 'Systems'));
+        return view('uploads.upload_clp_weg.index', compact('Clients', 'Users', 'Systems'));
     }
 
     public function store(Request $request)
@@ -35,7 +35,7 @@ class ClpAltusController extends Controller
             'users_name' => 'required|string',
             'clients_client' => 'required|string',
             'systems_system' => 'required|string',
-            'type' => 'required|string',
+            'type_Ident' => 'required|string',
             'model' => 'required|string'
         ]);
 
@@ -43,16 +43,21 @@ class ClpAltusController extends Controller
             $requestUpload = $request->file('upload');
             $extension = strtolower($requestUpload->getClientOriginalExtension());
 
-            // Validação manual da extensão
-            if ($extension !== 'projectarchive') {
-                return redirect()->back()->withInput()->with('error', 'O arquivo deve ter a extensão .projectarchive.');
+            // Mapeamento de extensões válidas por modelo
+            $validExtensions = [
+                'PLC300' => 'bkp',
+                'CLIC02' => 'cli',
+                'PLC500' => 'projectarchive',
+            ];
+
+            // Validação da extensão para o modelo selecionado
+            if (!isset($validExtensions[$request->model]) || $validExtensions[$request->model] !== $extension) {
+                return redirect()->back()->withInput()->with('error', 'Extensão: ' . $extension . ' não é compatível com o modelo ' . $request->model);
             }
 
             // Criando o caminho seguro para armazenamento
-            $directoryPath = 'private/received_file/' . $request->clients_client . '/' . $request->systems_system . '/' . "CLP". '/' . $request->model . '/';
-            Storage::makeDirectory($directoryPath);
+            $directoryPath = '\\\\GWSRVFS\\DADOS\\GW BASE EXECUTIVA\\Técnico\\Operação\\CCO\\HOMOLOGACAO\\ARQUIVOS\\' . $request->clients_client . DIRECTORY_SEPARATOR . $request->systems_system . DIRECTORY_SEPARATOR . "CLP" . DIRECTORY_SEPARATOR.$request->model .DIRECTORY_SEPARATOR;
 
-            // Criando nome seguro para o arquivo
             $uploadName = strtoupper(str_replace(
                 [" - ", "-", " "],
                 "_",
@@ -62,8 +67,8 @@ class ClpAltusController extends Controller
             // Adiciona a extensão em minúsculas
             $uploadName .= '.' . $extension;
 
-            // Salvando o arquivo no storage
-            $requestUpload->storeAs($directoryPath, $uploadName, 'local');
+            // Salvando o arquivo na pasta mapeada
+            $requestUpload->move($directoryPath, $uploadName);
 
             // Salvando as informações no banco
             $file = new Files;
@@ -77,7 +82,6 @@ class ClpAltusController extends Controller
             $file->save();
         }
 
-
-        return redirect('clp_altus')->with('success', 'Upload realizado com sucesso!');
+        return redirect('upload_clp_weg')->with('success', 'Upload realizado com sucesso!');
     }
 }

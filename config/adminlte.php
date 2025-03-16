@@ -371,15 +371,15 @@ return [
 
                         [
                             'text' => 'ABB',
-                            'url' => 'clp_abb',
+                            'url' => 'upload_clp_abb',
                         ],
                         [
                             'text' => 'Altus',
-                            'url' => 'clp_altus',
+                            'url' => 'upload_clp_altus',
                         ],
                         [
                             'text' => 'WEG',
-                            'url' => 'clp_weg',
+                            'url' => 'upload_clp_weg',
 
                         ],
                         [

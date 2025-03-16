@@ -2,51 +2,40 @@
     href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 @section('plugins.BsCustomFileInput', true)
 @extends('adminlte::page')
-@section('title', 'Dashboard GW | CLP Weg')
+@section('title', 'Dashboard GW | UP CLP Altus')
 @section('plugins.Select2', true)
 
 @section('content_header')
-    <div class="col-sm">
-        <h4><i class="fa-solid fa-gears"></i> &nbsp;&nbsp;UPLOAD - CLP WEG</h4>
-    </div>
-        <div class="row p-2">
-            <div class="col-sm">
-                @if (session('success'))
-                <div class="row p-3">
-                    <div class="col-sm">
-                        <x-adminlte-alert theme="success" title="Operação Finalizada" dismissable>
-                            <ul>
-                                <li>{{ session('success') }}</li>
-                            </ul>
-                        </x-adminlte-alert>
-                    </div>
+<div class="col-sm">
+    <h4><i class="fa-solid fa-gears"></i> &nbsp;&nbsp;UPLOAD - CLP ALTUS</h4>
+</div>
+    <div class="row p-2">
+        <div class="col-sm">
+            @if (session('success'))
+            <div class="row p-3">
+                <div class="col-sm">
+                    <x-adminlte-alert theme="success" title="Operação Finalizada" dismissable>
+                        <ul>
+                            <li>{{ session('success') }}</li>
+                        </ul>
+                    </x-adminlte-alert>
                 </div>
-                @endif
-                @if (session('error'))
-                <div class="row p-3">
-                    <div class="col-sm">
-                        <x-adminlte-alert theme="danger" title="Erro na Operação" dismissable>
-                            <ul>
-                                <li>{{ session('error') }}</li>
-                            </ul>
-                        </x-adminlte-alert>
-                    </div>
-                </div>
-                @endif
             </div>
+            @endif
         </div>
+    </div>
 @stop
 @section('content')
     <div class="card card-default">
         <div class="card-header">
-            <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;<b>Adicionar Arquivo dos seguintes Modelos:</b> PLC300 / CLIC02 / PLC500</h2><br>
+            <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;<b>Adicionar Arquivo dos seguintes Modelos:</b> XP315 / XP325 / XP340</h2><br>
         </div>
-        <form id="fileUploadForm" action="clp_weg" method="POST" enctype="multipart/form-data">
+        <form id="fileUploadForm" action="upload_clp_altus" method="POST" enctype="multipart/form-data">
             @csrf
             <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
             <div class="row p-2">
                 <div class="col-sm">
-                    <x-adminlte-select2 name="clients_client" label="1º - Cliente" data-placeholder="selecione o cliente..." required>
+                    <x-adminlte-select2 name="clients_client" label="1º - Cliente" data-placeholder="Select Client..." required>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-water"></i>
@@ -59,7 +48,7 @@
                     </x-adminlte-select2>
                 </div>
                 <div class="col-sm">
-                    <x-adminlte-select2 name="systems_system" label="2º - Sistema" data-placeholder="selecione o sistema..." required>
+                    <x-adminlte-select2 name="systems_system" label="2º - Sistema" data-placeholder="Select System..." required>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-sitemap"></i>
@@ -74,20 +63,20 @@
             </div>
             <div class="row p-2">
                 <div class="col-sm">
-                    <x-adminlte-select2 name="model" label="3º - Modelo" data-placeholder="selecione o modelo..." required>
+                    <x-adminlte-select2 name="model" label="3º - Modelo" data-placeholder="Select Model..." required>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-tag"></i>
                             </div>
                         </x-slot>
                         <option disabled="disabled" selected></option>
-                        <option value="PLC300">PLC 300</option>
-                        <option value="CLIC02">CLIC 02</option>
-                        <option value="PLC500">PLC 500</option>
+                        <option value="XP315">XP 315</option>
+                        <option value="XP325">XP 325</option>
+                        <option value="XP340">XP 340</option>
                     </x-adminlte-select2>
                 </div>
                 <div class="col-sm">
-                    <x-adminlte-select2 name="type_Ident" label="4º - Identificação" data-placeholder="selecione a identificação..." required>
+                    <x-adminlte-select2 name="type" label="4º - Identificação" data-placeholder="Select Type..." required>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-file"></i>
@@ -97,15 +86,15 @@
                         <option value="CLP1">CLP 1</option>
                         <option value="CLP2">CLP 2</option>
                         <option value="CLP3">CLP 3</option>
-                        <option value="CLP4">CLP 4</option>
+                        <option value="CLP3">CLP 4</option>
                     </x-adminlte-select2>
                 </div>
             </div>
             <div class="row p-2">
                 <div class="col-sm">
                     {{-- With label and feedback disabled --}}
-                    <x-adminlte-input-file type="file" accept=".bkp, .cli, .projectarchive" id="upload" name="upload"
-                        label="5º - Upload file" placeholder="selecione o arquivo correspondente ao modelo..." enable-feedback required>
+                    <x-adminlte-input-file type="file" accept=".projectarchive" id="upload" name="upload"
+                        label="5º - Upload file" placeholder="Choose a file..." enable-feedback required>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
                                 <i class="fas fa-solid fa-upload"></i>
@@ -126,7 +115,7 @@
             <div class="row p-2">
                 <div class="col-sm">
                     <p>* Preencha o formulário corretamente</p>
-                    <p><b>* Arquivos Suportados:</b> <b>PLC 300</b> .bkp / <b>CLIC02</b> .cli / <b>PLC500</b> .projectarchive</p>
+                    <p><b>* Arquivos Suportados:</b> .projectarchive</p>
                 </div>
             </div>
         </form>

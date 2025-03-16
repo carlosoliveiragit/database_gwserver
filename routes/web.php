@@ -10,6 +10,12 @@ use App\Http\Controllers\Upload\UploadIhmController;
 use App\Http\Controllers\Upload\UploadPopCcoController;
 use App\Http\Controllers\Upload\UploadPopManController;
 use App\Http\Controllers\Upload\UploadPopOprController;
+use App\Http\Controllers\Upload\UploadClpAbbController;
+use App\Http\Controllers\Upload\UploadClpAltusController;
+use App\Http\Controllers\Upload\UploadClpWegController;
+
+
+
 
 //show
 use App\Http\Controllers\show\ShowPdfController;
@@ -24,9 +30,6 @@ use App\Http\Controllers\Pop_clients_filesController;
 use App\Http\Controllers\Production_dataController;
 use App\Http\Controllers\View_production_dataController;
 use App\Http\Controllers\Search_production_dataController;
-use App\Http\Controllers\ClpWegController;
-use App\Http\Controllers\ClpAltusController;
-use App\Http\Controllers\ClpAbbController;
 use App\Http\Controllers\Clients_filesController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\SystemsController;
@@ -91,17 +94,6 @@ Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('users');
 Route::get('edit_user/{id}', [UsersController::class, 'edit'])->name('edit_user');
 Route::put('edit_user/{id}', [UsersController::class, 'update'])->name('update_user');
 
-Route::get('clp_weg', [ClpWegController::class, 'index'])->name('clp_weg');
-Route::post('clp_weg', [ClpWegController::class, 'store'])->name('clp_weg');
-
-Route::get('clp_altus', [ClpAltusController::class, 'index'])->name('clp_altus');
-Route::post('clp_altus', [ClpAltusController::class, 'store'])->name('clp_altus');
-
-Route::get('clp_abb', [ClpAbbController::class, 'index'])->name('clp_abb');
-Route::post('clp_abb', [ClpAbbController::class, 'store'])->name('clp_abb');
-
-
-
 Route::get('production_data', [Production_dataController::class, 'index'])->name('production_data');
 Route::post('production_data', [Production_dataController::class, 'store'])->name('production_data');
 Route::delete('production_data/{id}', [Production_dataController::class, 'destroy'])->name('production_data');
@@ -136,6 +128,15 @@ Route::post('upload_pop_man', [UploadPopManController::class, 'store'])->name('u
 
 Route::get('upload_pop_opr', [UploadPopOprController::class, 'index'])->name('upload_pop_opr');
 Route::post('upload_pop_opr', [UploadPopOprController::class, 'store'])->name('upload_pop_opr');
+
+Route::get('upload_clp_abb', [UploadClpAbbController::class, 'index'])->name('upload_clp_abb');
+Route::post('upload_clp_abb', [UploadClpAbbController::class, 'store'])->name('upload_clp_abb');
+
+Route::get('upload_clp_altus', [UploadClpAltusController::class, 'index'])->name('upload_clp_altus');
+Route::post('upload_clp_altus', [UploadClpAltusController::class, 'store'])->name('upload_clp_altus');
+
+Route::get('upload_clp_weg', [UploadClpWegController::class, 'index'])->name('upload_clp_weg');
+Route::post('upload_clp_weg', [UploadClpWegController::class, 'store'])->name('upload_clp_weg');
 
 
 //show

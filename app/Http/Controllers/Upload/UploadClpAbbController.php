@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Upload;
 
 use App\Models\Users;
 use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 
-class ClpAbbController extends Controller
+
+class UploadClpAbbController extends Controller
 {
     protected $user;
 
@@ -25,7 +26,7 @@ class ClpAbbController extends Controller
         $Users = Users::all();
         $Systems = Systems::all();
 
-        return view('uploads.clp_abb.index', compact('Clients', 'Users', 'Systems'));
+        return view('uploads.upload_clp_abb.index', compact('Clients', 'Users', 'Systems'));
     }
 
     public function store(Request $request)
@@ -77,6 +78,6 @@ class ClpAbbController extends Controller
             $file->save();
         }
 
-        return redirect('clp_abb')->with('success', 'Upload realizado com sucesso!');
+        return redirect('upload_clp_abb')->with('success', 'Upload realizado com sucesso!');
     }
 }

@@ -2,7 +2,7 @@
     href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 @section('plugins.BsCustomFileInput', true)
 @extends('adminlte::page')
-@section('title', 'Dashboard GW | CLP ABB')
+@section('title', 'Dashboard GW | UP CLP ABB')
 @section('plugins.Select2', true)
 
 @section('content_header')
@@ -31,7 +31,7 @@
         <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;<b>Adicionar Arquivo dos seguintes Modelos:
             </b>PM5032-T-ETH / PM5052-T-ETH</h2><br>
     </div>
-    <form id="fileUploadForm" action="clp_abb" method="POST" enctype="multipart/form-data">
+    <form id="fileUploadForm" action="upload_clp_abb" method="POST" enctype="multipart/form-data">
         @csrf
         <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
         <div class="row p-2">

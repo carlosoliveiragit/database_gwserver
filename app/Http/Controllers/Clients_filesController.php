@@ -70,7 +70,7 @@ class Clients_filesController extends Controller
         if (file_exists($filePath)) {
             unlink($filePath);
             Files::findOrFail($id)->delete();
-            return redirect('files')->with('success', 'Arquivo Deletado com Sucesso');
+            return redirect('clients_files')->with('success', 'Arquivo Deletado com Sucesso');
         }
 
         return redirect('clients_files')->with('success', 'Arquivo Deletado com Sucesso');
