@@ -9,7 +9,7 @@ use App\Models\Files;
 use Illuminate\Http\Request;
 
 use Imagick;
-class Images_bkpController extends Controller
+class UploadSetpointsController extends Controller
 {
     protected $user;
 
@@ -25,7 +25,7 @@ class Images_bkpController extends Controller
         $Users = User::all();
         $Systems = Systems::all();
 
-        return view('uploads.images_bkp.index', compact('Clients', 'Users', 'Systems'));
+        return view('upload_setpoints.index', compact('Clients', 'Users', 'Systems'));
     }
 
     public function store(Request $request)
@@ -74,9 +74,8 @@ class Images_bkpController extends Controller
             $pdfFile = $request->file('uploadPdf');
             $extension = strtolower($pdfFile->getClientOriginalExtension());
             $pdfFileName = strtoupper($request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His")) . '.' . $extension;
-            $pdfFile->storeAs($pdfPath, $pdfFileName, 'local');
+            $pdfFile->move($pdfPath, $pdfFileName);
         }
-
         // Salvar no banco de dados
         $fileEntry = new Files();
         $fileEntry->users_name = $request->users_name;
@@ -88,6 +87,6 @@ class Images_bkpController extends Controller
         $fileEntry->sector = "OPERACAO";
         $fileEntry->save();
 
-        return redirect('images_bkp')->with('success', 'Arquivos carregados com sucesso!');
+        return redirect('upload_setpoints')->with('success', 'Arquivos carregados com sucesso!');
     }
 }

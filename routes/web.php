@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FilesController;
 use App\http\Controllers\Pop_FilesController;
 use App\http\Controllers\Pop_clients_filesController;
-use App\http\Controllers\Ihm_bkpController;
+use App\http\Controllers\UploadIhmController;
 use App\http\Controllers\Production_dataController;
 use App\http\Controllers\View_production_dataController;
 use App\http\Controllers\Search_production_dataController;
@@ -15,7 +15,7 @@ use App\http\Controllers\ShowExcelController;
 use App\http\Controllers\ClpWegController;
 use App\http\Controllers\ClpAltusController;
 use App\http\Controllers\ClpAbbController;
-use App\http\Controllers\Images_bkpController;
+use App\http\Controllers\UploadSetpointsController;
 use App\http\Controllers\pop_bkpController;
 use App\http\Controllers\pop_manut_bkpController;
 use App\http\Controllers\pop_oper_bkpController;
@@ -23,7 +23,7 @@ use App\http\Controllers\Clients_filesController;
 use App\http\Controllers\ClientsController;
 use App\http\Controllers\SystemsController;
 use App\http\Controllers\UsersController;
-use App\http\Controllers\TelemetryController;
+use App\http\Controllers\UploadTelemetryController;
 use App\http\Controllers\HomeController;
 
 /*
@@ -84,12 +84,6 @@ Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('users');
 Route::get('edit_user/{id}', [UsersController::class, 'edit'])->name('edit_user');
 Route::put('edit_user/{id}', [UsersController::class, 'update'])->name('update_user');
 
-Route::get('telemetry', [TelemetryController::class, 'index'])->name('telemetry');
-Route::post('telemetry', [TelemetryController::class, 'store'])->name('telemetry');
-
-Route::get('images_bkp', [Images_bkpController::class, 'index'])->name('images_bkp');
-Route::post('images_bkp', [Images_bkpController::class, 'store'])->name('images_bkp');
-
 Route::get('pop_bkp', [pop_bkpController::class, 'index'])->name('pop_bkp');
 Route::post('pop_bkp', [pop_bkpController::class, 'store'])->name('pop_bkp');
 
@@ -108,8 +102,7 @@ Route::post('clp_altus', [ClpAltusController::class, 'store'])->name('clp_altus'
 Route::get('clp_abb', [ClpAbbController::class, 'index'])->name('clp_abb');
 Route::post('clp_abb', [ClpAbbController::class, 'store'])->name('clp_abb');
 
-Route::get('ihm_bkp', [Ihm_bkpController::class, 'index'])->name('ihm_bkp');
-Route::post('ihm_bkp', [Ihm_bkpController::class, 'store'])->name('ihm_bkp');
+
 
 Route::get('production_data', [Production_dataController::class, 'index'])->name('production_data');
 Route::post('production_data', [Production_dataController::class, 'store'])->name('production_data');
@@ -129,3 +122,12 @@ Route::get(uri: 'showpdf/view/{id}', action: [ShowPDFController::class, 'showPDF
 Route::get('showjson/view/{id}', [ShowJSONController::class, 'showJSON'])->name('showjson.view');
 Route::get('showexcel/view/{id}', [ShowExcelController::class, 'showExcel'])->name('showexcel.view');
 
+//uploads
+Route::get('upload_telemetry', [UploadTelemetryController::class, 'index'])->name('upload_telemetry');
+Route::post('upload_telemetry', [UploadTelemetryController::class, 'store'])->name('upload_telemetry');
+
+Route::get('upload_setpoints', [UploadSetpointsController::class, 'index'])->name('upload_setpoints');
+Route::post('upload_setpoints', [UploadSetpointsController::class, 'store'])->name('upload_setpoints');
+
+Route::get('upload_ihm', [UploadIhmController::class, 'index'])->name('upload_ihm');
+Route::post('upload_ihm', [UploadIhmController::class, 'store'])->name('upload_ihm');

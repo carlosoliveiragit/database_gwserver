@@ -42,7 +42,7 @@
             <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;Adicionar Arquivo JSON ScadaBR / NodeRed</h2>
         </div>
 
-        <form id="fileUploadForm" action="telemetry" method="POST" enctype="multipart/form-data">
+        <form id="fileUploadForm" action="upload_telemetry" method="POST" enctype="multipart/form-data">
             @csrf
             <input value="{{ Auth::user()->name }}" name="users_name" type="hidden" required>
 

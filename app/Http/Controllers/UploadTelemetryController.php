@@ -9,7 +9,7 @@ use App\Models\Files;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class TelemetryController extends Controller
+class UploadTelemetryController extends Controller
 {
     protected $user;
 
@@ -25,7 +25,7 @@ class TelemetryController extends Controller
         $Users = Users::all();
         $Systems = Systems::all();
 
-        return view('uploads.telemetry.index', compact('Clients', 'Users', 'Systems'));
+        return view('uploads.upload_telemetry.index', compact('Clients', 'Users', 'Systems'));
     }
 
     public function store(Request $request)
@@ -95,6 +95,6 @@ class TelemetryController extends Controller
     $file->path = $filePath;
     $file->save();
 
-    return redirect('telemetry')->with('success', 'Upload realizado com sucesso!');
+    return redirect('upload_telemetry.index')->with('success', 'Upload realizado com sucesso!');
 }
 }

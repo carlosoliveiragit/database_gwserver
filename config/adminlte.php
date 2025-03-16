@@ -325,7 +325,7 @@ return [
                 ],
                 [
                     'text' => 'Setpoints',
-                    'url' => 'images_bkp',
+                    'url' => 'upload_setpoints',
                     'icon' => 'fa-solid fa-image',
                 ],
                 [
@@ -344,7 +344,7 @@ return [
 
                 [
                     'text' => 'Telemetria',
-                    'url' => 'telemetry',
+                    'url' => 'upload_telemetry',
                     'icon' => 'fa-solid fa-scroll',
                 ],
                 [
@@ -401,7 +401,7 @@ return [
                 ],
                 [
                     'text' => 'IHM',
-                    'url' => 'ihm_bkp',
+                    'url' => 'upload_ihm',
                     'icon' => 'fa-solid fa-desktop',
 
                 ],

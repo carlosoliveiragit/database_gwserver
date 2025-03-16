@@ -31,7 +31,7 @@
         <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;Adicionar Arquivos de Imagem
         </h2><br>
     </div>
-    <form id="fileUploadForm" action="images_bkp" method="POST" enctype="multipart/form-data">
+    <form id="fileUploadForm" action="upload_setpoints" method="POST" enctype="multipart/form-data">
         @csrf
         <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
         <div class="row p-2">
@@ -101,14 +101,7 @@
                 </x-adminlte-select2>
             </div>
         </div>
-        <div class="row-p2">
-            <div class="col">
-                <div class="progress">
-                    <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0"
-                        aria-valuemin="0" aria-valuemax="100">0%</div>
-                </div>
-            </div>
-        </div>
+        
         <div class="row p-2">
             <div class="col-sm">
                 <label>Ação</label>
@@ -163,30 +156,5 @@
         });
     });
 </script>
-<script>
-    document.getElementById('fileUploadForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Impede o envio padrão do formulário
 
-        var form = event.target;
-        var formData = new FormData(form);
-        var xhr = new XMLHttpRequest();
-
-        xhr.upload.addEventListener('progress', function (event) {
-            if (event.lengthComputable) {
-                var percentComplete = (event.loaded / event.total) * 100;
-                var progressBar = document.getElementById('progressBar');
-                progressBar.style.width = percentComplete + '%';
-                progressBar.setAttribute('aria-valuenow', percentComplete);
-                progressBar.textContent = Math.round(percentComplete) + '%';
-            }
-        });
-
-        xhr.addEventListener('load', function () {
-            form.submit(); // Envia o formulário após o upload ser concluído
-        });
-
-        xhr.open('POST', form.action, true);
-        xhr.send(formData);
-    });
-</script>
 @stop

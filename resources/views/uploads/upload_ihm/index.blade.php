@@ -42,7 +42,7 @@
             <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;<b>Adicionar Arquivo
                     
         </div>
-        <form id="fileUploadForm" action="ihm_bkp" method="POST" enctype="multipart/form-data">
+        <form id="fileUploadForm" action="upload_ihm" method="POST" enctype="multipart/form-data">
             @csrf
             <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
             <div class="row p-2">

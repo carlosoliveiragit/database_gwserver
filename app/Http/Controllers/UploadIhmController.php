@@ -8,7 +8,7 @@ use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
 
-class Ihm_bkpController extends Controller
+class UploadIhmController extends Controller
 {
     protected $user;
 
@@ -24,7 +24,7 @@ class Ihm_bkpController extends Controller
         $Users = Users::all();
         $Systems = Systems::all();
 
-        return view('uploads.ihm_bkp.index', compact('Clients', 'Users', 'Systems'));
+        return view('uploads.upload_ihm.index', compact('Clients', 'Users', 'Systems'));
     }
 
     public function store(Request $request)
@@ -76,6 +76,6 @@ class Ihm_bkpController extends Controller
         }
 
 
-        return redirect('ihm_bkp')->with('success', 'Upload realizado com sucesso!');
+        return redirect('upload_ihm')->with('success', 'Upload realizado com sucesso!');
     }
 }
