@@ -1,10 +1,15 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 //upload
 use App\Http\Controllers\Upload\UploadSetpointsController;
-use App\Http\Controllers\Upload\UploadPopCcoController;
 use App\Http\Controllers\Upload\UploadTelemetryController;
 use App\Http\Controllers\Upload\UploadIhmController;
+use App\Http\Controllers\Upload\UploadPopCcoController;
+use App\Http\Controllers\Upload\UploadPopManController;
+use App\Http\Controllers\Upload\UploadPopOprController;
 
 //show
 use App\Http\Controllers\show\ShowPdfController;
@@ -12,8 +17,7 @@ use App\Http\Controllers\show\ShowJsonController;
 use App\Http\Controllers\show\ShowExcelController;
 
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\Pop_FilesController;
 use App\Http\Controllers\Pop_clients_filesController;
@@ -23,8 +27,6 @@ use App\Http\Controllers\Search_production_dataController;
 use App\Http\Controllers\ClpWegController;
 use App\Http\Controllers\ClpAltusController;
 use App\Http\Controllers\ClpAbbController;
-use App\Http\Controllers\pop_manut_bkpController;
-use App\Http\Controllers\pop_oper_bkpController;
 use App\Http\Controllers\Clients_filesController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\SystemsController;
@@ -89,12 +91,6 @@ Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('users');
 Route::get('edit_user/{id}', [UsersController::class, 'edit'])->name('edit_user');
 Route::put('edit_user/{id}', [UsersController::class, 'update'])->name('update_user');
 
-Route::get('pop_manut_bkp', [pop_manut_bkpController::class, 'index'])->name('pop_manut_bkp');
-Route::post('pop_manut_bkp', [pop_manut_bkpController::class, 'store'])->name('pop_manut_bkp');
-
-Route::get('pop_oper_bkp', [pop_oper_bkpController::class, 'index'])->name('pop_oper_bkp');
-Route::post('pop_oper_bkp', [pop_oper_bkpController::class, 'store'])->name('pop_oper_bkp');
-
 Route::get('clp_weg', [ClpWegController::class, 'index'])->name('clp_weg');
 Route::post('clp_weg', [ClpWegController::class, 'store'])->name('clp_weg');
 
@@ -134,6 +130,13 @@ Route::post('upload_ihm', [UploadIhmController::class, 'store'])->name('upload_i
 
 Route::get('upload_pop_cco', [UploadPopCcoController::class, 'index'])->name('upload_pop_cco');
 Route::post('upload_pop_cco', [UploadPopCcoController::class, 'store'])->name('upload_pop_cco');
+
+Route::get('upload_pop_man', [UploadPopManController::class, 'index'])->name('upload_pop_man');
+Route::post('upload_pop_man', [UploadPopManController::class, 'store'])->name('upload_pop_man');
+
+Route::get('upload_pop_opr', [UploadPopOprController::class, 'index'])->name('upload_pop_opr');
+Route::post('upload_pop_opr', [UploadPopOprController::class, 'store'])->name('upload_pop_opr');
+
 
 //show
 Route::get(uri: 'showpdf/view/{id}', action: [ShowPdfController::class, 'showPDF'])->name('showpdf.view');

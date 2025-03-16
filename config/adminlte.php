@@ -330,7 +330,7 @@ return [
                 ],
                 [
                     'text' => 'POP',
-                    'url' => 'pop_oper_bkp',
+                    'url' => 'upload_pop_opr',
                     'icon' => 'fa-solid fa-file-arrow-up ',
                 ],
                 ['header' => ''],
@@ -407,7 +407,7 @@ return [
                 ],
                 [
                     'text' => 'POP',
-                    'url' => 'pop_manut_bkp',
+                    'url' => 'upload_pop_man',
                     'icon' => 'fa-solid fa-file-arrow-up',
                 ],
                 ['header' => ''],

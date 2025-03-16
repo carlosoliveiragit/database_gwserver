@@ -2,7 +2,7 @@
     href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 @section('plugins.BsCustomFileInput', true)
 @extends('adminlte::page')
-@section('title', 'Dashboard GW | Imagens')
+@section('title', 'Dashboard GW | UP POP MAN')
 @section('plugins.Select2', true)
 
 @section('content_header')
@@ -31,7 +31,7 @@
             <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;Adicionar Arquivo PDF
             </h2><br>
         </div>
-        <form id="fileUploadForm" action="pop_manut_bkp" method="POST" enctype="multipart/form-data">
+        <form id="fileUploadForm" action="upload_pop_man" method="POST" enctype="multipart/form-data">
             @csrf
             <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
             <div class="row p-2">

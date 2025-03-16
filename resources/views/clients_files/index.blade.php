@@ -150,7 +150,7 @@
                                             {{-- <td>
                                                 {{ $return_db->users_name }}
                                             </td> --}}
-                                            <td>
+                                            <td title="{{ $return_db->file }}">
                                                 {{ Str::limit($return_db->file, 30) }}
                                             </td>
                                             <td>

@@ -1,13 +1,15 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Upload;
 
 use App\Models\Users;
 use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 
-class Pop_oper_bkpController extends Controller
+
+class UploadPopManController extends Controller
 {
     protected $user;
 
@@ -23,7 +25,7 @@ class Pop_oper_bkpController extends Controller
         $Users = Users::all();
         $Systems = Systems::all();
 
-        return view('uploads.pop_oper_bkp.index', [
+        return view('uploads.upload_pop_man.index', [
             'Clients' => $Clients,
             'Systems' => $Systems,
             'Users' => $Users
@@ -46,7 +48,7 @@ class Pop_oper_bkpController extends Controller
                     // Criando nome do arquivo: nome em maiúsculas e extensão em minúsculas
                     $originalName = pathinfo($requestUpload->getClientOriginalName(), PATHINFO_FILENAME);
                     $extension = strtolower($requestUpload->getClientOriginalExtension()); // Garantir extensão minúscula
-                    $uploadName = strtoupper("OPR-" . $originalName) . '.' . $extension; // Nome em maiúsculas
+                    $uploadName = strtoupper("MAN-" . $originalName) . '.' . $extension; // Nome em maiúsculas
 
                     // Verificar se o arquivo já existe no banco de dados
                     $file = Files::where('users_name', $request->users_name)
@@ -58,7 +60,7 @@ class Pop_oper_bkpController extends Controller
 
                     if ($file) {
                         // Atualizar o registro existente
-                        $file->sector = "OPERACAO";
+                        $file->sector = "MANUTENCAO";
                     } else {
                         // Criar um novo registro
                         $file = new Files;
@@ -66,7 +68,7 @@ class Pop_oper_bkpController extends Controller
                         $file->clients_client = $request->clients_client;
                         $file->systems_system = $request->systems_system;
                         $file->type = $request->type;
-                        $file->sector = "OPERACAO";
+                        $file->sector = "MANUTENCAO";
                         $file->file = $uploadName;
                     }
 
@@ -82,6 +84,7 @@ class Pop_oper_bkpController extends Controller
                 }
             }
         }
-    return redirect('pop_oper_bkp')->with('success', 'Upload realizado com sucesso');
+
+    return redirect('upload_pop_man')->with('success', 'Upload realizado com sucesso');
 }
 }
