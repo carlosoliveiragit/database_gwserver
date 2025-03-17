@@ -96,7 +96,7 @@
             <!-- Upload de Arquivo -->
             <div class="row p-2" id="fileUploadContainer">
                 <div class="col-sm">
-                    <x-adminlte-input-file accept=".json" type="file" id="upload" name="upload" label="Upload file"
+                    <x-adminlte-input-file accept=".json" type="file" id="upload" name="upload" label="Upload file" required
                         placeholder="Escolha um arquivo..." enable-feedback>
                         <x-slot name="prependSlot">
                             <div class="input-group-text text-primary">
