@@ -119,6 +119,15 @@
                                                         </a>
                                                     </div>
                                                 @endif
+                                                @if (pathinfo($return_db->file, PATHINFO_EXTENSION) === 'xlsx' || pathinfo($return_db->file, PATHINFO_EXTENSION) === 'xls')
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-primary btn-lg px-2 py-1"
+                                                            href="{{ route('showexcel.view', ['id' => $return_db->id]) }}"
+                                                            title="Visualizar Arquivo">
+                                                            <i class="fa fa fa-fw fa-eye"></i>
+                                                        </a>
+                                                    </div>
+                                                @endif
                                                 @can('is_admin')
                                                     <div class="btn-group">
                                                         <a type="submit" class="btn btn-danger btn-lg px-2 py-1"

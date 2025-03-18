@@ -7,6 +7,7 @@ use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 
 
@@ -49,9 +50,16 @@ class UploadClpAbbController extends Controller
                 return redirect()->back()->withInput()->with('error', 'O arquivo deve ter a extensão .projectarchive.');
             }
 
-            // Criando o caminho seguro para armazenamento
-            $directoryPath = '\\\\GWSRVFS\\DADOS\\GW BASE EXECUTIVA\\Técnico\\Operação\\CCO\\HOMOLOGACAO\\ARQUIVOS\\' . $request->clients_client . DIRECTORY_SEPARATOR . $request->systems_system . DIRECTORY_SEPARATOR . "CLP" . DIRECTORY_SEPARATOR.$request->model .DIRECTORY_SEPARATOR;
+            // Definição do caminho base (até ARQUIVOS)
+            $baseFilePath = '\\\\GWSRVFS\\DADOS\\GW BASE EXECUTIVA\\Técnico\\Operação\\CCO\\HOMOLOGACAO\\ARQUIVOS\\';
 
+            // Criando o caminho completo com as subpastas
+            $directoryPath = $baseFilePath . $request->clients_client . DIRECTORY_SEPARATOR . $request->systems_system . DIRECTORY_SEPARATOR . "MANUTENCAO" . DIRECTORY_SEPARATOR . "CLP" . DIRECTORY_SEPARATOR . $request->model . DIRECTORY_SEPARATOR;
+
+            // Criar o diretório se não existir
+            if (!File::exists($directoryPath)) {
+                File::makeDirectory($directoryPath, 0777, true); // true permite criar subpastas intermediárias
+            }
 
             // Criando nome seguro para o arquivo
             $uploadName = strtoupper(str_replace(

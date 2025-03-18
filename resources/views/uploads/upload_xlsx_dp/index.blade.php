@@ -1,13 +1,13 @@
 <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+    href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css">
 @section('plugins.BsCustomFileInput', true)
 @extends('adminlte::page')
-@section('title', 'Dashboard GW | UP POP CCO')
+@section('title', 'Dashboard GW | UP XLSX DP')
 @section('plugins.Select2', true)
 
 @section('content_header')
 <div class="col-sm">
-    <h4><i class="fa-solid fa-file-arrow-up"></i> &nbsp;&nbsp;UPLOAD - PROCEDIMENTO OPERACIONAL PADRÃO - CCO</h4>
+    <h4><i class="fa-solid fa-file-arrow-up"></i> &nbsp;&nbsp;UPLOAD - Dados de Produção</h4>
 </div>
 <div class="row p-2">
     <div class="col-sm">
@@ -22,16 +22,28 @@
                 </div>
             </div>
         @endif
+        @if (session('error'))
+            <div class="row p-3">
+                <div class="col-sm">
+                    <x-adminlte-alert theme="danger" title="Erro na Operação" dismissable>
+                        <ul>
+                            <li>{{ session('error') }}</li>
+                        </ul>
+                    </x-adminlte-alert>
+                </div>
+            </div>
+        @endif
     </div>
 </div>
 @stop
+
 @section('content')
 <div class="card card-default">
     <div class="card-header">
-        <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;Adicionar Arquivo PDF
+        <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;Adicionar Arquivo XLSX
         </h2><br>
     </div>
-    <form id="fileUploadForm" action="upload_pop_cco" method="POST" enctype="multipart/form-data">
+    <form id="fileUploadForm" action="upload_xlsx_dp" method="POST" enctype="multipart/form-data">
         @csrf
         <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
         <div class="row p-2">
@@ -64,8 +76,7 @@
         </div>
         <div class="row p-2">
             <div class="col-sm">
-                {{-- With label and feedback disabled --}}
-                <x-adminlte-input-file accept=".pdf" multiple id="upload" name="upload[]" label="Upload file"
+                <x-adminlte-input-file accept=".xlsx" multiple id="upload" name="upload[]" label="Upload file"
                     placeholder="Choose files..." enable-feedback required>
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
@@ -81,16 +92,12 @@
                             <i class="fas fa-solid fa-file"></i>
                         </div>
                     </x-slot>
-                    <option value="POP" selected></option>
+                    <option value="DADOS DE PRODUCAO" selected></option>
                 </x-adminlte-select2>
             </div>
         </div>
         <div class="row p-2">
             <div class="col-sm">
-                {{-- Dinamic Change --}}
-                <x-adminlte-progress id="pbDinamic" theme="lighblue" animated with-label />
-                {{-- Update the previous progress bar every 2 seconds, incrementing by 10% each step --}}
-
                 <label>Ação</label>
                 <div class="input-group mb-3">
                     <button type="submit" class="btn btn-block btn-primary">
@@ -98,22 +105,37 @@
                     </button>
                 </div>
             </div>
+            @can('is_admin')
+                <div class="col-sm">
+                    <label>Administrador</label>
+                    <div class="input-group mb-3">
+                        <button @cannot('is_admin') disabled @endcannot type="submit" name="force_upload" value="true"
+                            class="btn btn-block btn-warning">
+                            <span class="fas fa-exclamation-triangle"></span>&nbsp;&nbsp;Forçar Upload
+                        </button>
+                    </div>
+                </div>
+            @endcan
         </div>
-        <hr>
+
         <div class="row p-2">
             <div class="col-sm">
                 <p>* Preencha o formulário corretamente</p>
-                <p><b>* Arquivos Suportados:</b> .pdf</p>
+                <p>* Para upload de novos arquivos, entre em contato com um administrador do sistema</p>
+                @can('is_admin')
+                    <p>* Administrador - use a botão <b>"Forçar Upload"</b> para novos arquivos não registrados na base de dados<br>
+                    <i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;ESSA FUNÇÂO PODE GERAR DUPLICIDADE DE DADOS
+                    </p>
+                @endcan
+                <p><b>* Arquivos Suportados:</b> .xlsx</p>
             </div>
         </div>
     </form>
 </div>
 @stop
 
-
-
 @section('css')
 @stop
-@section('js')
 
+@section('js')
 @stop

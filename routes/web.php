@@ -7,14 +7,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Upload\UploadSetpointsController;
 use App\Http\Controllers\Upload\UploadTelemetryController;
 use App\Http\Controllers\Upload\UploadIhmController;
-use App\Http\Controllers\Upload\UploadPopCcoController;
-use App\Http\Controllers\Upload\UploadPopManController;
-use App\Http\Controllers\Upload\UploadPopOprController;
 use App\Http\Controllers\Upload\UploadClpAbbController;
 use App\Http\Controllers\Upload\UploadClpAltusController;
 use App\Http\Controllers\Upload\UploadClpWegController;
-
-
+use App\Http\Controllers\Upload\UploadXlsxDpController;
+use App\Http\Controllers\Upload\UploadXlsxAqController;
+use App\Http\Controllers\Upload\UploadPopController;
 
 
 //show
@@ -27,7 +25,6 @@ use App\Http\Controllers\show\ShowExcelController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\Pop_FilesController;
 use App\Http\Controllers\Pop_clients_filesController;
-use App\Http\Controllers\Production_dataController;
 use App\Http\Controllers\View_production_dataController;
 use App\Http\Controllers\Search_production_dataController;
 use App\Http\Controllers\Clients_filesController;
@@ -94,9 +91,6 @@ Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('users');
 Route::get('edit_user/{id}', [UsersController::class, 'edit'])->name('edit_user');
 Route::put('edit_user/{id}', [UsersController::class, 'update'])->name('update_user');
 
-Route::get('production_data', [Production_dataController::class, 'index'])->name('production_data');
-Route::post('production_data', [Production_dataController::class, 'store'])->name('production_data');
-Route::delete('production_data/{id}', [Production_dataController::class, 'destroy'])->name('production_data');
 
 Route::get('view_production_data', [View_production_dataController::class, 'index'])->name('view_production_data');
 Route::get('view_production_data/{file}/download', [View_production_dataController::class, 'download'])->name('view_production_data.download');
@@ -120,15 +114,6 @@ Route::post('upload_setpoints', [UploadSetpointsController::class, 'store'])->na
 Route::get('upload_ihm', [UploadIhmController::class, 'index'])->name('upload_ihm');
 Route::post('upload_ihm', [UploadIhmController::class, 'store'])->name('upload_ihm');
 
-Route::get('upload_pop_cco', [UploadPopCcoController::class, 'index'])->name('upload_pop_cco');
-Route::post('upload_pop_cco', [UploadPopCcoController::class, 'store'])->name('upload_pop_cco');
-
-Route::get('upload_pop_man', [UploadPopManController::class, 'index'])->name('upload_pop_man');
-Route::post('upload_pop_man', [UploadPopManController::class, 'store'])->name('upload_pop_man');
-
-Route::get('upload_pop_opr', [UploadPopOprController::class, 'index'])->name('upload_pop_opr');
-Route::post('upload_pop_opr', [UploadPopOprController::class, 'store'])->name('upload_pop_opr');
-
 Route::get('upload_clp_abb', [UploadClpAbbController::class, 'index'])->name('upload_clp_abb');
 Route::post('upload_clp_abb', [UploadClpAbbController::class, 'store'])->name('upload_clp_abb');
 
@@ -138,6 +123,14 @@ Route::post('upload_clp_altus', [UploadClpAltusController::class, 'store'])->nam
 Route::get('upload_clp_weg', [UploadClpWegController::class, 'index'])->name('upload_clp_weg');
 Route::post('upload_clp_weg', [UploadClpWegController::class, 'store'])->name('upload_clp_weg');
 
+Route::get('upload_xlsx_dp', [UploadXlsxDpController::class, 'index'])->name('upload_xlsx_dp');
+Route::post('upload_xlsx_dp', [UploadXlsxDpController::class, 'store'])->name('upload_xlsx_dp');
+
+Route::get('upload_xlsx_aq', [UploadXlsxAqController::class, 'index'])->name('upload_xlsx_aq');
+Route::post('upload_xlsx_aq', [UploadXlsxAqController::class, 'store'])->name('upload_xlsx_aq');
+
+Route::get('upload_pop/{sector}', [UploadPopController::class, 'index'])->name('uploads.upload_pop.index');
+Route::post('upload_pop/{sector}', [UploadPopController::class, 'store'])->name('uploads.upload_pop.store');
 
 //show
 Route::get(uri: 'showpdf/view/{id}', action: [ShowPdfController::class, 'showPDF'])->name('showpdf.view');

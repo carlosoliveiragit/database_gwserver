@@ -244,7 +244,7 @@ return [
             'url' => 'home',
             'icon' => 'fas fa-home',
         ],
-        
+
         ['header' => ''],
         ['header' => 'DOWNLOAD'],
         [
@@ -320,7 +320,7 @@ return [
 
                 [
                     'text' => 'Dados de Produção',
-                    'url' => 'production_data',
+                    'url' => 'upload_xlsx_dp',
                     'icon' => 'fa-solid fa-table',
                 ],
                 [
@@ -330,7 +330,7 @@ return [
                 ],
                 [
                     'text' => 'POP',
-                    'url' => 'upload_pop_opr',
+                    'url' => 'upload_pop/opr',
                     'icon' => 'fa-solid fa-file-arrow-up ',
                 ],
                 ['header' => ''],
@@ -349,7 +349,7 @@ return [
                 ],
                 [
                     'text' => 'POP',
-                    'url' => 'upload_pop_cco',
+                    'url' => 'upload_pop/cco',
                     'icon' => 'fa-solid fa-file-arrow-up',
                 ],
                 ['header' => ''],
@@ -407,12 +407,27 @@ return [
                 ],
                 [
                     'text' => 'POP',
-                    'url' => 'upload_pop_man',
+                    'url' => 'upload_pop/man',
                     'icon' => 'fa-solid fa-file-arrow-up',
                 ],
                 ['header' => ''],
             ],
         ],
+
+        [
+            'text' => 'APOIO',
+            'icon' => 'fas fa-cloud-arrow-up',
+            'submenu' => [
+                [
+                    'text' => 'Planilhas de apoio',
+                    'url' => 'upload_xlsx_aq',
+                    'icon' => 'fa-solid fa-table',
+                ],
+                ['header' => ''],
+
+            ],
+        ],
+
 
         ['header' => ''],
         [
