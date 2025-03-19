@@ -330,7 +330,7 @@ return [
                 ],
                 [
                     'text' => 'POP',
-                    'url' => 'upload_pop/opr',
+                    'url' => 'upload_pop/operacao',
                     'icon' => 'fa-solid fa-file-arrow-up ',
                 ],
                 ['header' => ''],
@@ -364,34 +364,37 @@ return [
 
 
 
+                
                 [
                     'text' => 'CLP',
                     'icon' => 'fa-solid fa-gears',
+                    //'label' => "DEV",
+                    //'label_color' => 'danger',
                     'submenu' => [
 
                         [
                             'text' => 'ABB',
-                            'url' => 'upload_clp_abb',
+                            'url' => 'upload_clp/abb',
                         ],
                         [
                             'text' => 'Altus',
-                            'url' => 'upload_clp_altus',
+                            'url' => 'upload_clp/altus',
                         ],
                         [
                             'text' => 'WEG',
-                            'url' => 'upload_clp_weg',
+                            'url' => 'upload_clp/weg',
 
                         ],
                         [
                             'text' => 'Allen-Bradley',
-                            'url' => 'clp_allen_bradley',
+                            'url' => 'upload_clp/allenbradley',
                             'label' => "DEV",
                             'label_color' => 'warning',
 
                         ],
                         [
                             'text' => 'Metaltex',
-                            'url' => 'clp_metaltex',
+                            'url' => 'upload_clp/metaltex',
                             'label' => "DEV",
                             'label_color' => 'warning',
 
@@ -407,7 +410,7 @@ return [
                 ],
                 [
                     'text' => 'POP',
-                    'url' => 'upload_pop/man',
+                    'url' => 'upload_pop/manutencao',
                     'icon' => 'fa-solid fa-file-arrow-up',
                 ],
                 ['header' => ''],

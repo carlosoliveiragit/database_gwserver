@@ -1,13 +1,17 @@
-<link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
-@section('plugins.BsCustomFileInput', true)
-@extends('adminlte::page')
+@section('content')
 @section('title', 'Dashboard GW | UP POP ' . strtoupper($sector))
-@section('plugins.Select2', true)
-
 @section('content_header')
 <div class="col-sm">
-    <h4><i class="fa-solid fa-file-arrow-up"></i> &nbsp;&nbsp;UPLOAD - PROCEDIMENTO OPERACIONAL PADRÃO - {{ strtoupper($sector) }}</h4>
+    <h4><i class="fa-solid fa-file-arrow-up"></i>
+        @if ($sector === 'manutencao')
+            UPLOAD - PROCEDIMENTO OPERACIONAL PADRÃO -&nbsp;&nbsp;MANUTENÇÃO
+        @endif
+        @if ($sector === 'cco')
+            UPLOAD - PROCEDIMENTO OPERACIONAL PADRÃO -&nbsp;&nbsp;CCO
+        @endif
+        @if ($sector === 'operacao')
+            UPLOAD - PROCEDIMENTO OPERACIONAL PADRÃO -&nbsp;&nbsp;OPERAÇÃO
+        @endif
 </div>
 <div class="row p-2">
     <div class="col-sm">
@@ -22,17 +26,27 @@
                 </div>
             </div>
         @endif
+        @if (session('error'))
+            <div class="row p-3">
+                <div class="col-sm">
+                    <x-adminlte-alert theme="danger" title="Erro na Operação" dismissable>
+                        <ul>
+                            <li>{{ session('error') }}</li>
+                        </ul>
+                    </x-adminlte-alert>
+                </div>
+            </div>
+        @endif
     </div>
 </div>
 @stop
-
-@section('content')
 <div class="card card-default">
     <div class="card-header">
         <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;Adicionar Arquivo PDF
         </h2><br>
     </div>
-    <form id="fileUploadForm" action="{{ route('uploads.upload_pop.store', ['sector' => $sector]) }}" method="POST" enctype="multipart/form-data">
+    <form id="fileUploadForm" action="{{ route('uploads.upload_pop.store', ['sector' => $sector]) }}" method="POST"
+        enctype="multipart/form-data">
         @csrf
         <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
         <div class="row p-2">
@@ -83,7 +97,6 @@
                 </div>
             </div>
         </div>
-        <hr>
         <div class="row p-2">
             <div class="col-sm">
                 <p>* Preencha o formulário corretamente</p>
@@ -92,10 +105,4 @@
         </div>
     </form>
 </div>
-@stop
-
-@section('css')
-@stop
-
-@section('js')
 @stop

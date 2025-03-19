@@ -7,12 +7,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Upload\UploadSetpointsController;
 use App\Http\Controllers\Upload\UploadTelemetryController;
 use App\Http\Controllers\Upload\UploadIhmController;
-use App\Http\Controllers\Upload\UploadClpAbbController;
-use App\Http\Controllers\Upload\UploadClpAltusController;
-use App\Http\Controllers\Upload\UploadClpWegController;
 use App\Http\Controllers\Upload\UploadXlsxDpController;
 use App\Http\Controllers\Upload\UploadXlsxAqController;
 use App\Http\Controllers\Upload\UploadPopController;
+use App\Http\Controllers\Upload\UploadClpController;
 
 
 //show
@@ -114,15 +112,6 @@ Route::post('upload_setpoints', [UploadSetpointsController::class, 'store'])->na
 Route::get('upload_ihm', [UploadIhmController::class, 'index'])->name('upload_ihm');
 Route::post('upload_ihm', [UploadIhmController::class, 'store'])->name('upload_ihm');
 
-Route::get('upload_clp_abb', [UploadClpAbbController::class, 'index'])->name('upload_clp_abb');
-Route::post('upload_clp_abb', [UploadClpAbbController::class, 'store'])->name('upload_clp_abb');
-
-Route::get('upload_clp_altus', [UploadClpAltusController::class, 'index'])->name('upload_clp_altus');
-Route::post('upload_clp_altus', [UploadClpAltusController::class, 'store'])->name('upload_clp_altus');
-
-Route::get('upload_clp_weg', [UploadClpWegController::class, 'index'])->name('upload_clp_weg');
-Route::post('upload_clp_weg', [UploadClpWegController::class, 'store'])->name('upload_clp_weg');
-
 Route::get('upload_xlsx_dp', [UploadXlsxDpController::class, 'index'])->name('upload_xlsx_dp');
 Route::post('upload_xlsx_dp', [UploadXlsxDpController::class, 'store'])->name('upload_xlsx_dp');
 
@@ -131,6 +120,9 @@ Route::post('upload_xlsx_aq', [UploadXlsxAqController::class, 'store'])->name('u
 
 Route::get('upload_pop/{sector}', [UploadPopController::class, 'index'])->name('uploads.upload_pop.index');
 Route::post('upload_pop/{sector}', [UploadPopController::class, 'store'])->name('uploads.upload_pop.store');
+
+Route::get('upload_clp/{model}', [UploadClpController::class, 'index'])->name('uploads.upload_clp.index');
+Route::post('upload_clp/{model}', [UploadClpController::class, 'store'])->name('uploads.upload_clp.store');
 
 //show
 Route::get(uri: 'showpdf/view/{id}', action: [ShowPdfController::class, 'showPDF'])->name('showpdf.view');
