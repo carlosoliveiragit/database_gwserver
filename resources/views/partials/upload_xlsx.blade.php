@@ -1,13 +1,14 @@
-<link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css">
-@section('plugins.BsCustomFileInput', true)
-@extends('adminlte::page')
-@section('title', 'Dashboard GW | UP XLSX DP')
-@section('plugins.Select2', true)
-
+@section('content')
+@section('title', 'Dashboard GW | UP XLSX ' . strtoupper($type))
 @section('content_header')
 <div class="col-sm">
-    <h4><i class="fa-solid fa-file-arrow-up"></i> &nbsp;&nbsp;UPLOAD - Dados de Produção</h4>
+    <h4><i class="fa-solid fa-file-arrow-up"></i>
+        @if ($type === 'production_data')
+            UPLOAD - DADOS DE PRODUÇÃO
+        @endif
+        @if ($type === 'support_files')
+            UPLOAD - ARQUIVOS DE APOIO
+        @endif
 </div>
 <div class="row p-2">
     <div class="col-sm">
@@ -36,14 +37,13 @@
     </div>
 </div>
 @stop
-
-@section('content')
 <div class="card card-default">
     <div class="card-header">
         <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;Adicionar Arquivo XLSX
         </h2><br>
     </div>
-    <form id="fileUploadForm" action="upload_xlsx_dp" method="POST" enctype="multipart/form-data">
+    <form id="fileUploadForm" action="{{ route('uploads.upload_xlsx.store', ['type' => $type]) }}" method="POST"
+        enctype="multipart/form-data">
         @csrf
         <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
         <div class="row p-2">
@@ -75,6 +75,33 @@
             </div>
         </div>
         <div class="row p-2">
+            @if ($type === 'production_data')
+            <div class="col-sm" hidden>
+                <x-adminlte-select2 name="sector" label="Setor" data-placeholder="selecione o setor...">
+                    <x-slot name="prependSlot">
+                        <div class="input-group-text text-primary">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </div>
+                    </x-slot>
+                    <option value="OPERACAO" selected>OPERAÇÃO</option>
+                </x-adminlte-select2>
+            </div>
+            @endif
+            @if ($type === 'support_files')
+            <div class="col-sm">
+                <x-adminlte-select2 name="sector" label="Setor" data-placeholder="selecione o setor...">
+                    <x-slot name="prependSlot">
+                        <div class="input-group-text text-primary">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </div>
+                    </x-slot>
+                    <option disabled="disabled" selected></option>
+                    <option value="MANUTENCAO">MANUTENÇÃO</option>
+                    <option value="OPERACAO">OPERAÇÃO</option>
+                    <option value="CCO">CCO</option>
+                </x-adminlte-select2>
+            </div>
+            @endif
             <div class="col-sm">
                 <x-adminlte-input-file accept=".xlsx" multiple id="upload" name="upload[]" label="Upload file"
                     placeholder="Choose files..." enable-feedback required>
@@ -84,16 +111,6 @@
                         </div>
                     </x-slot>
                 </x-adminlte-input-file>
-            </div>
-            <div class="col-sm" hidden>
-                <x-adminlte-select2 name="type" label="Tipo" data-placeholder="Select Type..." required>
-                    <x-slot name="prependSlot">
-                        <div class="input-group-text text-primary">
-                            <i class="fas fa-solid fa-file"></i>
-                        </div>
-                    </x-slot>
-                    <option value="DADOS DE PRODUCAO" selected></option>
-                </x-adminlte-select2>
             </div>
         </div>
         <div class="row p-2">
@@ -123,8 +140,9 @@
                 <p>* Preencha o formulário corretamente</p>
                 <p>* Para upload de novos arquivos, entre em contato com um administrador do sistema</p>
                 @can('is_admin')
-                    <p>* Administrador - use a botão <b>"Forçar Upload"</b> para novos arquivos não registrados na base de dados<br>
-                    <i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;ESSA FUNÇÂO PODE GERAR DUPLICIDADE DE DADOS
+                    <p>* Administrador - use a botão <b>"Forçar Upload"</b> para novos arquivos não registrados na base de
+                        dados<br>
+                        <i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;ESSA FUNÇÂO PODE GERAR DUPLICIDADE DE DADOS
                     </p>
                 @endcan
                 <p><b>* Arquivos Suportados:</b> .xlsx</p>
@@ -132,10 +150,4 @@
         </div>
     </form>
 </div>
-@stop
-
-@section('css')
-@stop
-
-@section('js')
 @stop

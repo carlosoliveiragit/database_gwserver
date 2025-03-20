@@ -7,10 +7,11 @@ use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Str;
 
 
-class UploadXlsxAqController extends Controller
+class UploadXlsxController extends Controller
 {
     protected $user;
 
@@ -20,16 +21,23 @@ class UploadXlsxAqController extends Controller
         $this->user = $user;
     }
 
-    public function index()
+    public function index($type)
     {
         $Clients = Clients::all();
         $Users = Users::all();
         $Systems = Systems::all();
 
-        return view('uploads.upload_xlsx_aq.index', [
+        $viewName = 'uploads.upload_xlsx.' . $type . '.index';
+
+        if (!view()->exists($viewName)) {
+            abort(404, "Setor não encontrado");
+        }
+
+        return view($viewName, [
             'Clients' => $Clients,
             'Systems' => $Systems,
-            'Users' => $Users
+            'Users' => $Users,
+            'type' => $type
         ]);
     }
 
@@ -40,8 +48,16 @@ class UploadXlsxAqController extends Controller
             'users_name' => 'required|string',
             'clients_client' => 'required|string',
             'systems_system' => 'required|string',
-            'type' => 'required|string',
         ]);
+
+        // Definir tipo de inserção com verificação
+        if ($request->type === 'support_files') {
+            $type_insert = 'ARQUIVO DE SUPORTE';
+        } elseif ($request->type === 'production_data') {
+            $type_insert = 'DADOS DE PRODUCAO';
+        } else {
+            return redirect()->back()->with('error', 'Tipo de upload inválido.');
+        }
 
         $forceUpload = $request->input('force_upload') === 'true';
 
@@ -59,11 +75,24 @@ class UploadXlsxAqController extends Controller
                         ->where('file', $uploadName)
                         ->first();
 
-                    // Definição do caminho base no storage (até ARQUIVOS)
-                    $baseFilePath = '\\\\GWSRVFS\\DADOS\\GW BASE EXECUTIVA\\Técnico\\Operação\\CCO\\HOMOLOGACAO\\ARQUIVOS\\';
+                    switch ($request->type) {
+                        case 'support_files':
+                            $basePath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR);
+                            $filePath = $basePath .
+                                $request->clients_client . DIRECTORY_SEPARATOR .
+                                $request->systems_system . DIRECTORY_SEPARATOR .
+                                $request->sector . DIRECTORY_SEPARATOR . 
+                                $type_insert . DIRECTORY_SEPARATOR;
+                            break;
 
-                    // Caminho do diretório específico, com as subpastas
-                    $filePath = $baseFilePath . $request->clients_client . DIRECTORY_SEPARATOR . $request->systems_system . DIRECTORY_SEPARATOR . $request->sector . DIRECTORY_SEPARATOR . "APOIO" . DIRECTORY_SEPARATOR;
+                        case 'production_data':
+                            $filePath = Str::finish(config('filesystems.paths.production_data_base'), DIRECTORY_SEPARATOR);
+                            break;
+
+                        default:
+                            return redirect()->back()->with('error', 'Tipo de upload inválido.');
+                    }
+
 
                     // Verificar se o diretório existe, senão, cria
                     if (!File::exists($filePath)) {
@@ -89,20 +118,22 @@ class UploadXlsxAqController extends Controller
                             $file->users_name = $request->users_name;
                             $file->clients_client = $request->clients_client;
                             $file->systems_system = $request->systems_system;
-                            $file->sector = $request->sector;
-                            $file->type = "APOIO";
                             $file->path = $filePath;
                             $file->file = $uploadName;
+                            $file->type = $type_insert;
+                            $file->sector = $request->sector;
                             $file->save();
                         } else {
                             // Bloquear o upload se o arquivo não estiver registrado e o botão "Forçar Upload" não foi pressionado
-                            return redirect('upload_xlsx_aq')->with('error', 'Upload não permitido. Arquivo não registrado no banco de dados.');
+                            return redirect()->back()->with('error', 'Upload não permitido. Arquivo não registrado no banco de dados.');
                         }
                     }
                 }
             }
         }
-        
-        return redirect('upload_xlsx_aq')->with('success', 'Upload realizado com sucesso');
+
+        //dd($type_insert, $filePath, $uploadName);
+
+        return redirect()->back()->with('success', 'Upload realizado com sucesso');
     }
 }

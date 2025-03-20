@@ -9,6 +9,8 @@ use App\Models\Files;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
+use Illuminate\Support\Str;
+
 
 class UploadPopController extends Controller
 {
@@ -60,7 +62,7 @@ class UploadPopController extends Controller
                     $uploadName = strtoupper($sector . "-" . $originalName) . '.' . $extension;
 
                     // Definir caminho base
-                    $baseFilePath = '\\\\GWSRVFS\\DADOS\\GW BASE EXECUTIVA\\Técnico\\Operação\\CCO\\HOMOLOGACAO\\ARQUIVOS\\';
+                    $baseFilePath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR);
 
                     // Criar diretório completo
                     $directoryPath = $baseFilePath . $request->clients_client . DIRECTORY_SEPARATOR .

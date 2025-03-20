@@ -9,6 +9,8 @@ use App\Models\Files;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
+use Illuminate\Support\Str;
+
 
 
 class UploadClpController extends Controller
@@ -76,7 +78,7 @@ class UploadClpController extends Controller
         }
 
         // Definição do caminho base (até ARQUIVOS)
-        $baseFilePath = '\\\\GWSRVFS\\DADOS\\GW BASE EXECUTIVA\\Técnico\\Operação\\CCO\\HOMOLOGACAO\\ARQUIVOS\\';
+        $baseFilePath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR);
 
         // Criando o caminho completo com as subpastas
         $directoryPath = $baseFilePath . $request->clients_client . DIRECTORY_SEPARATOR . $request->systems_system . DIRECTORY_SEPARATOR . "MANUTENCAO" . DIRECTORY_SEPARATOR . "CLP" . DIRECTORY_SEPARATOR . $request->model . DIRECTORY_SEPARATOR;
@@ -104,10 +106,10 @@ class UploadClpController extends Controller
         $file->users_name = $request->users_name;
         $file->clients_client = $request->clients_client;
         $file->systems_system = $request->systems_system;
-        $file->type = "CLP";
-        $file->sector = "MANUTENCAO";
         $file->path = $directoryPath;
         $file->file = $uploadName;
+        $file->type = "CLP";
+        $file->sector = "MANUTENCAO";
         $file->save(); // Salva as informações no banco de dados após o upload do arquivo
     }
 

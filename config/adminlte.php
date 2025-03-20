@@ -320,7 +320,7 @@ return [
 
                 [
                     'text' => 'Dados de Produção',
-                    'url' => 'upload_xlsx_dp',
+                    'url' => 'upload_xlsx/production_data',
                     'icon' => 'fa-solid fa-table',
                 ],
                 [
@@ -423,7 +423,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Planilhas de apoio',
-                    'url' => 'upload_xlsx_aq',
+                    'url' => 'upload_xlsx/support_files',
                     'icon' => 'fa-solid fa-table',
                 ],
                 ['header' => ''],

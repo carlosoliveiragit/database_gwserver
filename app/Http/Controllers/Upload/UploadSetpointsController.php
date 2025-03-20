@@ -8,6 +8,8 @@ use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
+use Illuminate\Support\Str;
+
 
 
 use Imagick;
@@ -42,7 +44,10 @@ class UploadSetpointsController extends Controller
         ]);
 
         // Caminho de armazenamento
-        $pdfPath = '\\\\GWSRVFS\\DADOS\\GW BASE EXECUTIVA\\Técnico\\Operação\\CCO\\HOMOLOGACAO\\ARQUIVOS\\' . $request->clients_client . DIRECTORY_SEPARATOR . $request->systems_system . DIRECTORY_SEPARATOR . $request->type . DIRECTORY_SEPARATOR;
+        $pdfPath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR) . 
+        $request->clients_client . DIRECTORY_SEPARATOR . 
+        $request->systems_system . DIRECTORY_SEPARATOR . 
+        $request->type . DIRECTORY_SEPARATOR;
 
         // Verificar se o diretório existe, se não, criar
         if (!file_exists($pdfPath)) {

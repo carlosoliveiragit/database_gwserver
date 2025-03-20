@@ -1,42 +1,11 @@
+
 @extends('adminlte::page')
 @section('title', 'Dashboard GW | Visualizar Excel')
-
 @section('content_header')
-<h4 class=""><i class="fa-solid fa-table"></i> &nbsp;&nbsp;Visualizar Excel</h4>
+    <h4 class=""><i class="fa-solid fa-table"></i> &nbsp;&nbsp;Visualizar Excel</h4>
 @stop
-
 @section('content')
-
-
-    {{-- Botões "Carregar mais linhas" e "Carregar todas as linhas" no topo --}}
-    @php
-        $currentRows = request()->query('rows', 5);
-        $nextRows = $currentRows + 5;
-    @endphp
-    <div class="row p-2">
-        <div class="col-sm-4 p-2">{{-- Botão "Carregar mais linhas" --}}
-            <h5>Arquivo: {{ $fileName }}</h5>
-        </div>
-        <div class="col-sm-4 p-2">{{-- Botão "Carregar mais linhas" --}}
-            <a class="btn btn-block btn-primary"
-                href="{{ request()->fullUrlWithQuery(['rows' => $nextRows, 'sheet' => $selectedSheet]) }}">
-                Carregar mais linhas ({{ $nextRows }})
-            </a>
-        </div>
-        <div class="col-sm-4 p-2"> {{-- Botão "Carregar todas as linhas" --}}
-            @php
-                // A primeira planilha é usada para determinar o número máximo de linhas
-                $firstSheet = reset($sheetsData);
-                $maxRow = $firstSheet['maxRow'];  // Total de linhas no primeiro sheet
-            @endphp
-            <a class="btn btn-block btn-danger"
-                href="{{ request()->fullUrlWithQuery(['rows' => $maxRow, 'sheet' => $selectedSheet]) }}">
-                Carregar todas as linhas
-            </a>
-        </div>
-    </div>
-
-    {{-- Exibição das planilhas --}}
+    <h5>Arquivo: {{ $fileName }}</h5>
     @foreach ($sheetsData as $sheetName => $sheet)
         <h6>Planilha: {{ $sheetName }}</h6>
         <div class="sheet-container card card-default">
@@ -44,11 +13,10 @@
                 <table class="table table-bordered">
                     <thead>
                         @foreach ($sheet['headers'] as $headerRow)
-                            <tr class="row-height">
+                            <tr>
                                 @foreach ($headerRow as $headerCell)
-                                    <th title="{{ $headerCell['value'] }}" class="truncate"
-                                        style="background-color: #{{ $headerCell['color'] }}; color: #{{ $headerCell['fontColor'] }}">
-                                        {{ $headerCell['value'] }}
+                                    <th title="{{ $headerCell }}" class="truncate">
+                                        {{ $headerCell }}
                                     </th>
                                 @endforeach
                             </tr>
@@ -56,11 +24,10 @@
                     </thead>
                     <tbody>
                         @foreach ($sheet['data'] as $row)
-                            <tr class="row-height">
+                            <tr>
                                 @foreach ($row as $cell)
-                                    <td title="{{ $cell['value'] }}" class="truncate"
-                                        style="background-color: #{{ $cell['color'] }}; color: #{{ $cell['fontColor'] }}">
-                                        {{ $cell['value'] }}
+                                    <td title="{{ $cell }}" class="truncate">
+                                        {{ $cell }}
                                     </td>
                                 @endforeach
                             </tr>
@@ -76,6 +43,7 @@
     <style>
         .truncate {
             max-width: 200px;
+            /* Define um tamanho fixo para evitar reflows */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -83,14 +51,15 @@
 
         .sheet-container {
             margin-top: 20px;
+            /* Espaçamento entre planilhas */
             padding: 20px;
+            /* Adiciona padding ao contêiner */
             border-top: 2px solid #ddd;
+            /* Linha divisória opcional */
             max-height: 500px;
+            /* Altura máxima para o contêiner */
             overflow-y: auto;
-        }
-
-        .row-height {
-            height: 15px;
+            /* Adiciona rolagem vertical */
         }
     </style>
 @endsection

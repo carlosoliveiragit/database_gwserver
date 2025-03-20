@@ -11,6 +11,7 @@ use App\Http\Controllers\Upload\UploadXlsxDpController;
 use App\Http\Controllers\Upload\UploadXlsxAqController;
 use App\Http\Controllers\Upload\UploadPopController;
 use App\Http\Controllers\Upload\UploadClpController;
+use App\Http\Controllers\Upload\UploadXlsxController;
 
 
 //show
@@ -123,6 +124,9 @@ Route::post('upload_pop/{sector}', [UploadPopController::class, 'store'])->name(
 
 Route::get('upload_clp/{model}', [UploadClpController::class, 'index'])->name('uploads.upload_clp.index');
 Route::post('upload_clp/{model}', [UploadClpController::class, 'store'])->name('uploads.upload_clp.store');
+
+Route::get('upload_xlsx/{type}', [UploadXlsxController::class, 'index'])->name('uploads.upload_xlsx.index');
+Route::post('upload_xlsx/{type}', [UploadXlsxController::class, 'store'])->name('uploads.upload_xlsx.store');
 
 //show
 Route::get(uri: 'showpdf/view/{id}', action: [ShowPdfController::class, 'showPDF'])->name('showpdf.view');

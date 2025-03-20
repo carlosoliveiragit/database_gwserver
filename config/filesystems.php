@@ -15,6 +15,12 @@ return [
 
     'default' => env('FILESYSTEM_DRIVER', 'local'),
 
+
+    'paths' => [
+    'support_files_base' => env('SUPPORT_FILES_BASE'),
+    'production_data_base' => env('PRODUCTION_DATA_BASE'),
+],
+
     /*
     |--------------------------------------------------------------------------
     | Filesystem Disks
@@ -41,15 +47,15 @@ return [
         'visibility' => 'public',
     ],
 
-    's3' => [
-        'driver' => 's3',
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-        'region' => env('AWS_DEFAULT_REGION'),
-        'bucket' => env('AWS_BUCKET'),
-        'url' => env('AWS_URL'),
-        'endpoint' => env('AWS_ENDPOINT'),
-    ],
+    //'s3' => [
+    //    'driver' => 's3',
+    //    'key' => env('AWS_ACCESS_KEY_ID'),
+    //    'secret' => env('AWS_SECRET_ACCESS_KEY'),
+    //    'region' => env('AWS_DEFAULT_REGION'),
+    //    'bucket' => env('AWS_BUCKET'),
+    //    'url' => env('AWS_URL'),
+    //    'endpoint' => env('AWS_ENDPOINT'),
+    //],
 
     'network' => [
         'driver' => 'local',
