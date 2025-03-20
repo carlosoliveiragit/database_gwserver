@@ -9,10 +9,9 @@ use App\Models\Files;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 use Illuminate\Support\Str;
-
-
-
 use Imagick;
+
+
 class UploadSetpointsController extends Controller
 {
     protected $user;

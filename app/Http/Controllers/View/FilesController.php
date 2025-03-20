@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\View;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Files;
 use App\Models\User;
+use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
+
 
 class FilesController extends Controller
 {
@@ -19,9 +20,8 @@ class FilesController extends Controller
 
     public function index()
     {
-        $Files = Files::where('type', 'NOT LIKE', '%POP%')
-            ->where('type', 'NOT LIKE', '%DADOS DE PRODUCAO%')->get();  // Use get() to execute the query
-        return view('files.index', ['Files' => $Files]);
+        $Files = Files::all();
+        return view('view.files.index', ['Files' => $Files]);
     }
 
     public function destroy($id, Request $request)

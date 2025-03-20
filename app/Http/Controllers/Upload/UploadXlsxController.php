@@ -106,8 +106,10 @@ class UploadXlsxController extends Controller
                         $requestUpload->move($filePath, $uploadName);
 
                         // Atualizar o banco de dados
+                        $existingFile->users_name= $request->users_name;
                         $existingFile->updated_at = now();
                         $existingFile->save();
+
                     } else {
                         if ($forceUpload) {
                             // Permitir o upload se não houver nenhum arquivo registrado e o botão "Forçar Upload" foi pressionado

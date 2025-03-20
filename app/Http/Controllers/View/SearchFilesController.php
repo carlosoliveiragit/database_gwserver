@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\View;
 
 use Illuminate\Http\Request;
 
@@ -8,8 +8,10 @@ use App\Models\User;
 use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
+use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 
-class Clients_filesController extends Controller
+
+class SearchFilesController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -54,13 +56,10 @@ class Clients_filesController extends Controller
             }
 
             // Filtra registros onde type NÃO CONTÉM "POP"
-            $query->where('type', 'NOT LIKE', '%POP%')
-                ->where('type', 'NOT LIKE', '%DADOS DE PRODUCAO%');
-
             $Files = $query->get();
         }
 
-        return view('clients_files.index', compact('Clients', 'Systems', 'Files'));
+        return view('view.search_files.index', compact('Clients', 'Systems', 'Files'));
     }
 
     public function destroy($id, Request $request)
@@ -70,10 +69,10 @@ class Clients_filesController extends Controller
         if (file_exists($filePath)) {
             unlink($filePath);
             Files::findOrFail($id)->delete();
-            return redirect('clients_files')->with('success', 'Arquivo Deletado com Sucesso');
+            return redirect('search_files')->with('success', 'Arquivo Deletado com Sucesso');
         }
 
-        return redirect('clients_files')->with('success', 'Arquivo Deletado com Sucesso');
+        return redirect('search_files')->with('success', 'Arquivo Deletado com Sucesso');
     }
 
     public function download($file)
@@ -86,14 +85,14 @@ class Clients_filesController extends Controller
         $fileEntry = Files::where('file', $file)->first();
 
         if (!$fileEntry) {
-            return redirect()->route('clients_files')->with('error', 'Arquivo não encontrado no banco de dados.');
+            return redirect()->route('search_files')->with('error', 'Arquivo não encontrado no banco de dados.');
         }
 
         // Montar o caminho completo baseado no registro do banco
         $filePath = $fileEntry->path . DIRECTORY_SEPARATOR . $fileEntry->file;
 
         if (!file_exists($filePath)) {
-            return redirect()->route('clients_files')->with('error', 'O arquivo não existe no sistema de arquivos.');
+            return redirect()->route('search_files')->with('error', 'O arquivo não existe no sistema de arquivos.');
         }
 
         return response()->download($filePath);

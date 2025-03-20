@@ -246,36 +246,12 @@ return [
         ],
 
         ['header' => ''],
-        ['header' => 'DOWNLOAD'],
-        [
-            'text' => 'DADOS DE PRODUÇÃO',
-            'icon' => 'fas fa-solid fa-cloud-arrow-down',
-            'submenu' => [
-
+        ['header' => 'BASE DE DADOS'],
+        
+           
                 [
                     'text' => 'Pesquisar',
-                    'url' => 'search_production_data',
-                    'icon' => 'fa-solid fa-magnifying-glass',
-                    //'can'  => 'is_admin',
-                ],
-                [
-                    'text' => 'Lista Geral',
-                    'url' => 'view_production_data',
-                    'icon' => 'fa-solid fa-list-ul',
-                    //'can'  => 'is_admin',
-                ],
-                ['header' => ''],
-
-            ],
-        ],
-        [
-            'text' => 'ARQUIVOS',
-            'icon' => 'fas fa-solid fa-cloud-arrow-down',
-            'submenu' => [
-
-                [
-                    'text' => 'Pesquisar',
-                    'url' => 'clients_files',
+                    'url' => 'search_files',
                     'icon' => 'fa-solid fa-magnifying-glass',
                     //'can'  => 'is_admin',
                 ],
@@ -285,37 +261,18 @@ return [
                     'icon' => 'fa-solid fa-list-ul',
                     //'can'  => 'is_admin',
                 ],
-                ['header' => ''],
-
-            ],
-        ],
-        [
-            'text' => 'PROCEDIMENTOS',
-            'icon' => 'fas fa-solid fa-cloud-arrow-down',
-            'submenu' => [
-
                 [
-                    'text' => 'Pesquisar',
-                    'url' => 'pop_clients_files',
-                    'icon' => 'fa-solid fa-magnifying-glass',
-                    //'can'  => 'is_admin',
-                ],
-                [
-                    'text' => 'Lista Geral',
-                    'url' => 'pop_files',
-                    'icon' => 'fa-solid fa-list-ul',
+                    'text' => 'Clientes',
+                    'url' => '#',
+                    'icon' => 'fas fa-solid fa-water',
                     //'can'  => 'is_admin',
                 ],
                 ['header' => ''],
 
-            ],
-        ],
-
-        ['header' => ''],
         ['header' => 'UPLOAD'],
         [
             'text' => 'OPERAÇÃO',
-            'icon' => 'fas fa-cloud-arrow-up',
+            'icon' => 'fa fa-cloud-arrow-up',
             'submenu' => [
 
                 [

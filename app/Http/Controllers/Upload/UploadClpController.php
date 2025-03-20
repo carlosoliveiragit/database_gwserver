@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 use Illuminate\Support\Str;
 
-
-
 class UploadClpController extends Controller
 {
     protected $user;
