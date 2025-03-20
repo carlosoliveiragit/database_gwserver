@@ -9,8 +9,7 @@ use App\Models\Files;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
-
-
+use Illuminate\Support\Str;
 
 class UploadIhmController extends Controller
 {
@@ -51,8 +50,8 @@ class UploadIhmController extends Controller
             }
 
             // Definição do caminho base (até ARQUIVOS)
-            $baseFilePath = '\\\\GWSRVFS\\DADOS\\GW BASE EXECUTIVA\\Técnico\\Operação\\CCO\\HOMOLOGACAO\\ARQUIVOS\\';
-
+            $baseFilePath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR);
+            
             // Criando o caminho completo com as subpastas
             $directoryPath = $baseFilePath . $request->clients_client . DIRECTORY_SEPARATOR . $request->systems_system . DIRECTORY_SEPARATOR . "MANUTENCAO" . DIRECTORY_SEPARATOR . "IHM" . DIRECTORY_SEPARATOR . $request->type_Ident . DIRECTORY_SEPARATOR;
 
