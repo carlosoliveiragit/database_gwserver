@@ -85,31 +85,29 @@
         </div>
         <div class="row p-2">
             <div class="col-sm-6">
-                <x-adminlte-select2 name="types_type" label="Tipo" data-placeholder="selecione o tipo...">
+                <x-adminlte-select2 name="types_type" label="Tipo" data-placeholder="selecione o Tipo...">
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
-                            <i class="fas fa-solid fa-file"></i>
+                            <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    <option disabled="disabled" selected></option>
-                    <option value="SETPOINTS">SETPOINTS</option>
-                    <option value="SCADABR">SCADABR</option>
-                    <option value="NODERED">NODERED</option>
-                    <option value="CLP">CLP</option>
-                    <option value="IHM">IHM</option>
+                    @foreach ($Types as $index => $type)
+                        <option disabled="disabled" selected></option>
+                        <option>{{ $type->type }}</option>
+                    @endforeach
                 </x-adminlte-select2>
             </div>
             <div class="col-sm-6">
                 <x-adminlte-select2 name="sectors_sector" label="Setor" data-placeholder="selecione o setor...">
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
-                            <i class="fa-solid fa-user-gear"></i>
+                            <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    <option disabled="disabled" selected></option>
-                    <option value="MANUTENCAO">MANUTENÇÃO</option>
-                    <option value="OPERACAO">OPERAÇÃO</option>
-                    <option value="CCO">CCO</option>
+                    @foreach ($Sectors as $index => $sector)
+                        <option disabled="disabled" selected></option>
+                        <option>{{ $sector->sector }}</option>
+                    @endforeach
                 </x-adminlte-select2>
             </div>
         </div>
@@ -133,9 +131,11 @@
                                 <thead>
                                     <tr class="text-secondary">
                                         <th>Id</th>
-                                        {{-- <th>Usuário</th> --}}
+                                        <th>Usuário</th>
+                                        <th>Cliente</th>
                                         <th>Arquivo</th>
                                         <th>Sistema</th>
+                                        <th>Setor</th>
                                         <th>Tipo</th>
                                         <th>Data</th>
                                         <th>Ação</th>
@@ -147,20 +147,26 @@
                                             <td>
                                                 {{ $return_db->id }}</i>
                                             </td>
-                                            {{-- <td>
-                                                {{ $return_db->users_name }}
-                                            </td> --}}
+                                            <td title="{{ $return_db->users_name }}">
+                                                {{ Str::limit($return_db->users_name, 5) }}
+                                            </td>
+                                            <td title="{{ $return_db->clients_client }}">
+                                                {{ Str::limit($return_db->clients_client, 20) }}
+                                            </td>
                                             <td title="{{ $return_db->file }}">
-                                                {{ Str::limit($return_db->file, 30) }}
+                                                {{ Str::limit($return_db->file, 20) }}
                                             </td>
                                             <td>
                                                 {{ $return_db->systems_system }}
                                             </td>
-                                            <td>
-                                                {{ $return_db->type }}
+                                            <td title="{{ $return_db->sector }}">
+                                                {{ Str::limit($return_db->sector, 30) }}
+                                            </td>
+                                            <td title="{{ $return_db->type }}">
+                                                {{ Str::limit($return_db->type, 10) }}
                                             </td>
                                             <td>
-                                                {{ $return_db->created_at->format('d/m/Y - H:i:s') }}
+                                                {{ $return_db->updated_at->format('d/m/Y - H:i:s') }}
                                             </td>
                                             <td>
                                                 <div class="btn-group">

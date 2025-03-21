@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\User;
-use App\Models\Systems;
+use App\Models\Types;
 
-class SystemsController extends Controller
+class TypesController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -31,28 +31,28 @@ class SystemsController extends Controller
     public function index()
     {
         $this->authorize('is_admin');
-        $return_db = Systems::all();
-        return view('systems.index', ['Systems' => $return_db]);
+        $return_db = Types::all();
+        return view('types.index', ['Types' => $return_db]);
     }
 
     public function store(Request $request)
     {
 
-        $systems = new Systems;
+        $types = new Types;
 
-        $systems->system = $request->system;
+        $types->type = $request->type;
 
-        $systems->save();
+        $types->save();
 
-        return redirect('systems')->with('success', 'Sistema Cadastrado com Sucesso');
+        return redirect('types')->with('success', 'Tipo Cadastrado com Sucesso');
     }
 
     public function edit($id)
     {
 
-        $Systems = Systems::findOrFail($id);
+        $Types = Types::findOrFail($id);
 
-        return view('update.edit_system.index', ['Systems' => $Systems]);
+        return view('update.edit_type.index', ['Types' => $Types]);
 
     }
 
@@ -61,18 +61,18 @@ class SystemsController extends Controller
 
         $data = $request->all();
 
-        Systems::findOrFail($request->id)->update($data);
+        Types::findOrFail($request->id)->update($data);
 
-        return redirect('systems')->with('success', 'Sistema Atualizado com Sucesso');
+        return redirect('types')->with('success', 'Tipo Atualizado com Sucesso');
 
     }
 
     public function destroy($id)
     {
 
-        Systems::findOrFail($id)->delete();
+        Types::findOrFail($id)->delete();
 
-        return redirect('systems')->with('success', 'Sistema Deletado com Sucesso');
+        return redirect('types')->with('success', 'Tipo Deletado com Sucesso');
 
     }
 

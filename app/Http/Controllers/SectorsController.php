@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\User;
-use App\Models\Systems;
+use App\Models\Sectors;
 
-class SystemsController extends Controller
+class SectorsController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -31,28 +31,28 @@ class SystemsController extends Controller
     public function index()
     {
         $this->authorize('is_admin');
-        $return_db = Systems::all();
-        return view('systems.index', ['Systems' => $return_db]);
+        $return_db = Sectors::all();
+        return view('sectors.index', ['Sectors' => $return_db]);
     }
 
     public function store(Request $request)
     {
 
-        $systems = new Systems;
+        $Sectors = new Sectors;
 
-        $systems->system = $request->system;
+        $Sectors->sector = $request->sector;
 
-        $systems->save();
+        $Sectors->save();
 
-        return redirect('systems')->with('success', 'Sistema Cadastrado com Sucesso');
+        return redirect('sectors')->with('success', 'Setor Cadastrado com Sucesso');
     }
 
     public function edit($id)
     {
 
-        $Systems = Systems::findOrFail($id);
+        $Sectors = Sectors::findOrFail($id);
 
-        return view('update.edit_system.index', ['Systems' => $Systems]);
+        return view('update.edit_sector.index', ['Sectors' => $Sectors]);
 
     }
 
@@ -61,18 +61,18 @@ class SystemsController extends Controller
 
         $data = $request->all();
 
-        Systems::findOrFail($request->id)->update($data);
+        Sectors::findOrFail($request->id)->update($data);
 
-        return redirect('systems')->with('success', 'Sistema Atualizado com Sucesso');
+        return redirect('sectors')->with('success', 'Setor Atualizado com Sucesso');
 
     }
 
     public function destroy($id)
     {
 
-        Systems::findOrFail($id)->delete();
+        Sectors::findOrFail($id)->delete();
 
-        return redirect('systems')->with('success', 'Sistema Deletado com Sucesso');
+        return redirect('sectors')->with('success', 'Setor Deletado com Sucesso');
 
     }
 

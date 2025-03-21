@@ -258,7 +258,7 @@ return [
                 [
                     'text' => 'Lista Geral',
                     'url' => 'files',
-                    'icon' => 'fa-solid fa-list-ul',
+                    'icon' => 'fa-solid fa-list-check',
                     //'can'  => 'is_admin',
                 ],
                 [
@@ -403,19 +403,31 @@ return [
                     'text' => 'Usuários',
                     'url' => 'users',
                     'icon' => 'fas fa-solid fa-users',
-                    'icon_color' => 'blue',
+                    'icon_color' => 'danger',
                 ],
                 [
                     'text' => 'Clientes',
                     'url' => 'clients',
                     'icon' => 'fas fa-solid fa-water',
-                    'icon_color' => 'green',
+                    'icon_color' => 'danger',
                 ],
                 [
                     'text' => 'Sistemas',
                     'url' => 'systems',
                     'icon' => 'fas fa-solid fa-sitemap',
-                    'icon_color' => 'yellow',
+                    'icon_color' => 'danger',
+                ],
+                [
+                    'text' => 'Tipos',
+                    'url' => 'types',
+                    'icon' => 'fa-solid fa-text-height',
+                    'icon_color' => 'danger',
+                ],
+                [
+                    'text' => 'Setores',
+                    'url' => 'sectors',
+                    'icon' => 'fa-solid fa-vector-square',
+                    'icon_color' => 'danger',
                 ],
 
             ],

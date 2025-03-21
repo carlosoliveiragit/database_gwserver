@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
+use App\Models\Types;
+use App\Models\Sectors;
 use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 
 
@@ -35,6 +37,8 @@ class SearchFilesController extends Controller
     {
         $Clients = Clients::all();
         $Systems = Systems::all();
+        $Types = Types::all();
+        $Sectors = Sectors::all();
 
         $Files = collect(); // Inicializa a variável Files como uma coleção vazia
 
@@ -55,11 +59,10 @@ class SearchFilesController extends Controller
                 $query->where('sector', $request->sectors_sector);
             }
 
-            // Filtra registros onde type NÃO CONTÉM "POP"
             $Files = $query->get();
         }
 
-        return view('view.search_files.index', compact('Clients', 'Systems', 'Files'));
+        return view('view.search_files.index', compact('Clients', 'Sectors', 'Types', 'Systems', 'Files'));
     }
 
     public function destroy($id, Request $request)

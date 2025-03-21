@@ -65,9 +65,11 @@
                                 <thead>
                                     <tr class="text-secondary">
                                         <th>Id</th>
-                                        {{-- <th>Usuário</th> --}}
+                                        <th>Usuário</th>
+                                        <th>Cliente</th>
                                         <th>Arquivo</th>
                                         <th>Sistema</th>
+                                        <th>Setor</th>
                                         <th>Tipo</th>
                                         <th>Data</th>
                                         <th>Ação</th>
@@ -79,17 +81,23 @@
                                             <td>
                                                 {{ $return_db->id }}</i>
                                             </td>
-                                            {{-- <td>
-                                                {{ $return_db->users_name }}
-                                            </td> --}}
+                                            <td title="{{ $return_db->users_name }}">
+                                                {{ Str::limit($return_db->users_name, 5) }}
+                                            </td>
+                                            <td title="{{ $return_db->clients_client }}">
+                                                {{ Str::limit($return_db->clients_client, 20) }}
+                                            </td>
                                             <td title="{{ $return_db->file }}">
-                                                {{ Str::limit($return_db->file, 30) }}
+                                                {{ Str::limit($return_db->file, 20) }}
                                             </td>
                                             <td>
                                                 {{ $return_db->systems_system }}
                                             </td>
-                                            <td>
-                                                {{ $return_db->type }}
+                                            <td title="{{ $return_db->sector }}">
+                                                {{ Str::limit($return_db->sector, 30) }}
+                                            </td>
+                                            <td title="{{ $return_db->type }}">
+                                                {{ Str::limit($return_db->type, 10) }}
                                             </td>
                                             <td>
                                                 {{ $return_db->updated_at->format('d/m/Y - H:i:s') }}
@@ -151,7 +159,6 @@
 </div>
 @stop
 @section('js')
-
 <script>
     $(document).ready(function () {
         $('#table1').DataTable({
@@ -182,5 +189,4 @@
         });
     });
 </script>
-
 @stop
