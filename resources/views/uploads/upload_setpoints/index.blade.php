@@ -81,7 +81,7 @@
                 </x-adminlte-input-file>
             </div>
             <div class="col-sm" id="pdfUploadContainer" style="display: none;">
-                <x-adminlte-input-file accept=".pdf" type="file" id="uploadPdf" name="uploadPdf" label="Upload PDF"
+                <x-adminlte-input-file accept=".pdf" type="file" id="uploadPdf" name="uploadPdf[]" label="Upload PDF" multiple
                     placeholder="Escolha um arquivo..." enable-feedback>
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">

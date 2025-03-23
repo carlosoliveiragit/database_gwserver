@@ -7,7 +7,7 @@ use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 
 class UploadTelemetryController extends Controller
@@ -40,58 +40,74 @@ class UploadTelemetryController extends Controller
             'json_text' => 'nullable|string'
         ]);
 
+        $clients_client = $this->sanitizeInput($request->clients_client);
+        $systems_system = $this->sanitizeInput($request->systems_system);
+        $type = $this->sanitizeInput($request->type);
+
         $file = new Files;
         $file->users_name = $request->users_name;
-        $file->clients_client = $request->clients_client;
-        $file->systems_system = $request->systems_system;
-        $file->type = $request->type;
+        $file->clients_client = $clients_client;
+        $file->systems_system = $systems_system;
+        $file->type = $type;
         $file->sector = "CCO";
 
-        // Definição do caminho do diretório no storage
         $filePath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR) .
-        $request->clients_client . DIRECTORY_SEPARATOR . 
-        $request->systems_system . DIRECTORY_SEPARATOR . 
-        $request->type . DIRECTORY_SEPARATOR;
+            $clients_client . DIRECTORY_SEPARATOR .
+            $systems_system . DIRECTORY_SEPARATOR .
+            $type . DIRECTORY_SEPARATOR;
+
+        if (!file_exists($filePath)) {
+            mkdir($filePath, 0777, true);
+        }
+
+        // Nome seguro para o arquivo
+        $uploadNameBase = $clients_client . ' ' . $systems_system . ' ' . $type . ' ' . date("dmy His");
+        $uploadName = $this->sanitizeInput($uploadNameBase) . '.json';
+
+        // Comentário a ser incluído no JSON
+        $comment = [
+            'GENERAL WATER' => 'CENTRO DE CONTROLE OPERACIONAL',
+            'USUARIO' => $request->users_name,
+            'CLIENTE' => $clients_client,
+            'SISTEMA' => $systems_system,
+            'TIPO' => $type,
+            'DATA' => now()->format('Y-m-d H:i:s')
+        ];
 
         if ($request->hasFile('upload') && $request->file('upload')->isValid()) {
             $requestUpload = $request->file('upload');
             $extension = strtolower($requestUpload->getClientOriginalExtension());
 
-            // Validação manual da extensão
             if ($extension !== 'json') {
                 return redirect()->back()->withInput()->with('error', 'O arquivo deve ter a extensão .json.');
             }
 
-            // Validar se o conteúdo do arquivo é um JSON válido
             $jsonContent = file_get_contents($requestUpload->getRealPath());
             if (json_decode($jsonContent) === null && json_last_error() !== JSON_ERROR_NONE) {
                 return redirect()->back()->withInput()->with('error', 'O arquivo JSON enviado não é válido: ' . json_last_error_msg());
             }
 
-            // Criando nome seguro para o arquivo
-            $uploadName = strtoupper(str_replace(
-                [" - ", "-", " "],
-                "_",
-                $request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His")
-            )) . '.' . $extension;
+            $jsonDecoded = json_decode($jsonContent, true);
+            $jsonDecoded['comentario'] = $comment;
+            $jsonContentWithComment = json_encode($jsonDecoded, JSON_PRETTY_PRINT);
 
-            // Salvando o arquivo na pasta mapeada
-            $requestUpload->move($filePath, $uploadName);
+            file_put_contents($filePath . $uploadName, $jsonContentWithComment);
             $file->file = $uploadName;
+
         } elseif ($request->json_text) {
-            if (json_decode($request->json_text) === null && json_last_error() !== JSON_ERROR_NONE) {
+            $jsonContent = $request->json_text;
+
+            if (json_decode($jsonContent) === null && json_last_error() !== JSON_ERROR_NONE) {
                 return redirect()->back()->withInput()->with('error', 'O JSON inserido não é válido: ' . json_last_error_msg());
             }
 
-            $uploadName = strtoupper(str_replace(
-                [" - ", "-", " "],
-                "_",
-                $request->clients_client . '_' . $request->systems_system . '_' . $request->type . '_' . date("dmy_His")
-            )) . '.json';
+            $jsonDecoded = json_decode($jsonContent, true);
+            $jsonDecoded['comentario'] = $comment;
+            $jsonContentWithComment = json_encode($jsonDecoded, JSON_PRETTY_PRINT);
 
-            // Salvando o JSON colado na pasta mapeada
-            file_put_contents($filePath . $uploadName, $request->json_text);
+            file_put_contents($filePath . $uploadName, $jsonContentWithComment);
             $file->file = $uploadName;
+
         } else {
             return redirect()->back()->withInput()->with('error', 'Nenhum JSON enviado.');
         }
@@ -101,4 +117,20 @@ class UploadTelemetryController extends Controller
 
         return redirect('upload_telemetry')->with('success', 'Upload realizado com sucesso!');
     }
+
+    // Função para sanitizar o input
+    private function sanitizeInput($input)
+    {
+        // Remove acentos e substitui Ç corretamente usando iconv
+        $input = iconv('UTF-8', 'ASCII//TRANSLIT', $input);
+        // Substitui underscores e espaços por hífen
+        $input = preg_replace('/[\s_]+/', '-', $input);
+        // Remove caracteres que não são letras, números ou hífen
+        $input = preg_replace('/[^A-Za-z0-9\-]/', '', $input);
+        // Substitui múltiplos hífens por um único hífen
+        $input = preg_replace('/-+/', '-', $input);
+        // Converte para maiúsculas
+        return strtoupper($input);
+    }
+
 }

@@ -383,6 +383,11 @@ return [
                     'url' => 'upload_xlsx/support_files',
                     'icon' => 'fa-solid fa-table',
                 ],
+                [
+                    'text' => 'Arquivos PDF',
+                    'url' => 'upload_pdf',
+                    'icon' => 'fa-solid fa-file-pdf',
+                ],
                 ['header' => ''],
 
             ],
@@ -403,6 +408,12 @@ return [
                     'text' => 'Usuários',
                     'url' => 'users',
                     'icon' => 'fas fa-solid fa-users',
+                    'icon_color' => 'danger',
+                ],
+                [
+                    'text' => 'Perfil de Usuario',
+                    'url' => 'profiles',
+                    'icon' => 'fa-solid fa-address-card',
                     'icon_color' => 'danger',
                 ],
                 [
@@ -429,7 +440,6 @@ return [
                     'icon' => 'fa-solid fa-vector-square',
                     'icon_color' => 'danger',
                 ],
-
             ],
         ],
 
@@ -438,7 +448,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Menu Filters
+    | Menu Filters 
     |--------------------------------------------------------------------------
     |
     | Here we can modify the menu filters of the admin panel.

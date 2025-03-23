@@ -23,7 +23,7 @@
     <div class="card card-default">
         <div class="card-header">
             <h2 class="card-title">
-                &nbsp;&nbsp;Editando Tipo: {{$Types->type}} </h2>
+                &nbsp;&nbsp;Editando Tipo: {{$Types->name}} </h2>
         </div>
         <p></p>
         <form action="{{ $Types->id }}" method="POST">
@@ -32,8 +32,8 @@
             <div class="class row p-2">
                 <div class="col-sm">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="type" name="type"
-                            placeholder="Nome do Novo Tipo" value="{{$Types->type}}" required>
+                        <input type="text" class="form-control" id="type" name="name"
+                            placeholder="Nome do Novo Tipo" value="{{$Types->name}}" required>
                     </div>
                 </div>
                 <div class="col-sm">

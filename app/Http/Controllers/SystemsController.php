@@ -31,8 +31,8 @@ class SystemsController extends Controller
     public function index()
     {
         $this->authorize('is_admin');
-        $return_db = Systems::all();
-        return view('systems.index', ['Systems' => $return_db]);
+        $Systems = Systems::all();
+        return view('systems.index', compact('Systems'));
     }
 
     public function store(Request $request)
@@ -40,7 +40,7 @@ class SystemsController extends Controller
 
         $systems = new Systems;
 
-        $systems->system = $request->system;
+        $systems->name = $request->system;
 
         $systems->save();
 

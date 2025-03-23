@@ -53,20 +53,28 @@ class UploadPopController extends Controller
             'systems_system' => 'required|string',
         ]);
 
+        // Validação e sanitização dos campos clients_client, systems_system e sector
+        $clients_client = $this->sanitizeInput($request->clients_client);
+        $systems_system = $this->sanitizeInput($request->systems_system);
+        $sector = $this->sanitizeInput($request->sector);
+
         if ($request->hasFile('upload')) {
             foreach ($request->file('upload') as $requestUpload) {
                 if ($requestUpload->isValid()) {
                     // Nome e extensão formatados
                     $originalName = pathinfo($requestUpload->getClientOriginalName(), PATHINFO_FILENAME);
                     $extension = strtolower($requestUpload->getClientOriginalExtension());
-                    $uploadName = strtoupper($sector . "-" . $originalName) . '.' . $extension;
+                    $uploadName = $sector.' '.$originalName;
+                    $uploadName = $this->sanitizeInput($uploadName);
+                    // Adiciona a extensão em minúsculas
+                    $uploadName .= '.' . $extension;
 
                     // Definir caminho base
                     $baseFilePath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR);
 
                     // Criar diretório completo
-                    $directoryPath = $baseFilePath . $request->clients_client . DIRECTORY_SEPARATOR .
-                        $request->systems_system . DIRECTORY_SEPARATOR .
+                    $directoryPath = $baseFilePath . $clients_client . DIRECTORY_SEPARATOR .
+                        $systems_system . DIRECTORY_SEPARATOR .
                         strtoupper($sector) . DIRECTORY_SEPARATOR .
                         "POP" . DIRECTORY_SEPARATOR;
 
@@ -101,7 +109,7 @@ class UploadPopController extends Controller
                         $file->clients_client = $request->clients_client;
                         $file->systems_system = $request->systems_system;
                         $file->type = 'POP'; // Tipo sempre POP
-                        $file->sector = strtoupper($sector);
+                        $file->sector = $request->sector;
                         $file->path = $directoryPath;
                         $file->file = $uploadName;
                         $file->save();
@@ -115,6 +123,21 @@ class UploadPopController extends Controller
 
         // Redireciona para a rota do setor
         return redirect()->route('uploads.upload_pop.index', ['sector' => $sector])->with('success', 'Upload realizado com sucesso');
+    }
+
+    // Função para sanitizar o input
+    private function sanitizeInput($input)
+    {
+        // Remove acentos e substitui Ç corretamente usando iconv
+        $input = iconv('UTF-8', 'ASCII//TRANSLIT', $input);
+        // Substitui underscores e espaços por hífen
+        $input = preg_replace('/[\s_]+/', '-', $input);
+        // Remove caracteres que não são letras, números ou hífen
+        $input = preg_replace('/[^A-Za-z0-9\-]/', '', $input);
+        // Substitui múltiplos hífens por um único hífen
+        $input = preg_replace('/-+/', '-', $input);
+        // Converte para maiúsculas
+        return strtoupper($input);
     }
 
 }

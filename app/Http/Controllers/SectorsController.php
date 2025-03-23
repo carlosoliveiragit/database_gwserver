@@ -31,8 +31,8 @@ class SectorsController extends Controller
     public function index()
     {
         $this->authorize('is_admin');
-        $return_db = Sectors::all();
-        return view('sectors.index', ['Sectors' => $return_db]);
+        $Sectors = Sectors::all();
+        return view('sectors.index', compact('Sectors') );
     }
 
     public function store(Request $request)
@@ -40,7 +40,7 @@ class SectorsController extends Controller
 
         $Sectors = new Sectors;
 
-        $Sectors->sector = $request->sector;
+        $Sectors->name = $request->sector;
 
         $Sectors->save();
 

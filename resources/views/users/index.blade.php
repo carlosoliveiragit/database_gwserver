@@ -1,3 +1,6 @@
+
+<link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 @extends('adminlte::page')
 @section('title', 'Dashboard | Users')
 @section('content_header')
@@ -93,16 +96,17 @@
                     </div>
                 </div>
                 <div class="col-sm">
-                    <label>Perfil</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-screwdriver-wrench text-primary"></i></span>
-                        </div>
-                        <select class="form-control" name="profile">
-                            <option value="user">Usuário</option>
-                            <option value="administrator">Administrador</option>
-                        </select>
-                    </div>
+                    <x-adminlte-select2 name="profiles_profile" label="Setor" data-placeholder="selecione o setor...">
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text text-primary">
+                                <i class="fas fa-solid fa-sitemap"></i>
+                            </div>
+                        </x-slot>
+                        @foreach ($Profiles as $profile)
+                            <option disabled="disabled" selected></option>
+                            <option>{{ $profile->name }}</option>
+                        @endforeach
+                    </x-adminlte-select2>
                 </div>
             </div>
             <div class="row p-2">
@@ -114,9 +118,24 @@
                                 <i class="fas fa-envelope text-primary"></i>
                             </span>
                         </div>
-                        <input type="email" name="email" class="form-control" placeholder="E-mail" required>
+                        <input type="email" name="email" class="form-control" placeholder="E-mail" required autocomplete="off">
                     </div>
                 </div>
+                <div class="col-sm">
+                    <x-adminlte-select2 name="sectors_sector" label="Setor" data-placeholder="selecione o setor...">
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text text-primary">
+                                <i class="fas fa-solid fa-sitemap"></i>
+                            </div>
+                        </x-slot>
+                        @foreach ($Sectors as $sector)
+                            <option disabled="disabled" selected></option>
+                            <option>{{ $sector->name }}</option>
+                        @endforeach
+                    </x-adminlte-select2>
+                </div>
+            </div>
+            <div class="row p-2">
                 <div class="col-sm">
                     <label>Ação</label>
                     <div class="input-group mb-3">
@@ -128,7 +147,6 @@
             </div>
         </form>
     </div>
-    <hr>
     <div class="card card-default">
         <div class="card-header">
             <h2 class="card-title"><i class="fa-solid fa-users"></i> &nbsp;&nbsp;Usuários Cadastrados</h2>
@@ -146,8 +164,9 @@
                                         <tr class="text-secondary">
                                             <th>Id</th>
                                             <th>Nome</th>
-                                            <th>email</th>
-                                            <th>profile</th>
+                                            <th>Email</th>
+                                            <th>Setor</th>
+                                            <th>Profile</th>
                                             <th>Dark Mode</th>
                                             @can('is_admin')
                                                 <th>Ação</th>
@@ -155,32 +174,35 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($Users as $key => $return_db)
+                                        @foreach ($Users as $user)
                                             <tr class="border border-secondary">
                                                 <td>
-                                                    {{ $return_db->id }}
+                                                    {{ $user->id }}
                                                 </td>
                                                 <td>
-                                                    {{ $return_db->name }}
+                                                    {{ $user->name }}
                                                 </td>
                                                 <td>
-                                                    {{ $return_db->email }}
+                                                    {{ $user->email }}
                                                 </td>
                                                 <td>
-                                                    {{ $return_db->profile }}
+                                                    {{ $user->sector->name }}
+                                                </td>
+                                                <td>
+                                                    {{ $user->profile->name }}
                                                 </td>
                                                 <th>
-                                                    {{ $return_db->admin_lte_dark_mode }}
+                                                    {{ $user->admin_lte_dark_mode }}
                                                 </th>
                                                 @can('is_admin')
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
-                                                            <a type="submit" class="btn btn-danger btn-sm"
-                                                                href="users?id={{ $return_db->id }}&name={{ $return_db->name }}">
+                                                            <a type="submit" class="btn btn-primary btn-lg px-2 py-3"
+                                                                href="users?id={{ $user->id }}&name={{ $user->name }}">
                                                                 <i class="fa fa-lg fa-fw fa-trash"></i>
                                                             </a>
-                                                            <a class="btn btn-info btn-sm"
-                                                                href="edit_user/{{ $return_db->id }}">
+                                                            <a class="btn btn-danger btn-lg px-2 py-3"
+                                                                href="edit_user/{{ $user->id }}">
                                                                 <i class="fa fa-lg fa-fw fa-pen"></i>
                                                             </a>
                                                         </div>

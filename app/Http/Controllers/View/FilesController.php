@@ -4,7 +4,7 @@ namespace App\Http\Controllers\View;
 
 use Illuminate\Http\Request;
 use App\Models\Files;
-use App\Models\User;
+use App\Models\Users;
 use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 
 
@@ -12,7 +12,7 @@ class FilesController extends Controller
 {
     protected $user;
 
-    public function __construct(User $user)
+    public function __construct(Users $user)
     {
         $this->middleware('auth');
         $this->user = $user;
@@ -20,8 +20,8 @@ class FilesController extends Controller
 
     public function index()
     {
-        $Files = Files::all();
-        return view('view.files.index', ['Files' => $Files]);
+        $Files = Files::with(['user', 'client', 'system', 'type', 'sector'])->get();
+        return view('view.files.index', compact('Files'));
     }
 
     public function destroy($id, Request $request)

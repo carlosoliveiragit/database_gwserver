@@ -35,11 +35,11 @@ class HomeController extends Controller
         $users = User::count();
         $systems = Systems::count();
         //$files = Files::count();
-        $files_arq = Files::where('type', 'NOT LIKE', '%POP%')
-                          ->where('type', 'NOT LIKE', '%DADOS DE PRODUCAO%')
+        $files_arq = Files::where('type_id', 'NOT LIKE', '%POP%')
+                          ->where('type_id', 'NOT LIKE', '%DADOS DE PRODUCAO%')
                           ->count();
-        $files_proc = Files::where('type', 'LIKE', '%POP%')->count();
-        $files_proddata = Files::where('type', 'LIKE', '%DADOS DE PRODUCAO%')->count();
+        $files_proc = Files::where('type_id', 'LIKE', '%POP%')->count();
+        $files_proddata = Files::where('type_id', 'LIKE', '%DADOS DE PRODUCAO%')->count();
 
         //dd($files_arq);
         

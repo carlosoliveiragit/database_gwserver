@@ -29,15 +29,15 @@ class ClientsController extends Controller
     public function index()
     {   
         $this->authorize('is_admin');
-        $return_db= Clients::all();
-        return view('clients.index',['Clients'=> $return_db]);
+        $Clients= Clients::all();
+        return view('clients.index',compact('Clients'));
     }
 
     public function store(Request $request){
 
         $clients = new Clients;
 
-        $clients -> client = $request -> client;
+        $clients -> name = $request -> client;
         
         $clients -> save();
 

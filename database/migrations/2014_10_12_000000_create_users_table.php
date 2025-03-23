@@ -18,7 +18,9 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('profile',['administrator','user']);
+            $table->foreignId('sector_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('profile_id')->nullable()->constrained()->onDelete('set null');
+            $table->boolean('admin_lte_dark_mode')->default(false);
             $table->timestamps();
         });
     }

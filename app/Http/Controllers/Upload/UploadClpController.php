@@ -44,75 +44,95 @@ class UploadClpController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'upload.*' => 'required|file|max:10240',
-        'users_name' => 'required|string',
-        'clients_client' => 'required|string',
-        'systems_system' => 'required|string',
-    ]);
+    {
+        $request->validate([
+            'upload.*' => 'required|file|max:10240',
+            'users_name' => 'required|string',
+            'clients_client' => 'required|string',
+            'systems_system' => 'required|string',
+            'model' => 'required|string', // Adicionando validação para o modelo
+        ]);
 
-    if ($request->hasFile('upload') && $request->file('upload')->isValid()) {
-        $requestUpload = $request->file('upload');
-        $extension = strtolower($requestUpload->getClientOriginalExtension());
+        // Validação e sanitização dos campos clients_client, systems_system e model
+        $clients_client = $this->sanitizeInput($request->clients_client);
+        $systems_system = $this->sanitizeInput($request->systems_system);
+        $model = $this->sanitizeInput($request->model);
 
-        // Mapeamento de modelos e suas extensões válidas
-        $validExtensions = [
-            'CLIC02' => 'cli',
-            'PLC300' => 'bkp',
-            'PM5052-T-ETH' => 'projectarchive',
-            'PM5032-T-ETH' => 'projectarchive',
-            'XP315' => 'projectarchive',
-            'XP325' => 'projectarchive',
-            'XP340' => 'projectarchive',
-            'PLC500' => 'projectarchive',
-        ];
+        if ($request->hasFile('upload') && $request->file('upload')->isValid()) {
+            $requestUpload = $request->file('upload');
+            $extension = strtolower($requestUpload->getClientOriginalExtension());
 
-        // Verifica se o modelo existe no mapeamento e se a extensão é válida
-        if (!isset($validExtensions[$request->model]) || $validExtensions[$request->model] !== $extension) {
-            return redirect()->back()
-                ->withInput() // Mantém os dados inseridos no formulário
-                ->with('error', 'O arquivo deve ter a extensão .' . $validExtensions[$request->model] . ' para o modelo ' . $request->model);
+            // Mapeamento de modelos e suas extensões válidas
+            $validExtensions = [
+                'CLIC02' => 'cli',
+                'PLC300' => 'bkp',
+                'PM5052-T-ETH' => 'projectarchive',
+                'PM5032-T-ETH' => 'projectarchive',
+                'XP315' => 'projectarchive',
+                'XP325' => 'projectarchive',
+                'XP340' => 'projectarchive',
+                'PLC500' => 'projectarchive',
+            ];
+
+            // Verifica se o modelo existe no mapeamento e se a extensão é válida
+            if (!isset($validExtensions[$model]) || $validExtensions[$model] !== $extension) {
+                return redirect()->back()
+                    ->withInput() // Mantém os dados inseridos no formulário
+                    ->with('error', 'O arquivo deve ter a extensão .' . $validExtensions[$model] . ' para o modelo ' . $model);
+            }
+
+            // Definição do caminho base (até ARQUIVOS)
+            $baseFilePath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR);
+
+            // Criando o caminho completo com as subpastas
+            $directoryPath = $baseFilePath . $clients_client . DIRECTORY_SEPARATOR . $systems_system . DIRECTORY_SEPARATOR . "MANUTENCAO" . DIRECTORY_SEPARATOR . "CLP" . DIRECTORY_SEPARATOR . $model . DIRECTORY_SEPARATOR;
+
+            // Criar o diretório se não existir
+            if (!File::exists($directoryPath)) {
+                File::makeDirectory($directoryPath, 0777, true); // true permite criar subpastas intermediárias
+            }
+
+            // Criando nome seguro para o arquivo
+            $uploadName = $clients_client . ' ' . $systems_system . ' ' . $request->type_Ident . ' ' . $model . ' ' . date("dmy His");
+            // Usa a função de sanitização diretamente para o nome do arquivo
+            $uploadName = $this->sanitizeInput($uploadName);
+
+            // Adiciona a extensão em minúsculas
+            $uploadName .= '.' . $extension;
+
+            // Salvando o arquivo na pasta mapeada
+            $requestUpload->move($directoryPath, $uploadName);
+
+            // Salvando as informações no banco de dados
+            $file = new Files;
+            $file->users_name = $request->users_name;
+            $file->clients_client = $request->clients_client;
+            $file->systems_system = $request->systems_system;
+            $file->path = $directoryPath;
+            $file->file = $uploadName;
+            $file->type = "CLP";
+            $file->sector = "MANUTENCAO";
+            $file->save(); // Salva as informações no banco de dados após o upload do arquivo
         }
 
-        // Definição do caminho base (até ARQUIVOS)
-        $baseFilePath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR);
-
-        // Criando o caminho completo com as subpastas
-        $directoryPath = $baseFilePath . $request->clients_client . DIRECTORY_SEPARATOR . $request->systems_system . DIRECTORY_SEPARATOR . "MANUTENCAO" . DIRECTORY_SEPARATOR . "CLP" . DIRECTORY_SEPARATOR . $request->model . DIRECTORY_SEPARATOR;
-
-        // Criar o diretório se não existir
-        if (!File::exists($directoryPath)) {
-            File::makeDirectory($directoryPath, 0777, true); // true permite criar subpastas intermediárias
-        }
-
-        // Criando nome seguro para o arquivo
-        $uploadName = strtoupper(str_replace(
-            [" - ", "-", " "],
-            "_",
-            $request->clients_client . '_' . $request->systems_system . '_' . $request->type_Ident . '_' . $request->model . '_' . date("dmy_His")
-        ));
-
-        // Adiciona a extensão em minúsculas
-        $uploadName .= '.' . $extension;
-
-        // Salvando o arquivo na pasta mapeada
-        $requestUpload->move($directoryPath, $uploadName);
-
-        // Salvando as informações no banco de dados
-        $file = new Files;
-        $file->users_name = $request->users_name;
-        $file->clients_client = $request->clients_client;
-        $file->systems_system = $request->systems_system;
-        $file->path = $directoryPath;
-        $file->file = $uploadName;
-        $file->type = "CLP";
-        $file->sector = "MANUTENCAO";
-        $file->save(); // Salva as informações no banco de dados após o upload do arquivo
+        // Redireciona de volta para a página de onde veio (com sucesso)
+        return redirect()->back()->with('success', 'Upload realizado com sucesso');
     }
 
-    // Redireciona de volta para a página de onde veio (com sucesso)
-    return redirect()->back()->with('success', 'Upload realizado com sucesso');
-}
+    
+    // Função para sanitizar o input
+    private function sanitizeInput($input)
+    {
+        // Remove acentos e substitui Ç corretamente usando iconv
+        $input = iconv('UTF-8', 'ASCII//TRANSLIT', $input);
+        // Substitui underscores e espaços por hífen
+        $input = preg_replace('/[\s_]+/', '-', $input);
+        // Remove caracteres que não são letras, números ou hífen
+        $input = preg_replace('/[^A-Za-z0-9\-]/', '', $input);
+        // Substitui múltiplos hífens por um único hífen
+        $input = preg_replace('/-+/', '-', $input);
+        // Converte para maiúsculas
+        return strtoupper($input);
+    }
 
 }

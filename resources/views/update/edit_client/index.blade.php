@@ -23,7 +23,7 @@
     <div class="card card-default">
         <div class="card-header">
             <h2 class="card-title">
-                &nbsp;&nbsp;Editando Cliente: {{$Clients->client}} </h2>
+                &nbsp;&nbsp;Editando Cliente: {{$Clients->name}} </h2>
         </div>
         <p></p>
         <form action="{{ $Clients->id }}" method="POST">
@@ -32,8 +32,8 @@
             <div class="class row p-2">
                 <div class="col-sm">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="client" name="client"
-                            placeholder="Nome do Novo Cliente" value="{{$Clients->client}}" required>
+                        <input type="text" class="form-control" id="client" name="name"
+                            placeholder="Nome do Novo Cliente" value="{{$Clients->name}}" required>
                     </div>
                 </div>
                 <div class="col-sm">

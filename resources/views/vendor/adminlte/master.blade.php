@@ -75,10 +75,11 @@
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="{{ asset('favicon/ms-icon-144x144.png') }}">
     @endif
-
+    {{-- Vite Assets --}}
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
 
-<body class="@yield('classes_body') layout-navbar-fixed layout-fixed text-sm" @yield('body_data') >
+<body class="@yield('classes_body') layout-navbar-fixed layout-fixed text-sm" @yield('body_data')>
 
     {{-- Body Content --}}
     @yield('body')

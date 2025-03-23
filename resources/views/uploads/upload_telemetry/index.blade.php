@@ -115,8 +115,6 @@
             </div>
             <div class="row p-2">
                 <div class="col-sm">
-                    <x-adminlte-progress id="pbDinamic" theme="lightblue" animated with-label />
-
                     <label>Ação</label>
                     <div class="input-group mb-3">
                         <button type="submit" class="btn btn-block btn-primary">
@@ -140,20 +138,30 @@
 
 @section('js')
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const uploadMethod = document.getElementById("uploadMethod");
-        const fileUploadContainer = document.getElementById("fileUploadContainer");
-        const textUploadContainer = document.getElementById("textUploadContainer");
+   document.addEventListener("DOMContentLoaded", function() {
+    const uploadMethod = document.getElementById("uploadMethod");
+    const fileUploadContainer = document.getElementById("fileUploadContainer");
+    const textUploadContainer = document.getElementById("textUploadContainer");
+    const uploadInput = document.getElementById("upload");
+    const jsonText = document.getElementById("jsonText");
 
-        uploadMethod.addEventListener("change", function() {
-            if (this.value === "file") {
-                fileUploadContainer.style.display = "block";
-                textUploadContainer.style.display = "none";
-            } else {
-                fileUploadContainer.style.display = "none";
-                textUploadContainer.style.display = "block";
-            }
-        });
-    });
+    function toggleInputs() {
+        if (uploadMethod.value === "file") {
+            fileUploadContainer.style.display = "block";
+            textUploadContainer.style.display = "none";
+            uploadInput.required = true;
+            jsonText.required = false;
+        } else {
+            fileUploadContainer.style.display = "none";
+            textUploadContainer.style.display = "block";
+            uploadInput.required = false;
+            jsonText.required = true;
+        }
+    }
+
+    uploadMethod.addEventListener("change", toggleInputs);
+    toggleInputs(); // Inicializa corretamente
+});
+
 </script>
 @stop

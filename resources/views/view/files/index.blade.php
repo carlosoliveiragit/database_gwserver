@@ -76,61 +76,57 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($Files as $key => $return_db)
+                                    @foreach ($Files as $file)
                                         <tr class="border border-secondary">
-                                            <td>
-                                                {{ $return_db->id }}</i>
+                                            <td>{{ $file->id }}</td>
+                                            <td title="{{ $file->user->name ?? 'N/A' }}">
+                                                {{ Str::limit($file->user->name ?? 'N/A', 5) }}
                                             </td>
-                                            <td title="{{ $return_db->users_name }}">
-                                                {{ Str::limit($return_db->users_name, 5) }}
+                                            <td title="{{ $file->client->name ?? 'N/A' }}">
+                                                {{ Str::limit($file->client->name ?? 'N/A', 20) }}
                                             </td>
-                                            <td title="{{ $return_db->clients_client }}">
-                                                {{ Str::limit($return_db->clients_client, 20) }}
+                                            <td title="{{ $file->file }}">{{ Str::limit($file->file, 20) }}
+
                                             </td>
-                                            <td title="{{ $return_db->file }}">
-                                                {{ Str::limit($return_db->file, 20) }}
+                                            <td>{{ $file->system->name ?? 'N/A' }}</td>
+                                            <td title="{{ $file->sector->name ?? 'N/A' }}">
+                                                {{ Str::limit($file->sector->name ?? 'N/A', 30) }}
                                             </td>
-                                            <td>
-                                                {{ $return_db->systems_system }}
+                                            <td title="{{ $file->type->name ?? 'N/A' }}">
+                                                {{ Str::limit($file->type->name ?? 'N/A', 10) }}
                                             </td>
-                                            <td title="{{ $return_db->sector }}">
-                                                {{ Str::limit($return_db->sector, 30) }}
-                                            </td>
-                                            <td title="{{ $return_db->type }}">
-                                                {{ Str::limit($return_db->type, 10) }}
-                                            </td>
-                                            <td>
-                                                {{ $return_db->updated_at->format('d/m/Y - H:i:s') }}
+                                            <td>{{ $file->updated_at->format('d/m/Y - H:i:s') }}
+
                                             </td>
                                             <td>
                                                 <div class="btn-group">
                                                     <a class="btn btn-success btn-lg px-2 py-1"
-                                                        href="{{ route('files.download', ['file' => $return_db->file]) }}"
+                                                        href="{{ route('files.download', ['file' => $file->file]) }}"
                                                         title="Baixar Arquivo">
                                                         <i class="fa fa fa-fw fa-download"></i>
                                                     </a>
                                                 </div>
-                                                @if (pathinfo($return_db->file, PATHINFO_EXTENSION) === 'pdf')
+                                                @if (pathinfo($file->file, PATHINFO_EXTENSION) === 'pdf')
                                                     <div class="btn-group">
                                                         <a class="btn btn-primary btn-lg px-2 py-1"
-                                                            href="{{ route('showpdf.view', ['id' => $return_db->id]) }}"
+                                                            href="{{ route('showpdf.view', ['id' => $file->id]) }}"
                                                             title="Visualizar Arquivo">
                                                             <i class="fa fa fa-fw fa-eye"></i>
                                                         </a>
                                                     </div>
-                                                @elseif (pathinfo($return_db->file, PATHINFO_EXTENSION) === 'json')
+                                                @elseif (pathinfo($file->file, PATHINFO_EXTENSION) === 'json')
                                                     <div class="btn-group">
                                                         <a class="btn btn-primary btn-lg px-2 py-1"
-                                                            href="{{ route('showjson.view', ['id' => $return_db->id]) }}"
+                                                            href="{{ route('showjson.view', ['id' => $file->id]) }}"
                                                             title="Visualizar Arquivo">
                                                             <i class="fa fa fa-fw fa-eye"></i>
                                                         </a>
                                                     </div>
                                                 @endif
-                                                @if (pathinfo($return_db->file, PATHINFO_EXTENSION) === 'xlsx' || pathinfo($return_db->file, PATHINFO_EXTENSION) === 'xls')
+                                                @if (pathinfo($file->file, PATHINFO_EXTENSION) === 'xlsx' || pathinfo($file->file, PATHINFO_EXTENSION) === 'xls')
                                                     <div class="btn-group">
                                                         <a class="btn btn-primary btn-lg px-2 py-1"
-                                                            href="{{ route('showexcel.view', ['id' => $return_db->id]) }}"
+                                                            href="{{ route('showexcel.view', ['id' => $file->id]) }}"
                                                             title="Visualizar Arquivo">
                                                             <i class="fa fa fa-fw fa-eye"></i>
                                                         </a>
@@ -139,7 +135,7 @@
                                                 @can('is_admin')
                                                     <div class="btn-group">
                                                         <a type="submit" class="btn btn-danger btn-lg px-2 py-1"
-                                                            href="files?id={{ $return_db->id }}&path={{ $return_db->path }}&file={{ $return_db->file }}"
+                                                            href="files?id={{ $file->id }}&path={{ $file->path }}&file={{ $file->file }}"
                                                             title="Excluir Arquivo">
                                                             <i class="fa fa fa-fw fa-trash"></i>
                                                         </a>

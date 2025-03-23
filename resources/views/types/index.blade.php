@@ -96,22 +96,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($Types as $key => $return_db)
+                                        @foreach ($Types as $type)
                                             <tr class="border border-secondary">
                                                 <td>
-                                                    {{ $return_db->id }}
+                                                    {{ $type->id }}
                                                 </td>
                                                 <td>
-                                                    {{ $return_db->type }}
+                                                    {{ $type->name }}
                                                 </td>
                                                 @can('is_admin')
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
                                                             <a type="submit" class="btn btn-danger btn-sm"
-                                                                href="types?id={{ $return_db->id }}&system={{ $return_db->type }}">
+                                                                href="types?id={{ $type->id }}&system={{ $type->name }}">
                                                                 <i class="fa fa-lg fa-fw fa-trash"></i>
                                                             </a>
-                                                            <a href="edit_type/{{ $return_db->id }}"
+                                                            <a href="edit_type/{{ $type->id }}"
                                                                 class="btn btn-info btn-sm">
                                                                 <i class="fa fa-lg fa-fw fa-pen"></i>
                                                             </a>

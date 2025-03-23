@@ -3,23 +3,16 @@
 namespace App\Http\Controllers\View;
 
 use Illuminate\Http\Request;
-
 use App\Models\User;
 use App\Models\Clients;
 use App\Models\Systems;
 use App\Models\Files;
 use App\Models\Types;
 use App\Models\Sectors;
-use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
-
+use Illuminate\Routing\Controller;
 
 class SearchFilesController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     protected $user;
 
     public function __construct(User $user)
@@ -28,41 +21,35 @@ class SearchFilesController extends Controller
         $this->user = $user;
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index(Request $request)
     {
         $Clients = Clients::all();
         $Systems = Systems::all();
         $Types = Types::all();
         $Sectors = Sectors::all();
+        
 
-        $Files = collect(); // Inicializa a variável Files como uma coleção vazia
+        $Files = collect(); // Inicializa a variável files como uma coleção vazia
 
         // Se houver filtros aplicados, só então buscamos os arquivos
         if ($request->has('clients_client') || $request->has('systems_system') || $request->has('types_type') || $request->has('sectors_sector')) {
             $query = Files::query();
 
             if ($request->has('clients_client')) {
-                $query->where('clients_client', $request->clients_client);
+                $query->where('client_id', $request->clients_client);
             }
             if ($request->has('systems_system')) {
-                $query->where('systems_system', $request->systems_system);
+                $query->where('system_id', $request->systems_system);
             }
             if ($request->has('types_type')) {
-                $query->where('type', $request->types_type);
+                $query->where('type_id', $request->types_type);
             }
             if ($request->has('sectors_sector')) {
-                $query->where('sector', $request->sectors_sector);
+                $query->where('sector_id', $request->sectors_sector);
             }
-
-            $Files = $query->get();
+            $Files = $query->with(['user', 'client', 'system', 'type', 'sector'])->get();
         }
-
-        return view('view.search_files.index', compact('Clients', 'Sectors', 'Types', 'Systems', 'Files'));
+        return view('view.search_files.index', compact('Clients', 'Systems', 'Types', 'Sectors', 'Files'));
     }
 
     public function destroy($id, Request $request)
@@ -75,7 +62,7 @@ class SearchFilesController extends Controller
             return redirect('search_files')->with('success', 'Arquivo Deletado com Sucesso');
         }
 
-        return redirect('search_files')->with('success', 'Arquivo Deletado com Sucesso');
+        return redirect('search_files')->with('error', 'Arquivo não encontrado.');
     }
 
     public function download($file)

@@ -62,9 +62,11 @@
                             <i class="fas fa-solid fa-water"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Clients as $index => $client)
-                        <option disabled="disabled" selected></option>
-                        <option>{{ $client->client }}</option>
+                    <option disabled selected></option>
+                    @foreach ($Clients as $client)
+                        <option value="{{ $client->id }}" {{ request('clients_client') == $client->id ? 'selected' : '' }}>
+                            {{ $client->name }}
+                        </option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
@@ -75,14 +77,16 @@
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Systems as $index => $system)
-                        <option disabled="disabled" selected></option>
-                        <option>{{ $system->system }}</option>
+                    <option disabled selected></option>
+                    @foreach ($Systems as $system)
+                        <option value="{{ $system->id }}" {{ request('systems_system') == $system->id ? 'selected' : '' }}>
+                            {{ $system->name }}
+                        </option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
-
         </div>
+
         <div class="row p-2">
             <div class="col-sm-6">
                 <x-adminlte-select2 name="types_type" label="Tipo" data-placeholder="selecione o Tipo...">
@@ -91,9 +95,11 @@
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Types as $index => $type)
-                        <option disabled="disabled" selected></option>
-                        <option>{{ $type->type }}</option>
+                    <option disabled selected></option>
+                    @foreach ($Types as $type)
+                        <option value="{{ $type->id }}" {{ request('types_type') == $type->id ? 'selected' : '' }}>
+                            {{ $type->name }}
+                        </option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
@@ -104,17 +110,29 @@
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Sectors as $index => $sector)
-                        <option disabled="disabled" selected></option>
-                        <option>{{ $sector->sector }}</option>
+                    <option disabled selected></option>
+                    @foreach($Sectors as $sector)
+                        <option value="{{ $sector->id }}" {{ request('sectors_sector') == $sector->id ? 'selected' : '' }}>
+                            {{ $sector->name }}
+                        </option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
         </div>
-        <div class="col-sm">
-            <div class="input-group mb-3">
-                <button type="submit" class="btn btn-block bg-gradient-info"><i
-                        class="fa-solid fa-magnifying-glass-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Pesquisar</button>
+        <div class="row p-2">
+            <div class="col-sm">
+                <div class="input-group mb-3">
+                    <button type="submit" class="btn btn-block bg-gradient-info">
+                        <i class="fa-solid fa-magnifying-glass-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Pesquisar
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="input-group mb-3">
+                    <a href="{{ route('search_files.index') }}" class="btn btn-block bg-gradient-secondary">
+                        <i class="fas fa-undo"></i>&nbsp;&nbsp;&nbsp;&nbsp;Limpar Seleção
+                    </a>
+                </div>
             </div>
         </div>
     </form>
@@ -142,61 +160,55 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($Files as $key => $return_db)
+                                    @forelse ($Files as $file)
                                         <tr class="border border-secondary">
-                                            <td>
-                                                {{ $return_db->id }}</i>
+                                            <td>{{ $file->id }}</td>
+                                            <td title="{{ $file->user->name ?? 'N/A' }}">
+                                                {{ Str::limit($file->user->name ?? 'N/A', 5) }}
                                             </td>
-                                            <td title="{{ $return_db->users_name }}">
-                                                {{ Str::limit($return_db->users_name, 5) }}
+                                            <td title="{{ $file->client->name ?? 'N/A' }}">
+                                                {{ Str::limit($file->client->name ?? 'N/A', 20) }}
                                             </td>
-                                            <td title="{{ $return_db->clients_client }}">
-                                                {{ Str::limit($return_db->clients_client, 20) }}
+                                            <td title="{{ $file->file }}">
+                                                {{ Str::limit($file->file, 20) }}
                                             </td>
-                                            <td title="{{ $return_db->file }}">
-                                                {{ Str::limit($return_db->file, 20) }}
+                                            <td>{{ $file->system->name ?? 'N/A' }}</td>
+                                            <td title="{{ $file->sector->name ?? 'N/A' }}">
+                                                {{ Str::limit($file->sector->name ?? 'N/A', 30) }}
                                             </td>
-                                            <td>
-                                                {{ $return_db->systems_system }}
+                                            <td title="{{ $file->type->name ?? 'N/A' }}">
+                                                {{ Str::limit($file->type->name ?? 'N/A', 10) }}
                                             </td>
-                                            <td title="{{ $return_db->sector }}">
-                                                {{ Str::limit($return_db->sector, 30) }}
-                                            </td>
-                                            <td title="{{ $return_db->type }}">
-                                                {{ Str::limit($return_db->type, 10) }}
-                                            </td>
-                                            <td>
-                                                {{ $return_db->updated_at->format('d/m/Y - H:i:s') }}
-                                            </td>
+                                            <td>{{ $file->updated_at->format('d/m/Y - H:i:s') }}</td>
                                             <td>
                                                 <div class="btn-group">
                                                     <a class="btn btn-success btn-lg px-2 py-1"
-                                                        href="{{ route('search_files.download', ['file' => $return_db->file]) }}"
+                                                        href="{{ route('search_files.download', ['file' => $file->file]) }}"
                                                         title="Baixar Arquivo">
-                                                        <i class="fa fa fa-fw fa-download"></i>
+                                                        <i class="fa fa-fw fa-download"></i>
                                                     </a>
                                                 </div>
-                                                @if (pathinfo($return_db->file, PATHINFO_EXTENSION) === 'pdf')
+                                                @if (pathinfo($file->file, PATHINFO_EXTENSION) === 'pdf')
                                                     <div class="btn-group">
                                                         <a class="btn btn-primary btn-lg px-2 py-1"
-                                                            href="{{ route('showpdf.view', ['id' => $return_db->id]) }}"
+                                                            href="{{ route('showpdf.view', ['id' => $file->id]) }}"
                                                             title="Visualizar Arquivo">
                                                             <i class="fa fa fa-fw fa-eye"></i>
                                                         </a>
                                                     </div>
-                                                @elseif (pathinfo($return_db->file, PATHINFO_EXTENSION) === 'json')
+                                                @elseif (pathinfo($file->file, PATHINFO_EXTENSION) === 'json')
                                                     <div class="btn-group">
                                                         <a class="btn btn-primary btn-lg px-2 py-1"
-                                                            href="{{ route('showjson.view', ['id' => $return_db->id]) }}"
+                                                            href="{{ route('showjson.view', ['id' => $file->id]) }}"
                                                             title="Visualizar Arquivo">
                                                             <i class="fa fa fa-fw fa-eye"></i>
                                                         </a>
                                                     </div>
                                                 @endif
-                                                @if (pathinfo($return_db->file, PATHINFO_EXTENSION) === 'xlsx' || pathinfo($return_db->file, PATHINFO_EXTENSION) === 'xls')
+                                                @if (pathinfo($file->file, PATHINFO_EXTENSION) === 'xlsx' || pathinfo($file->file, PATHINFO_EXTENSION) === 'xls')
                                                     <div class="btn-group">
                                                         <a class="btn btn-primary btn-lg px-2 py-1"
-                                                            href="{{ route('showexcel.view', ['id' => $return_db->id]) }}"
+                                                            href="{{ route('showexcel.view', ['id' => $file->id]) }}"
                                                             title="Visualizar Arquivo">
                                                             <i class="fa fa fa-fw fa-eye"></i>
                                                         </a>
@@ -205,15 +217,20 @@
                                                 @can('is_admin')
                                                     <div class="btn-group">
                                                         <a type="submit" class="btn btn-danger btn-lg px-2 py-1"
-                                                            href="search_files?id={{ $return_db->id }}&path={{ $return_db->path }}&file={{ $return_db->file }}"
+                                                            href="search_files?id={{ $file->id }}&path={{ $file->path }}&file={{ $file->file }}"
                                                             title="Excluir Arquivo">
                                                             <i class="fa fa fa-fw fa-trash"></i>
                                                         </a>
                                                     </div>
                                                 @endcan
                                             </td>
+
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="9" class="text-center text-muted">Nenhum arquivo encontrado.</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -223,6 +240,8 @@
         </div>
     </div>
 </div>
+
+
 @stop
 @section('js')
 

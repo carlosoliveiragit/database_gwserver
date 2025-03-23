@@ -8,6 +8,7 @@ use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\SystemsController;
 use App\Http\Controllers\TypesController;
 use App\Http\Controllers\SectorsController;
+use App\Http\Controllers\ProfilesController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\HomeController;
 //upload
@@ -17,6 +18,7 @@ use App\Http\Controllers\Upload\UploadIhmController;
 use App\Http\Controllers\Upload\UploadPopController;
 use App\Http\Controllers\Upload\UploadClpController;
 use App\Http\Controllers\Upload\UploadXlsxController;
+use App\Http\Controllers\Upload\UploadPdfController;
 //show
 use App\Http\Controllers\show\ShowPdfController;
 use App\Http\Controllers\show\ShowJsonController;
@@ -74,6 +76,13 @@ Route::delete('sectors/{id}', [SectorsController::class, 'destroy'])->name('sect
 Route::get('edit_sector/{id}', [SectorsController::class, 'edit'])->name('edit_sector');
 Route::put('edit_sector/{id}', [SectorsController::class, 'update'])->name('edit_sector');
 
+Route::get('profiles', [ProfilesController::class, 'index'])->name('profiles');
+Route::post('profiles', [ProfilesController::class, 'store'])->name('profiles');
+Route::delete('profiles/{id}', [ProfilesController::class, 'destroy'])->name('profiles');
+Route::get('edit_profile/{id}', [ProfilesController::class, 'edit'])->name('edit_profile');
+Route::put('edit_profile/{id}', [ProfilesController::class, 'update'])->name('edit_profile');
+
+
 //uploads
 Route::get('upload_telemetry', [UploadTelemetryController::class, 'index'])->name('upload_telemetry');
 Route::post('upload_telemetry', [UploadTelemetryController::class, 'store'])->name('upload_telemetry');
@@ -93,6 +102,9 @@ Route::post('upload_clp/{model}', [UploadClpController::class, 'store'])->name('
 Route::get('upload_xlsx/{type}', [UploadXlsxController::class, 'index'])->name('uploads.upload_xlsx.index');
 Route::post('upload_xlsx/{type}', [UploadXlsxController::class, 'store'])->name('uploads.upload_xlsx.store');
 
+Route::get('upload_pdf', [UploadPdfController::class, 'index'])->name('upload_pdf');
+Route::post('upload_pdf', [UploadPdfController::class, 'store'])->name('upload_pdf');
+
 //show
 Route::get(uri: 'showpdf/view/{id}', action: [ShowPdfController::class, 'showPDF'])->name('showpdf.view');
 Route::get('showjson/view/{id}', [ShowJsonController::class, 'showJSON'])->name('showjson.view');
@@ -104,10 +116,11 @@ Route::get('files/{file}/download', [FilesController::class, 'download'])->name(
 Route::post('files', [FilesController::class, 'destroy'])->name('files');
 Route::delete('files/{id}', [FilesController::class, 'destroy'])->name('files');
 
-Route::get('search_files', [SearchFilesController::class, 'index'])->name('search_files');
+Route::get('search_files', [SearchFilesController::class, 'index'])->name('search_files.index');
 Route::get('search_files/{file}/download', [SearchFilesController::class, 'download'])->name('search_files.download');
-Route::post('search_files', [SearchFilesController::class, 'store'])->name('search_files');
-Route::delete('search_files/{id}', [SearchFilesController::class, 'destroy'])->name('search_files');
+Route::post('search_files', [SearchFilesController::class, 'store'])->name('search_files.store');
+Route::delete('search_files/{id}', [SearchFilesController::class, 'destroy'])->name('search_files.destroy');
+
 
 
 

@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Sectors;
+use App\Models\Profiles;
 use App\Models\Users;
-use stdClass;
 
 class UsersController extends Controller
 {
@@ -31,19 +32,26 @@ class UsersController extends Controller
     public function index()
     {
         $this->authorize('is_admin');
-        $return_db = Users::all();
-        return view('users.index', ['Users' => $return_db]);
+        $Users = Users::all();
+        $Sectors = Sectors::all();
+        $Profiles = Profiles::all();
+        $Users = Users::with(['sector','profile'])->get();
+        return view('users.index', compact('Users','Sectors' , 'Profiles'));
     }
     public function store(Request $request)
     {
 
         try {
-            $users = new Users;
+            
+            $sector = Sectors::where('name', $request->sectors_sector)->first();
+            $profile = Profiles::where('name', $request->profiles_profile)->first();
 
+            $users = new Users;
             $users->name = $request->name;
             $users->email = $request->email;
             $users->password = Hash::make($request->password);
-            $users->profile = $request->profile;
+            $users->sector_id = $sector->id; // Associando o setor
+            $users->profile_id = $profile->id;// Associando o perfil
             $users->admin_lte_dark_mode = $request->admin_lte_dark_mode;
 
             $users->save();
@@ -63,8 +71,9 @@ class UsersController extends Controller
     public function edit($id) {
 
         $Users = Users::findOrFail($id);
+        $Sectors = Sectors::all();
 
-        return view('update.edit_user.index', ['Users' => $Users]);
+        return view('update.edit_user.index', compact('Users','Sectors'));
 
     }
     public function update(Request $request)

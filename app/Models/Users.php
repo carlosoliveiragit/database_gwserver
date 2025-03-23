@@ -10,4 +10,14 @@ class Users extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function sector()
+    {
+        return $this->belongsTo(Sectors::class);
+    }
+
+    public function profile()
+    {
+        return $this->belongsTo(Profiles::class);
+    }
 }

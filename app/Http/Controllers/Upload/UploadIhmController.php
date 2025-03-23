@@ -40,6 +40,13 @@ class UploadIhmController extends Controller
             'type' => 'required|string'
         ]);
 
+        // Validação e sanitização dos campos clients_client, systems_system e model
+        $clients_client = $this->sanitizeInput($request->clients_client);
+        $systems_system = $this->sanitizeInput($request->systems_system);
+        $type_Ident = $this->sanitizeInput($request->type_Ident);
+        $type_Ident = $this->sanitizeInput($request->type_Ident);
+
+
         if ($request->hasFile('upload') && $request->file('upload')->isValid()) {
             $requestUpload = $request->file('upload');
             $extension = strtolower($requestUpload->getClientOriginalExtension());
@@ -51,9 +58,9 @@ class UploadIhmController extends Controller
 
             // Definição do caminho base (até ARQUIVOS)
             $baseFilePath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR);
-            
+
             // Criando o caminho completo com as subpastas
-            $directoryPath = $baseFilePath . $request->clients_client . DIRECTORY_SEPARATOR . $request->systems_system . DIRECTORY_SEPARATOR . "MANUTENCAO" . DIRECTORY_SEPARATOR . "IHM" . DIRECTORY_SEPARATOR . $request->type_Ident . DIRECTORY_SEPARATOR;
+            $directoryPath = $baseFilePath . $clients_client . DIRECTORY_SEPARATOR . $systems_system . DIRECTORY_SEPARATOR . "MANUTENCAO" . DIRECTORY_SEPARATOR . "IHM" . DIRECTORY_SEPARATOR . $type_Ident . DIRECTORY_SEPARATOR;
 
             // Criar o diretório se não existir
             if (!File::exists($directoryPath)) {
@@ -61,16 +68,11 @@ class UploadIhmController extends Controller
 
 
                 // Criando nome seguro para o arquivo
-                $uploadName = strtoupper(str_replace(
-                    [" - ", "-", " "],
-                    "_",
-                    $request->clients_client . '_' . $request->systems_system . '_' . $request->type_Ident . '_' . date("dmy_His")
-                ));
-
+                $uploadName = $clients_client . ' ' . $systems_system . ' ' . $type_Ident . ' ' . date("dmy-His");
+                // Usa a função de sanitização diretamente para o nome do arquivo
+                $uploadName = $this->sanitizeInput($uploadName);
                 // Adiciona a extensão em minúsculas
                 $uploadName .= '.' . $extension;
-
-                // Salvando o arquivo na pasta mapeada
                 $requestUpload->move($directoryPath, $uploadName);
 
                 // Salvando as informações no banco
@@ -84,10 +86,26 @@ class UploadIhmController extends Controller
                 $file->file = $uploadName;
                 $file->save();
             }
-            
-            dd($requestUpload, $directoryPath);
+
+            //dd($requestUpload, $directoryPath);
 
             return redirect('upload_ihm')->with('success', 'Upload realizado com sucesso!');
         }
     }
+
+    // Função para sanitizar o input
+    private function sanitizeInput($input)
+    {
+        // Remove acentos e substitui Ç corretamente usando iconv
+        $input = iconv('UTF-8', 'ASCII//TRANSLIT', $input);
+        // Substitui underscores e espaços por hífen
+        $input = preg_replace('/[\s_]+/', '-', $input);
+        // Remove caracteres que não são letras, números ou hífen
+        $input = preg_replace('/[^A-Za-z0-9\-]/', '', $input);
+        // Substitui múltiplos hífens por um único hífen
+        $input = preg_replace('/-+/', '-', $input);
+        // Converte para maiúsculas
+        return strtoupper($input);
+    }
+
 }

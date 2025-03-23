@@ -31,8 +31,8 @@ class TypesController extends Controller
     public function index()
     {
         $this->authorize('is_admin');
-        $return_db = Types::all();
-        return view('types.index', ['Types' => $return_db]);
+        $Types = Types::all();
+        return view('types.index', compact('Types') );
     }
 
     public function store(Request $request)
@@ -40,7 +40,7 @@ class TypesController extends Controller
 
         $types = new Types;
 
-        $types->type = $request->type;
+        $types->name = $request->type;
 
         $types->save();
 

@@ -6,26 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->string('users_name');
-            $table->string('clients_client');
-            $table->string('systems_system');
+
+            // Foreign Keys que viram NULL se o registro relacionado for deletado
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('client_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('system_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('type_id')->nullable()->constrained('types')->onDelete('set null');
+            $table->foreignId('sector_id')->nullable()->constrained()->onDelete('set null');
+
             $table->string('path');
             $table->string('file');
-            $table->string('type');
+
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('files');
