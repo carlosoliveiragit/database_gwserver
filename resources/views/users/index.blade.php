@@ -75,8 +75,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-lock text-primary"></i></span>
                     </div>
-                    <input type="password" name="password" class="form-control" placeholder="Senha Minimo 8 Caracteres"
-                        minlength="8" maxlength="20" size="20" required>
+                    <input type="password" name="password" class="form-control" placeholder="Senha Mínimo 8 Caracteres"
+                        minlength="8" maxlength="20" size="20" required autocomplete="new-password">
                 </div>
             </div>
         </div>
@@ -103,8 +103,8 @@
                             <i class="fas fa-envelope text-primary"></i>
                         </span>
                     </div>
-                    <input type="email" name="email" class="form-control" placeholder="E-mail" required
-                        autocomplete="off">
+                    <input type="email" name="email" class="form-control" placeholder="E-mail" required autocomplete="off">
+
                 </div>
             </div>
         </div>

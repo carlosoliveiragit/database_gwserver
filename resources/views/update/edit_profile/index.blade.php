@@ -3,7 +3,7 @@
 @section('content_header')
     <div class="row p-2">
         <div class="col-sm">
-            <h4><i class="fa-solid fa-vector-square"></i> &nbsp;&nbsp;Atualização de Dados</h4>
+            <h4><i class="fa-solid fa-address-card"></i> &nbsp;&nbsp;Atualização de Dados</h4>
         </div>
         <div class="col-sm">
             @if (session('success'))
@@ -23,17 +23,17 @@
     <div class="card card-default">
         <div class="card-header">
             <h2 class="card-title">
-                &nbsp;&nbsp;Editando Tipo: {{$Sectors->name}} </h2>
+                &nbsp;&nbsp;Editando o Perfil de Usuário: {{$Profiles->name}} </h2>
         </div>
         <p></p>
-        <form action="{{ $Sectors->id }}" method="POST">
+        <form action="{{ $Profiles->id }}" method="POST">
             @csrf
             @method('PUT') 
             <div class="class row p-2">
                 <div class="col-sm">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="type" name="name"
-                            placeholder="Nome do Novo Tipo" value="{{$Sectors->name}}" required>
+                        <input type="text" class="form-control" id="profile" name="name"
+                            placeholder="Nome do Novo Perfil" value="{{$Profiles->name}}" required>
                     </div>
                 </div>
                 <div class="col-sm">

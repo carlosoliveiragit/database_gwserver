@@ -35,14 +35,18 @@ class UsersController extends Controller
         $Users = Users::all();
         $Sectors = Sectors::all();
         $Profiles = Profiles::all();
-        $Users = Users::with(['sector','profile'])->get();
-        return view('users.index', compact('Users','Sectors' , 'Profiles'));
+        $Users = Users::with(['sector', 'profile'])->get();
+        return view('users.index', compact('Users', 'Sectors', 'Profiles'));
     }
     public function store(Request $request)
     {
+        $existingUser = Users::where('email', $request->email)->first();
+
+        if ($existingUser) {
+            return redirect('users')->with('error', 'Email já cadastrado');
+        }
 
         try {
-            
             $sector = Sectors::where('name', $request->sectors_sector)->first();
             $profile = Profiles::where('name', $request->profiles_profile)->first();
 
@@ -50,44 +54,44 @@ class UsersController extends Controller
             $users->name = $request->name;
             $users->email = $request->email;
             $users->password = Hash::make($request->password);
-            $users->sector_id = $sector->id; // Associando o setor
-            $users->profile_id = $profile->id;// Associando o perfil
-            $users->admin_lte_dark_mode = $request->admin_lte_dark_mode;
+            $users->sector_id = $sector->id;
+            $users->profile_id = $profile->id;
+            $users->admin_lte_dark_mode = '0';
 
             $users->save();
 
-        } catch (\Illuminate\Database\QueryException $e) {
-
-            if ($e->getCode() === '23000') {
-                return redirect('users')->with('error', 'Email ja  Cadastrado');
-            }
-
+        } catch (\Exception $e) {
+            return redirect('users')->with('error', 'Erro ao cadastrar usuário: ' . $e->getMessage());
         }
 
-        return redirect('users')->with('success', 'Usuário Cadastrado com Sucesso');
-
+        return redirect('users')->with('success', 'Usuário cadastrado com sucesso');
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
 
         $Users = Users::findOrFail($id);
         $Sectors = Sectors::all();
         $Profiles = Profiles::all();
 
-        return view('update.edit_user.index', compact('Users','Sectors' ,'Profiles'));
+        return view('update.edit_user.index', compact('Users', 'Sectors', 'Profiles'));
 
     }
     public function update(Request $request)
     {
-        
         $data = $request->all();
 
-        $data['password']= Hash::make($request->password);
+        // Se uma senha for fornecida, a atualiza
+        if ($request->password) {
+            $data['password'] = Hash::make($request->password);
+        } else {
+            // Caso contrário, mantemos a senha atual
+            unset($data['password']);
+        }
 
         Users::findOrFail($request->id)->update($data);
 
         return redirect('users')->with('success', 'Usuário Atualizado com Sucesso');
-
     }
     public function destroy($id)
     {

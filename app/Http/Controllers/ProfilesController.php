@@ -52,7 +52,7 @@ class ProfilesController extends Controller
 
         $Profiles = Profiles::findOrFail($id);
 
-        return view('update.edit_profiles.index', compact('Profiles') );
+        return view('update.edit_profile.index', compact('Profiles') );
 
     }
 

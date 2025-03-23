@@ -92,22 +92,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($Sectors as $key => $return_db)
+                                        @foreach ($Sectors as $sector)
                                             <tr class="border border-secondary">
                                                 <td>
-                                                    {{ $return_db->id }}
+                                                    {{ $sector->id }}
                                                 </td>
                                                 <td>
-                                                    {{ $return_db->sector }}
+                                                    {{ $sector->name }}
                                                 </td>
                                                 @can('is_admin')
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
                                                             <a type="submit" class="btn btn-danger btn-sm"
-                                                                href="sectors?id={{ $return_db->id }}&system={{ $return_db->sector }}">
+                                                                href="sectors?id={{ $sector->id }}&system={{ $sector->name }}">
                                                                 <i class="fa fa-lg fa-fw fa-trash"></i>
                                                             </a>
-                                                            <a href="edit_sector/{{ $return_db->id }}"
+                                                            <a href="edit_sector/{{ $sector->id }}"
                                                                 class="btn btn-info btn-sm">
                                                                 <i class="fa fa-lg fa-fw fa-pen"></i>
                                                             </a>

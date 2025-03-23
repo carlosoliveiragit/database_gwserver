@@ -1,7 +1,10 @@
 <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+
 @extends('adminlte::page')
+
 @section('title', 'Dashboard GW | Edit Users')
+
 @section('content_header')
 <div class="row">
     <div class="col-sm">
@@ -48,11 +51,11 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-lock text-primary"></i></span>
                     </div>
-                    <input type="password" name="password" class="form-control" placeholder="Senha Minimo 8 Caracteres">
+                    <input type="password" name="password" class="form-control" placeholder="Senha Mínimo 8 Caracteres">
                 </div>
             </div>
         </div>
-        <div class="row p-2">  
+        <div class="row p-2">
             <div class="col-sm">
                 <x-adminlte-select2 name="profile_id" label="Perfil de Usuário" data-placeholder="selecione o perfil...">
                     <x-slot name="prependSlot">
@@ -61,8 +64,9 @@
                         </div>
                     </x-slot>
                     @foreach ($Profiles as $profile)
-                        <option disabled="disabled" selected></option>
-                        <option value="{{ $profile->id}}">{{ $profile->name }}</option>
+                        <option value="{{ $profile->id }}" {{ $profile->id == $Users->profile_id ? 'selected' : '' }}>
+                            {{ $profile->name }}
+                        </option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
@@ -88,8 +92,9 @@
                         </div>
                     </x-slot>
                     @foreach ($Sectors as $sector)
-                        <option disabled="disabled" selected></option>
-                        <option value="{{ $sector->id }}">{{ $sector->name }}</option>
+                        <option value="{{ $sector->id }}" {{ $sector->id == $Users->sector_id ? 'selected' : '' }}>
+                            {{ $sector->name }}
+                        </option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
@@ -105,12 +110,10 @@
     </form>
 </div>
 <hr>
-
 @stop
+
 @section('css')
 @stop
-@section('js')
 
 @section('js')
-
 @stop

@@ -26,10 +26,10 @@
                 </div>
             @endif
             @if (isset($_GET['id']))
-                <x-adminlte-card class="bg-warning" title=" Tem Certeza que Deseja Excluir o Setor?" theme="warning"
+                <x-adminlte-card class="bg-warning" title=" Tem Certeza que Deseja Excluir o Perfil de Usuário?" theme="warning"
                     icon="fas fa-exclamation-triangle" removable>
                     <h5><strong>{{ $_GET['system'] }}</strong></h5>
-                    <form action="sectors/{{ $_GET['id'] }}" method="POST">
+                    <form action="profiles/{{ $_GET['id'] }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">
@@ -44,8 +44,8 @@
 @section('content')
     <div class="card card-default">
         <div class="card-header">
-            <h2 class="card-title"><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;<i class="fa-solid fa-vector-square "></i>
-                &nbsp;&nbsp;Adicionar Setor</h2>
+            <h2 class="card-title"><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;<i class="fa-solid fa-address-card"></i>
+                &nbsp;&nbsp;Adicionar Perfil de Usuário</h2>
         </div>
         <p></p>
         <form action="profiles" method="POST">
@@ -61,7 +61,7 @@
                     <div class="input-group mb-3">
                         <button type="submit" class="btn btn-block btn-primary">
                             <i class="fa-solid fa-plus"></i>&nbsp;&nbsp;<span
-                                class="fa-solid fa-vector-square"></span>&nbsp;&nbsp;Cadastrar Perfil
+                                class="fa-solid fa-address-card"></span>&nbsp;&nbsp;Cadastrar Perfil
                         </button>
                     </div>
 
@@ -92,22 +92,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($Sectors as $key => $return_db)
+                                        @foreach ($Profiles as $profile)
                                             <tr class="border border-secondary">
                                                 <td>
-                                                    {{ $return_db->id }}
+                                                    {{ $profile->id }}
                                                 </td>
                                                 <td>
-                                                    {{ $return_db->sector }}
+                                                    {{ $profile->name }}
                                                 </td>
                                                 @can('is_admin')
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
                                                             <a type="submit" class="btn btn-danger btn-sm"
-                                                                href="sectors?id={{ $return_db->id }}&system={{ $return_db->sector }}">
+                                                                href="profiles?id={{ $profile->id }}&system={{ $profile->name }}">
                                                                 <i class="fa fa-lg fa-fw fa-trash"></i>
                                                             </a>
-                                                            <a href="edit_sector/{{ $return_db->id }}"
+                                                            <a href="edit_profile/{{ $profile->id }}"
                                                                 class="btn btn-info btn-sm">
                                                                 <i class="fa fa-lg fa-fw fa-pen"></i>
                                                             </a>
