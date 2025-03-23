@@ -72,13 +72,14 @@ class UsersController extends Controller
 
         $Users = Users::findOrFail($id);
         $Sectors = Sectors::all();
+        $Profiles = Profiles::all();
 
-        return view('update.edit_user.index', compact('Users','Sectors'));
+        return view('update.edit_user.index', compact('Users','Sectors' ,'Profiles'));
 
     }
     public function update(Request $request)
     {
-
+        
         $data = $request->all();
 
         $data['password']= Hash::make($request->password);

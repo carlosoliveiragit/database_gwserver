@@ -43,20 +43,6 @@
                 </div>
             </div>
             <div class="col-sm">
-                <label>Tema</label>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fas fa-moon text-primary"></i></span>
-                    </div>
-                    <select class="form-control" name="admin_lte_dark_mode">
-                        <option value="0">Dark Mode OFF</option>
-                        <option value="1">Dark Mode ON</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="row p-2">
-            <div class="col-sm">
                 <label>Senha</label>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -65,20 +51,21 @@
                     <input type="password" name="password" class="form-control" placeholder="Senha Minimo 8 Caracteres">
                 </div>
             </div>
-            <div class="col-sm">
-                <label>Perfil</label>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fas fa-screwdriver-wrench text-primary"></i></span>
-                    </div>
-                    <select class="form-control" name="profile">
-                        <option value="user">Usuário</option>
-                        <option value="administrator">Administrador</option>
-                    </select>
-                </div>
-            </div>
         </div>
-        <div class="row p-2">
+        <div class="row p-2">  
+            <div class="col-sm">
+                <x-adminlte-select2 name="profile_id" label="Perfil de Usuário" data-placeholder="selecione o perfil...">
+                    <x-slot name="prependSlot">
+                        <div class="input-group-text text-primary">
+                            <i class="fas fa-solid fa-sitemap"></i>
+                        </div>
+                    </x-slot>
+                    @foreach ($Profiles as $profile)
+                        <option disabled="disabled" selected></option>
+                        <option value="{{ $profile->id}}">{{ $profile->name }}</option>
+                    @endforeach
+                </x-adminlte-select2>
+            </div>
             <div class="col-sm">
                 <label>E-mail</label>
                 <div class="input-group mb-3">
@@ -91,21 +78,21 @@
                         placeholder="E-mail" required>
                 </div>
             </div>
+        </div>
+        <div class="row p-2">
             <div class="col-sm">
-                <x-adminlte-select2 name="sector" label="Setor" data-placeholder="selecione o setor...">
+                <x-adminlte-select2 name="sector_id" label="Setor" data-placeholder="selecione o setor...">
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Sectors as $index => $sector)
+                    @foreach ($Sectors as $sector)
                         <option disabled="disabled" selected></option>
-                        <option>{{ $sector->sector }}</option>
+                        <option value="{{ $sector->id }}">{{ $sector->name }}</option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
-        </div>
-        <div class="row p-2">
             <div class="col-sm">
                 <label>Ação</label>
                 <div class="input-group mb-3">
