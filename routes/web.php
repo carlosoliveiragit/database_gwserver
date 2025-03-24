@@ -121,6 +121,13 @@ Route::get('search_files/{file}/download', [SearchFilesController::class, 'downl
 Route::post('search_files', [SearchFilesController::class, 'store'])->name('search_files.store');
 Route::delete('search_files/{id}', [SearchFilesController::class, 'destroy'])->name('search_files.destroy');
 
+use App\Http\Controllers\TestDataController;
+
+//Route::get('/teste', action: [TestDataController::class, 'store']);
+
+Route::post('/teste', [TestDataController::class, 'store']);
+
+
 
 
 
