@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('profiles', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // Mantém o campo id como chave primária
+            $table->string('xid', 50)->unique(); // Adiciona o campo xid único
             $table->string('name');
             $table->timestamps();
         });

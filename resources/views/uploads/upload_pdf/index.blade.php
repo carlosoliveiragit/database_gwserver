@@ -52,7 +52,7 @@
                             <i class="fas fa-solid fa-water"></i>
                         </div>
                     </x-slot>
-                    @foreach($Clients as $index => $name)
+                    @foreach($Clients as  $name)
                         <option disabled="disabled" selected></option>
                         <option>{{ $name->name }}</option>
                     @endforeach
@@ -65,7 +65,7 @@
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    @foreach($Systems as $index => $name)
+                    @foreach($Systems as $name)
                         <option disabled="disabled" selected></option>
                         <option>{{ $name->name }}</option>
                     @endforeach
@@ -80,7 +80,7 @@
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    @foreach($Sectors as $index => $name)
+                    @foreach($Sectors as $name)
                         <option disabled="disabled" selected></option>
                         <option>{{ $name->name }}</option>
                     @endforeach

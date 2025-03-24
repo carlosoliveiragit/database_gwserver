@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->string('xid', 50)->unique(); // Adiciona o campo xid único
             $table->string('name');
             $table->timestamps();
         });

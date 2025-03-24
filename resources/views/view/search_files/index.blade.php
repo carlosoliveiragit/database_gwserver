@@ -64,7 +64,7 @@
                     </x-slot>
                     <option disabled selected></option>
                     @foreach ($Clients as $client)
-                        <option value="{{ $client->id }}" {{ request('clients_client') == $client->id ? 'selected' : '' }}>
+                        <option value="{{ $client->xid }}" {{ request('clients_client') == $client->xid ? 'selected' : '' }}>
                             {{ $client->name }}
                         </option>
                     @endforeach
@@ -79,7 +79,7 @@
                     </x-slot>
                     <option disabled selected></option>
                     @foreach ($Systems as $system)
-                        <option value="{{ $system->id }}" {{ request('systems_system') == $system->id ? 'selected' : '' }}>
+                        <option value="{{ $system->xid }}" {{ request('systems_system') == $system->xid ? 'selected' : '' }}>
                             {{ $system->name }}
                         </option>
                     @endforeach
@@ -97,7 +97,7 @@
                     </x-slot>
                     <option disabled selected></option>
                     @foreach ($Types as $type)
-                        <option value="{{ $type->id }}" {{ request('types_type') == $type->id ? 'selected' : '' }}>
+                        <option value="{{ $type->xid }}" {{ request('types_type') == $type->xid ? 'selected' : '' }}>
                             {{ $type->name }}
                         </option>
                     @endforeach
@@ -112,7 +112,7 @@
                     </x-slot>
                     <option disabled selected></option>
                     @foreach($Sectors as $sector)
-                        <option value="{{ $sector->id }}" {{ request('sectors_sector') == $sector->id ? 'selected' : '' }}>
+                        <option value="{{ $sector->xid }}" {{ request('sectors_sector') == $sector->xid ? 'selected' : '' }}>
                             {{ $sector->name }}
                         </option>
                     @endforeach

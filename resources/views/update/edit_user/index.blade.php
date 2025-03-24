@@ -57,14 +57,14 @@
         </div>
         <div class="row p-2">
             <div class="col-sm">
-                <x-adminlte-select2 name="profile_id" label="Perfil de Usuário" data-placeholder="selecione o perfil...">
+                <x-adminlte-select2 name="profile_xid" label="Perfil de Usuário" data-placeholder="selecione o perfil...">
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
                     @foreach ($Profiles as $profile)
-                        <option value="{{ $profile->id }}" {{ $profile->id == $Users->profile_id ? 'selected' : '' }}>
+                        <option value="{{ $profile->xid }}" {{ $profile->xid == $Users->profile_xid ? 'selected' : '' }}>
                             {{ $profile->name }}
                         </option>
                     @endforeach
@@ -85,14 +85,14 @@
         </div>
         <div class="row p-2">
             <div class="col-sm">
-                <x-adminlte-select2 name="sector_id" label="Setor" data-placeholder="selecione o setor...">
+                <x-adminlte-select2 name="sector_xid" label="Setor" data-placeholder="selecione o setor...">
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
                     @foreach ($Sectors as $sector)
-                        <option value="{{ $sector->id }}" {{ $sector->id == $Users->sector_id ? 'selected' : '' }}>
+                        <option value="{{ $sector->xid }}" {{ $sector->xid == $Users->sector_xid ? 'selected' : '' }}>
                             {{ $sector->name }}
                         </option>
                     @endforeach

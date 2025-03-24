@@ -18,7 +18,7 @@ class TestDataController extends Controller
             }
 
             // Log para ver os dados recebidos
-            //Log::info('Dados recebidos: ', $request->all());
+            Log::info('Dados recebidos: ', $request->all());
 
 
             // Criação de uma nova entrada no banco de dados
@@ -42,8 +42,8 @@ class TestDataController extends Controller
 
         } catch (\Exception $e) {
             // Logando o erro completo para depuração
-            //Log::error('Erro ao processar a requisição: ' . $e->getMessage());
-            //Log::error('Detalhes do erro: ' . $e->getTraceAsString());
+            Log::error('Erro ao processar a requisição: ' . $e->getMessage());
+            Log::error('Detalhes do erro: ' . $e->getTraceAsString());
 
             // Respondendo com uma mensagem amigável de erro
             return response("Ocorreu um erro ao processar a requisição.", 500);

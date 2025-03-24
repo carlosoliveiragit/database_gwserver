@@ -53,7 +53,7 @@
             <div class="class row p-2">
                 <div class="col-sm">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="system" name="name"
+                        <input type="text" class="form-control" id="profiles" name="profile"
                             placeholder="Nome do Novo Perfi" required>
                     </div>
                 </div>

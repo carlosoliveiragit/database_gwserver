@@ -93,13 +93,13 @@ class UploadPdfController extends Controller
             $user   = User   ::where('name', $request->users_name)->first();  
 
             $fileEntry = new Files();
-            $fileEntry->user_id = $user->id; // Associando o usuário
-            $fileEntry->client_id = $client->id; // Associando o cliente
-            $fileEntry->system_id = $system->id; // Associando o sistema
-            $fileEntry->sector_id = $sector->id; // Associando o setor
+            $fileEntry->user_xid = $user->xid; // Associando o usuário
+            $fileEntry->client_xid = $client->xid; // Associando o cliente
+            $fileEntry->system_xid = $system->xid; // Associando o sistema
+            $fileEntry->sector_xid = $sector->xid; // Associando o setor
             $fileEntry->path = $pdfPath;
             $fileEntry->file = $savedFileName;
-            $fileEntry->type_id = "1";  // Se necessário, você pode armazenar um tipo
+            $fileEntry->type_xid = "TP_I8JYSI";  // Se necessário, você pode armazenar um tipo
             $fileEntry->save();
         }
 

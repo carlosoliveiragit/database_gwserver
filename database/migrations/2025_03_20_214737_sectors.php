@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Sectors', function (Blueprint $table) {
-            $table->id();
+        Schema::create('sectors', function (Blueprint $table) {
+            $table->id(); // Mantém o campo id como chave primária
+            $table->string('xid', 50)->unique(); // Adiciona o campo xid único
             $table->string('name');
             $table->timestamps();
         });
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('Sectors');
+        Schema::dropIfExists('sectors');
     }
 };

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 use App\Models\Sectors;
 use App\Models\Profiles;
 use App\Models\Users;
@@ -18,10 +17,10 @@ class UsersController extends Controller
      */
     protected $user;
 
-    public function __construct(User $user)
+    public function __construct(Users $users)
     {
         $this->middleware('auth');
-        $this->user = $user;
+        $this->user = $users;
     }
 
     /**
@@ -54,8 +53,8 @@ class UsersController extends Controller
             $users->name = $request->name;
             $users->email = $request->email;
             $users->password = Hash::make($request->password);
-            $users->sector_id = $sector->id;
-            $users->profile_id = $profile->id;
+            $users->sector_xid = $sector->xid;
+            $users->profile_xid = $profile->xid;
             $users->admin_lte_dark_mode = '0';
 
             $users->save();

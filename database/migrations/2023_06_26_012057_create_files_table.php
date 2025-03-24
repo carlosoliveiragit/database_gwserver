@@ -10,14 +10,23 @@ return new class extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
+            $table->string('xid', 50)->unique(); // Adiciona o campo xid único
 
-            // Foreign Keys que viram NULL se o registro relacionado for deletado
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('client_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('system_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('type_id')->nullable()->constrained('types')->onDelete('set null');
-            $table->foreignId('sector_id')->nullable()->constrained()->onDelete('set null');
+            // Definindo as chaves estrangeiras corretamente
+            $table->string('user_xid', 50)->nullable();
+            $table->string('client_xid', 50)->nullable();
+            $table->string('system_xid', 50)->nullable();
+            $table->string('type_xid', 50)->nullable();
+            $table->string('sector_xid', 50)->nullable();
 
+            // Relacionamentos com as tabelas
+            $table->foreign('user_xid')->references('xid')->on('users')->onDelete('set null');
+            $table->foreign('client_xid')->references('xid')->on('clients')->onDelete('set null');
+            $table->foreign('system_xid')->references('xid')->on('systems')->onDelete('set null');
+            $table->foreign('type_xid')->references('xid')->on('types')->onDelete('set null');
+            $table->foreign('sector_xid')->references('xid')->on('sectors')->onDelete('set null');
+
+            // Outras colunas
             $table->string('path');
             $table->string('file');
 

@@ -36,16 +36,16 @@ class SearchFilesController extends Controller
             $query = Files::query();
 
             if ($request->has('clients_client')) {
-                $query->where('client_id', $request->clients_client);
+                $query->where('client_xid', $request->clients_client);
             }
             if ($request->has('systems_system')) {
-                $query->where('system_id', $request->systems_system);
+                $query->where('system_xid', $request->systems_system);
             }
             if ($request->has('types_type')) {
-                $query->where('type_id', $request->types_type);
+                $query->where('type_xid', $request->types_type);
             }
             if ($request->has('sectors_sector')) {
-                $query->where('sector_id', $request->sectors_sector);
+                $query->where('sector_xid', $request->sectors_sector);
             }
             $Files = $query->with(['user', 'client', 'system', 'type', 'sector'])->get();
         }
