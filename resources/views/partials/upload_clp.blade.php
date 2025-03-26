@@ -58,9 +58,9 @@
                             <i class="fas fa-solid fa-water"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Clients as $index => $client)
+                    @foreach ($Clients as $client)
                         <option disabled="disabled" selected></option>
-                        <option>{{ $client->client }}</option>
+                        <option>{{ $client->name }}</option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
@@ -72,16 +72,16 @@
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Systems as $index => $system)
+                    @foreach ($Systems as $system)
                         <option disabled="disabled" selected></option>
-                        <option>{{ $system->system }}</option>
+                        <option>{{ $system->name }}</option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
         </div>
         <div class="row p-2">
             <div class="col-sm">
-                <x-adminlte-select2 name="model" label="3º - Modelo" data-placeholder="Select Model..." required>
+                <x-adminlte-select2 name="models_model" label="3º - Modelo" data-placeholder="Select Model..." required>
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
                             <i class="fas fa-solid fa-tag"></i>
@@ -107,7 +107,7 @@
                 </x-adminlte-select2>
             </div>
             <div class="col-sm">
-                <x-adminlte-select2 name="type" label="4º - Identificação" data-placeholder="Select Type..." required>
+                <x-adminlte-select2 name="models_ident" label="4º - Identificação" data-placeholder="Select Type..." required>
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
                             <i class="fas fa-solid fa-file"></i>

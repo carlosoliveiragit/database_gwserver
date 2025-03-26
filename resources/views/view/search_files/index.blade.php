@@ -164,7 +164,7 @@
                                         <tr class="border border-secondary">
                                             <td>{{ $file->id }}</td>
                                             <td title="{{ $file->user->name ?? 'N/A' }}">
-                                                {{ Str::limit($file->user->name ?? 'N/A', 5) }}
+                                                {{ Str::limit($file->user->name ?? 'N/A', 30) }}
                                             </td>
                                             <td title="{{ $file->client->name ?? 'N/A' }}">
                                                 {{ Str::limit($file->client->name ?? 'N/A', 20) }}

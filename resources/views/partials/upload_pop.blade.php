@@ -49,28 +49,33 @@
         enctype="multipart/form-data">
         @csrf
         <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
+        <input type="hidden" name="view_origem" value="{{ basename(request()->path()) }}">
         <div class="row p-2">
             <div class="col-sm">
-                <x-adminlte-select2 name="clients_client" label="Cliente" data-placeholder="Select Client..." required>
+                <x-adminlte-select2 name="clients_client" label="1º - Cliente" data-placeholder="Select Client..."
+                    required>
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
                             <i class="fas fa-solid fa-water"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Clients as $index => $client)
-                        <option value="{{ $client->client }}">{{ $client->client }}</option>
+                    @foreach($Clients as $client)
+                        <option disabled="disabled" selected></option>
+                        <option>{{ $client->name }}</option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
             <div class="col-sm">
-                <x-adminlte-select2 name="systems_system" label="Sistema" data-placeholder="Select System..." required>
+                <x-adminlte-select2 name="systems_system" label="2º - Sistema" data-placeholder="Select System..."
+                    required>
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Systems as $index => $system)
-                        <option value="{{ $system->system }}">{{ $system->system }}</option>
+                    @foreach($Systems as $system)
+                        <option disabled="disabled" selected></option>
+                        <option>{{ $system->name }}</option>
                     @endforeach
                 </x-adminlte-select2>
             </div>

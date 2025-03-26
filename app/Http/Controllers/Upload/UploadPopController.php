@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Upload;
 use App\Models\Users;
 use App\Models\Clients;
 use App\Models\Systems;
+use App\Models\Types;
+use App\Models\Sectors;
 use App\Models\Files;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -27,6 +29,8 @@ class UploadPopController extends Controller
         $Clients = Clients::all();
         $Users = Users::all();
         $Systems = Systems::all();
+        $Types = Types::all();
+        $Sectors = Sectors::all();
 
         // Verifica se o setor existe e define a view correspondente
         $viewName = 'uploads.upload_pop.' . $sector . '.index';
@@ -36,12 +40,7 @@ class UploadPopController extends Controller
             abort(404, "Setor não encontrado");
         }
 
-        return view($viewName, [
-            'Clients' => $Clients,
-            'Systems' => $Systems,
-            'Users' => $Users,
-            'sector' => $sector
-        ]);
+        return view($viewName, compact("sector", "Clients", "Users", "Systems", "Types", "Sectors"));
     }
 
     public function store(Request $request, $sector)
@@ -53,30 +52,51 @@ class UploadPopController extends Controller
             'systems_system' => 'required|string',
         ]);
 
+        $type_xid = "TP_5FSPEC";//POP
+        $types_name = trim(Types::where('xid', 'TP_5FSPEC')->value('name'));//POP
+
+        $viewOrigem = $request->input('view_origem');
+
+        if ($viewOrigem === "cco") {
+            $sector_xid = "SC_BFDEPA";//CCO
+            $sectors_name = trim(Sectors::where('xid', 'SC_BFDEPA')->value('name'));//CCO
+        }
+        if ($viewOrigem === "manutencao") {
+            $sector_xid = "SC_EX3U73";//MANUTENÇÃO
+            $sectors_name = trim(Sectors::where('xid', 'SC_EX3U73')->value('name'));//MANUTENÇÃO
+        }
+
+        if ($viewOrigem === "operacao") {
+            $sector_xid = "SC_XYIYFC";//OPERAÇÃO
+            $sectors_name = trim(Sectors::where('xid', 'SC_XYIYFC')->value('name'));//OPERAÇÃO
+        }
+
         // Validação e sanitização dos campos clients_client, systems_system e sector
+        $users_user = $this->sanitizeInput($request->users_user);
         $clients_client = $this->sanitizeInput($request->clients_client);
         $systems_system = $this->sanitizeInput($request->systems_system);
-        $sector = $this->sanitizeInput($request->sector);
-
+        $type_name = $this->sanitizeInput($types_name);
+        $sector_name = $this->sanitizeInput($sectors_name);
+        
         if ($request->hasFile('upload')) {
             foreach ($request->file('upload') as $requestUpload) {
                 if ($requestUpload->isValid()) {
                     // Nome e extensão formatados
                     $originalName = pathinfo($requestUpload->getClientOriginalName(), PATHINFO_FILENAME);
                     $extension = strtolower($requestUpload->getClientOriginalExtension());
-                    $uploadName = $sector.' '.$originalName;
+                    $uploadName = $sector . ' ' . $originalName;
                     $uploadName = $this->sanitizeInput($uploadName);
                     // Adiciona a extensão em minúsculas
                     $uploadName .= '.' . $extension;
 
                     // Definir caminho base
                     $baseFilePath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR);
-
                     // Criar diretório completo
-                    $directoryPath = $baseFilePath . $clients_client . DIRECTORY_SEPARATOR .
+                    $directoryPath = $baseFilePath .
+                        $clients_client . DIRECTORY_SEPARATOR .
                         $systems_system . DIRECTORY_SEPARATOR .
-                        strtoupper($sector) . DIRECTORY_SEPARATOR .
-                        "POP" . DIRECTORY_SEPARATOR;
+                        $sector_name . DIRECTORY_SEPARATOR .
+                        $type_name . DIRECTORY_SEPARATOR;
 
                     // Caminho completo do arquivo
                     $fullFilePath = $directoryPath . $uploadName;
@@ -86,11 +106,17 @@ class UploadPopController extends Controller
                         File::makeDirectory($directoryPath, 0777, true);
                     }
 
+                    // Associar as chaves estrangeiras corretamente
+                    $user = Users::where('name', $request->users_name)->first();
+                    $client = Clients::where('name', $request->clients_client)->first();
+                    $system = Systems::where('name', $request->systems_system)->first();
+                    
                     // Verificar se arquivo com mesmo nome e caminho já existe no banco
-                    $file = Files::where('users_name', $request->users_name)
-                        ->where('clients_client', $request->clients_client)
-                        ->where('systems_system', $request->systems_system)
-                        ->where('type', 'POP') // Tipo sempre POP
+                    $file = Files::where('user_xid', $request->users_name)
+                        ->where('client_xid', $request->clients_client)
+                        ->where('system_xid', $request->systems_system)
+                        ->where('type_xid', $type_xid)
+                        ->where('sector_xid', $sector_xid)
                         ->where('file', $uploadName)
                         ->where('path', $directoryPath)
                         ->first();
@@ -102,14 +128,15 @@ class UploadPopController extends Controller
                         }
                         // Atualiza campos se necessário (aqui mantemos setor)
                         $file->save();
+
                     } else {
                         // Novo registro no banco
                         $file = new Files;
-                        $file->users_name = $request->users_name;
-                        $file->clients_client = $request->clients_client;
-                        $file->systems_system = $request->systems_system;
-                        $file->type = 'POP'; // Tipo sempre POP
-                        $file->sector = $request->sector;
+                        $file->user_xid = $user->xid;// Associando o usuário
+                        $file->client_xid = $client->xid;// Associando o cliente
+                        $file->system_xid = $system->xid;// Associando o sistema
+                        $file->type_xid = $type_xid;// Associando o type
+                        $file->sector_xid = $sector_xid;// Associando o sector
                         $file->path = $directoryPath;
                         $file->file = $uploadName;
                         $file->save();
@@ -120,9 +147,8 @@ class UploadPopController extends Controller
                 }
             }
         }
-
         // Redireciona para a rota do setor
-        return redirect()->route('uploads.upload_pop.index', ['sector' => $sector])->with('success', 'Upload realizado com sucesso');
+        return redirect()->back()->with('success', 'Upload realizado com sucesso');
     }
 
     // Função para sanitizar o input

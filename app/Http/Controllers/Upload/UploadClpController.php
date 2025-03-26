@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Upload;
 use App\Models\Users;
 use App\Models\Clients;
 use App\Models\Systems;
+use App\Models\Types;
+use App\Models\Sectors;
 use App\Models\Files;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class UploadClpController extends Controller
 {
@@ -34,13 +36,7 @@ class UploadClpController extends Controller
         if (!view()->exists($viewName)) {
             abort(404, "Setor não encontrado");
         }
-
-        return view($viewName, [
-            'Clients' => $Clients,
-            'Systems' => $Systems,
-            'Users' => $Users,
-            'model' => $model
-        ]);
+        return view($viewName, compact("Clients","Systems","Users","model"));
     }
 
     public function store(Request $request)
@@ -50,13 +46,25 @@ class UploadClpController extends Controller
             'users_name' => 'required|string',
             'clients_client' => 'required|string',
             'systems_system' => 'required|string',
-            'model' => 'required|string', // Adicionando validação para o modelo
+            'models_model' => 'required|string', // Adicionando validação para o modelo
         ]);
 
-        // Validação e sanitização dos campos clients_client, systems_system e model
+        $sector_xid = "SC_EX3U73";//MANUTENÇÃO
+        $sectors_name = trim(Sectors::where('xid', 'SC_EX3U73')->value('name'));//CLP
+        $type_xid = "TP_S4SA7G";//CLP
+        $types_name = trim(Types::where('xid', 'TP_S4SA7G')->value('name'));//CLP
+
+        // Validação e sanitização dos campos clients_client, systems_system e sector
+        $users_user = $this->sanitizeInput($request->users_user);
         $clients_client = $this->sanitizeInput($request->clients_client);
         $systems_system = $this->sanitizeInput($request->systems_system);
-        $model = $this->sanitizeInput($request->model);
+        $model_ident = $this->sanitizeInput($request->models_ident);
+        $sector_name = $this->sanitizeInput($sectors_name);
+        $type_name = $this->sanitizeInput($types_name);
+
+        //dd($sector_name);
+
+        $models_model = $this->sanitizeInput($request->models_model);
 
         if ($request->hasFile('upload') && $request->file('upload')->isValid()) {
             $requestUpload = $request->file('upload');
@@ -74,18 +82,26 @@ class UploadClpController extends Controller
                 'PLC500' => 'projectarchive',
             ];
 
+            
+
             // Verifica se o modelo existe no mapeamento e se a extensão é válida
-            if (!isset($validExtensions[$model]) || $validExtensions[$model] !== $extension) {
+            if (!isset($validExtensions[$models_model]) || $validExtensions[$models_model] !== $extension) {
                 return redirect()->back()
                     ->withInput() // Mantém os dados inseridos no formulário
-                    ->with('error', 'O arquivo deve ter a extensão .' . $validExtensions[$model] . ' para o modelo ' . $model);
+                    ->with('error', 'O arquivo deve ter a extensão .' . $validExtensions[$models_model] . ' para o modelo ' . $models_model);
             }
 
             // Definição do caminho base (até ARQUIVOS)
             $baseFilePath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR);
-
             // Criando o caminho completo com as subpastas
-            $directoryPath = $baseFilePath . $clients_client . DIRECTORY_SEPARATOR . $systems_system . DIRECTORY_SEPARATOR . "MANUTENCAO" . DIRECTORY_SEPARATOR . "CLP" . DIRECTORY_SEPARATOR . $model . DIRECTORY_SEPARATOR;
+            $directoryPath = $baseFilePath .
+                $clients_client . DIRECTORY_SEPARATOR .
+                $systems_system . DIRECTORY_SEPARATOR .
+                $sector_name . DIRECTORY_SEPARATOR .
+                $type_name  . '-' .
+                $model_ident . '-' .
+                $models_model . DIRECTORY_SEPARATOR;
+               
 
             // Criar o diretório se não existir
             if (!File::exists($directoryPath)) {
@@ -93,25 +109,38 @@ class UploadClpController extends Controller
             }
 
             // Criando nome seguro para o arquivo
-            $uploadName = $clients_client . ' ' . $systems_system . ' ' . $request->type_Ident . ' ' . $model . ' ' . date("dmy His");
+            $savedFileName = 
+            $clients_client.' '. 
+            $systems_system .' '.
+            $sector_name.' '. 
+            $type_name.' '. 
+            $model_ident.' '.
+            $models_model.' '. 
+            date("dmy His");
+
             // Usa a função de sanitização diretamente para o nome do arquivo
-            $uploadName = $this->sanitizeInput($uploadName);
+            $savedFileName = $this->sanitizeInput($savedFileName);
 
             // Adiciona a extensão em minúsculas
-            $uploadName .= '.' . $extension;
+            $savedFileName .= '.' . $extension;
 
             // Salvando o arquivo na pasta mapeada
-            $requestUpload->move($directoryPath, $uploadName);
+            $requestUpload->move($directoryPath, $savedFileName);
+
+            // Associar as chaves estrangeiras corretamente
+            $user = Users::where('name', $request->users_name)->first();
+            $client = Clients::where('name', $request->clients_client)->first();
+            $system = Systems::where('name', $request->systems_system)->first();
 
             // Salvando as informações no banco de dados
-            $file = new Files;
-            $file->users_name = $request->users_name;
-            $file->clients_client = $request->clients_client;
-            $file->systems_system = $request->systems_system;
+            $file = new Files();
+            $file->user_xid = $user->xid; // Associando o usuário
+            $file->client_xid = $client->xid; // Associando o cliente
+            $file->system_xid = $system->xid; // Associando o sistema
+            $file->type_xid = $type_xid; // Associando o type
+            $file->sector_xid = $sector_xid; // Associando o setor
             $file->path = $directoryPath;
-            $file->file = $uploadName;
-            $file->type = "CLP";
-            $file->sector = "MANUTENCAO";
+            $file->file = $savedFileName;
             $file->save(); // Salva as informações no banco de dados após o upload do arquivo
         }
 
@@ -119,7 +148,6 @@ class UploadClpController extends Controller
         return redirect()->back()->with('success', 'Upload realizado com sucesso');
     }
 
-    
     // Função para sanitizar o input
     private function sanitizeInput($input)
     {

@@ -40,56 +40,59 @@
 <div class="card card-default">
     <div class="card-header">
         <h2 class="card-title"><i class="fa-solid fa-plus"></i> &nbsp;&nbsp;<b>Adicionar Arquivo</b></h2>
+
     </div>
     <form id="fileUploadForm" action="upload_pdf" method="POST" enctype="multipart/form-data">
         @csrf
         <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
         <div class="row p-2">
             <div class="col-sm">
-                <x-adminlte-select2 name="clients_client" label="1º - Cliente" data-placeholder="Select Client..." required>
+                <x-adminlte-select2 name="clients_client" label="1º - Cliente" data-placeholder="Select Client..."
+                    required>
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
                             <i class="fas fa-solid fa-water"></i>
                         </div>
                     </x-slot>
-                    @foreach($Clients as  $name)
+                    @foreach($Clients as $client)
                         <option disabled="disabled" selected></option>
-                        <option>{{ $name->name }}</option>
+                        <option>{{ $client->name }}</option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
             <div class="col-sm">
-                <x-adminlte-select2 name="systems_system" label="2º - Sistema" data-placeholder="Select System..." required>
+                <x-adminlte-select2 name="systems_system" label="2º - Sistema" data-placeholder="Select System..."
+                    required>
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    @foreach($Systems as $name)
+                    @foreach($Systems as $system)
                         <option disabled="disabled" selected></option>
-                        <option>{{ $name->name }}</option>
+                        <option>{{ $system->name }}</option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
         </div>
         <div class="row p-2">
             <div class="col-sm">
-                <x-adminlte-select2 name="sectors_sector" label="Setor" data-placeholder="selecione o setor...">
+                <x-adminlte-select2 name="sectors_sector" label="3º - Setor" data-placeholder="selecione o setor..." required>
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    @foreach($Sectors as $name)
+                    @foreach($Sectors as $sector)
                         <option disabled="disabled" selected></option>
-                        <option>{{ $name->name }}</option>
+                        <option>{{ $sector->name }}</option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
             <div class="col-sm">
                 {{-- With label and feedback disabled --}}
-                <x-adminlte-input-file type="file" accept=".pdf" id="upload" name="uploadPdf[]" label="4º - Upload file" multiple
-                    placeholder="Choose a file..." enable-feedback required>
+                <x-adminlte-input-file type="file" accept=".pdf" id="upload" name="uploadPdf[]" label="4º - Upload file"
+                    multiple placeholder="Choose a file..." enable-feedback required>
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
                             <i class="fas fa-solid fa-upload"></i>
