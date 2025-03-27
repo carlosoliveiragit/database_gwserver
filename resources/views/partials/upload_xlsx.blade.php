@@ -46,6 +46,10 @@
         enctype="multipart/form-data">
         @csrf
         <input value="{{ $user = Auth::user()['name'] }}" name="users_name" type="text" hidden required>
+        
+
+
+        <input type="hidden" name="view_origem" value="{{ basename(request()->path()) }}">
         <div class="row p-2">
             <div class="col-sm">
                 <x-adminlte-select2 name="clients_client" label="Cliente" data-placeholder="Select Client..." required>
@@ -54,9 +58,9 @@
                             <i class="fas fa-solid fa-water"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Clients as $index => $client)
+                    @foreach ($Clients as $client)
                         <option disabled="disabled" selected></option>
-                        <option>{{ $client->client }}</option>
+                        <option>{{ $client->name }}</option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
@@ -67,40 +71,43 @@
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Systems as $index => $system)
+                    @foreach ($Systems as $system)
                         <option disabled="disabled" selected></option>
-                        <option>{{ $system->system }}</option>
+                        <option>{{ $system->name }}</option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
         </div>
         <div class="row p-2">
             @if ($type === 'production_data')
-            <div class="col-sm" hidden>
-                <x-adminlte-select2 name="sector" label="Setor" data-placeholder="selecione o setor...">
-                    <x-slot name="prependSlot">
-                        <div class="input-group-text text-primary">
-                            <i class="fa-solid fa-user-gear"></i>
-                        </div>
-                    </x-slot>
-                    <option value="OPERACAO" selected>OPERAÇÃO</option>
-                </x-adminlte-select2>
-            </div>
+                <div class="col-sm" hidden>
+                    <x-adminlte-select2 name="sectors_sector" label="Setor" data-placeholder="selecione o setor...">
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text text-primary">
+                                <i class="fa-solid fa-user-gear"></i>
+                            </div>
+                        </x-slot>
+                        @foreach ($Sectors_filt as $sector)
+                            <option selected>{{ $sector->name }}</option>
+                        @endforeach
+                    </x-adminlte-select2>
+                </div>
             @endif
             @if ($type === 'support_files')
-            <div class="col-sm">
-                <x-adminlte-select2 name="sector" label="Setor" data-placeholder="selecione o setor...">
-                    <x-slot name="prependSlot">
-                        <div class="input-group-text text-primary">
-                            <i class="fa-solid fa-user-gear"></i>
-                        </div>
-                    </x-slot>
-                    <option disabled="disabled" selected></option>
-                    <option value="MANUTENCAO">MANUTENÇÃO</option>
-                    <option value="OPERACAO">OPERAÇÃO</option>
-                    <option value="CCO">CCO</option>
-                </x-adminlte-select2>
-            </div>
+                <div class="col-sm">
+                    <x-adminlte-select2 name="sectors_sector" label="Setor" data-placeholder="selecione o setor...">
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text text-primary">
+                                <i class="fa-solid fa-user-gear"></i>
+                            </div>
+                        </x-slot>
+                        <option disabled="disabled" selected></option>
+                        @foreach ($Sectors_all as $sector)
+                            <option disabled="disabled" selected></option>
+                            <option>{{ $sector->name }}</option>
+                        @endforeach
+                    </x-adminlte-select2>
+                </div>
             @endif
             <div class="col-sm">
                 <x-adminlte-input-file accept=".xlsx" multiple id="upload" name="upload[]" label="Upload file"

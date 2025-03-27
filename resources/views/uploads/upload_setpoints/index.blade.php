@@ -42,9 +42,9 @@
                             <i class="fas fa-solid fa-water"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Clients as $index => $client)
+                    @foreach ($Clients as $client)
                         <option disabled="disabled" selected></option>
-                        <option>{{ $client->client }}</option>
+                        <option>{{ $client->name }}</option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
@@ -55,9 +55,9 @@
                             <i class="fas fa-solid fa-sitemap"></i>
                         </div>
                     </x-slot>
-                    @foreach ($Systems as $index => $system)
+                    @foreach ($Systems as $system)
                         <option disabled="disabled" selected></option>
-                        <option>{{ $system->system }}</option>
+                        <option>{{ $system->name }}</option>
                     @endforeach
                 </x-adminlte-select2>
             </div>
@@ -89,16 +89,6 @@
                         </div>
                     </x-slot>
                 </x-adminlte-input-file>
-            </div>
-            <div class="col-sm" hidden>
-                <x-adminlte-select2 name="type" label="Tipo" data-placeholder="Select Type..." required>
-                    <x-slot name="prependSlot">
-                        <div class="input-group-text text-primary">
-                            <i class="fas fa-solid fa-file"></i>
-                        </div>
-                    </x-slot>
-                    <option value="SETPOINTS" selected></option>
-                </x-adminlte-select2>
             </div>
         </div>
         

@@ -45,4 +45,16 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
     protected $guarded = [];
+
+    // Relacionamento com o setor
+    public function sector()
+    {
+        return $this->belongsTo(Sectors::class, 'sector_xid', 'xid');
+    }
+
+    // Relacionamento com o perfil
+    public function profile()
+    {
+        return $this->belongsTo(Profiles::class, 'profile_xid', 'xid');
+    }
 }
