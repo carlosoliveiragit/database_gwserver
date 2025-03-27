@@ -9,10 +9,10 @@ use App\Models\Types;
 use App\Models\Sectors;
 use App\Models\Files;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller; // Adicionando a importação da classe Controller
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 use Imagick;
-use Clegginabox\PDFMerger\PDFMerger;
+use iio\libmergepdf\Merger;
 
 class UploadSetpointsController extends Controller
 {
@@ -40,34 +40,30 @@ class UploadSetpointsController extends Controller
             'clients_client' => 'required|string',
             'systems_system' => 'required|string',
             'upload.*' => 'nullable|mimes:jpeg,png,jpg|max:4096',
-            'uploadPdf.*' => 'nullable|mimes:pdf|max:4096', // Permitir múltiplos PDFs
+            'uploadPdf.*' => 'nullable|mimes:pdf|max:4096',
         ]);
 
-        $sector_xid = "SC_XYIYFC";//OPERAÇÃO
-        $sectors_name = trim(Sectors::where('xid', 'SC_XYIYFC')->value('name'));//OPERAÇÃO
-        $type_xid = "TP_SBTJXF";//SETPOINTS
-        $types_name = trim(Types::where('xid', 'TP_SBTJXF')->value('name'));//SETPOINTS
+        $sector_xid = "SC_XYIYFC";
+        $sectors_name = trim(Sectors::where('xid', 'SC_XYIYFC')->value('name'));
+        $type_xid = "TP_SBTJXF";
+        $types_name = trim(Types::where('xid', 'TP_SBTJXF')->value('name'));
 
         $clients_client = $this->sanitizeInput($request->clients_client);
         $systems_system = $this->sanitizeInput($request->systems_system);
-        $type = $this->sanitizeInput($request->type);
         $sector_name = $this->sanitizeInput($sectors_name);
         $type_name = $this->sanitizeInput($types_name);
 
-
         $basePath = Str::finish(config('filesystems.paths.support_files_base'), DIRECTORY_SEPARATOR);
-        $directoryPath = $basePath . 
-        $clients_client . DIRECTORY_SEPARATOR . 
-        $systems_system . DIRECTORY_SEPARATOR . 
-        $sector_name . DIRECTORY_SEPARATOR .
-        $type_name . DIRECTORY_SEPARATOR;
+        $directoryPath = $basePath .
+            $clients_client . DIRECTORY_SEPARATOR .
+            $systems_system . DIRECTORY_SEPARATOR .
+            $sector_name . DIRECTORY_SEPARATOR .
+            $type_name . DIRECTORY_SEPARATOR;
 
-        // Validar que pelo menos um arquivo foi enviado
         if (!$request->hasFile('upload') && !$request->hasFile('uploadPdf')) {
             return redirect()->back()->with('error', 'É necessário enviar ao menos uma imagem ou um arquivo PDF.');
         }
 
-        // Criar diretório se não existir
         if (!file_exists($directoryPath)) {
             if (!mkdir($directoryPath, 0755, true)) {
                 return redirect()->back()->with('error', 'Não foi possível criar o diretório de armazenamento.');
@@ -77,7 +73,7 @@ class UploadSetpointsController extends Controller
         $timestamp = date("dmy-His");
         $savedFileNames = [];
 
-        // Processamento das imagens -> PDF
+        // Converter imagens em PDF
         if ($request->hasFile('upload')) {
             $pdfNameFromImages = "{$clients_client}-{$systems_system}-{$sector_name}-{$type_name}-{$timestamp}.pdf";
             $pdfFullPath = $directoryPath . $pdfNameFromImages;
@@ -99,47 +95,41 @@ class UploadSetpointsController extends Controller
             }
         }
 
-        // Upload de múltiplos PDFs fundidos em um único PDF
+        // Fundir múltiplos PDFs
         if ($request->hasFile('uploadPdf')) {
             $mergedPdfName = "{$clients_client}-{$systems_system}-{$sector_name}-{$type_name}-{$timestamp}.pdf";
             $mergedPdfPath = $directoryPath . $mergedPdfName;
 
-            $pdfMerger = new PDFMerger();
-
+            $merger = new Merger();
             foreach ($request->file('uploadPdf') as $pdfFile) {
-                // Adiciona cada PDF enviado
-                $pdfMerger->addPDF($pdfFile->getRealPath(), 'all');
+                $merger->addFile($pdfFile->getRealPath());
             }
 
-            // Realiza a fusão dos PDFs
-            $pdfMerger->merge('file', $mergedPdfPath);
+            file_put_contents($mergedPdfPath, $merger->merge());
 
             $savedFileNames[] = $mergedPdfName;
         }
-   
-        // Salvar no banco cada arquivo gerado
-        foreach ($savedFileNames as $savedFileName) {
 
-            // Associar as chaves estrangeiras corretamente
+        // Salvar no banco
+        foreach ($savedFileNames as $savedFileName) {
             $user = Users::where('name', $request->users_name)->first();
             $client = Clients::where('name', $request->clients_client)->first();
             $system = Systems::where('name', $request->systems_system)->first();
-            
+
             $file = new Files();
-            $file->user_xid = $user->xid; // Associando o usuário
-            $file->client_xid = $client->xid; // Associando o cliente
-            $file->system_xid = $system->xid; // Associando o sistema
-            $file->type_xid = $type_xid; // Associando o type
-            $file->sector_xid = $sector_xid; // Associando o setor
+            $file->user_xid = $user->xid;
+            $file->client_xid = $client->xid;
+            $file->system_xid = $system->xid;
+            $file->type_xid = $type_xid;
+            $file->sector_xid = $sector_xid;
             $file->path = $directoryPath;
             $file->file = $savedFileName;
             $file->save();
         }
 
-        return redirect('upload_pdf')->with('success', 'Arquivos carregados com sucesso!');
+        return redirect()->back()->with('success', 'Arquivos carregados com sucesso!');
     }
 
-    // Função para sanitizar o input
     private function sanitizeInput($input)
     {
         $input = iconv('UTF-8', 'ASCII//TRANSLIT', $input);

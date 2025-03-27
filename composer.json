@@ -8,6 +8,7 @@
         "php": "^8.1",
         "clegginabox/pdf-merger": "dev-master",
         "guzzlehttp/guzzle": "^7.2",
+        "iio/libmergepdf": "^3.1",
         "jeroennoten/laravel-adminlte": "^3.9",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
